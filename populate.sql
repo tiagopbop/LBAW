@@ -19,11 +19,11 @@ VALUES
     ('Reminder', 'Your task deadline is approaching.', CURRENT_DATE);
 
 -- Populate project table
-INSERT INTO project (project_id, availability, project_creation_date, archived_status)
+INSERT INTO project (project_id, availability, project_creation_date, archived_status, project_title, project_description)
 VALUES
-    (1, TRUE, CURRENT_DATE, FALSE),
-    (2, TRUE, CURRENT_DATE, FALSE),
-    (3, FALSE, CURRENT_DATE, TRUE);
+    (1, TRUE, CURRENT_DATE, FALSE, "Ovelha", "Branco"),
+    (2, TRUE, CURRENT_DATE, FALSE, "Abelha", "Amarelo"),
+    (3, FALSE, CURRENT_DATE, TRUE, "Àrvore", "Castanho");
 
 -- Populate task table
 INSERT INTO task (project_id, task_name, status, details, assigned_to, due_date, priority, created_at, updated_at)
