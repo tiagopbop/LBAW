@@ -1,9 +1,9 @@
 -- Populate authenticated_user table
-INSERT INTO authenticated_user (username, email, password, user_creation_date, suspended_status, pb, pronouns, bio, country)
+INSERT INTO authenticated_user (id, username, email, password, user_creation_date, suspended_status, pb, pronouns, bio, country)
 VALUES
-    ('john_doe', 'john@example.com', 'password123', CURRENT_DATE, FALSE, 'profile1.jpg', 'he/him', 'Software Developer', 'USA'),
-    ('jane_smith', 'jane@example.com', 'password456', CURRENT_DATE, FALSE, 'profile2.jpg', 'she/her', 'Project Manager', 'UK'),
-    ('alice_wong', 'alice@example.com', 'password789', CURRENT_DATE, TRUE, 'profile3.jpg', 'they/them', 'Designer', 'Canada');
+    (1, 'john_doe', 'john@example.com', 'password123', CURRENT_DATE, FALSE, 'profile1.jpg', 'he/him', 'Software Developer', 'USA'),
+    (2, 'jane_smith', 'jane@example.com', 'password456', CURRENT_DATE, FALSE, 'profile2.jpg', 'she/her', 'Project Manager', 'UK'),
+    (3, 'alice_wong', 'alice@example.com', 'password789', CURRENT_DATE, TRUE, 'profile3.jpg', 'they/them', 'Designer', 'Canada');
 
 -- Populate admin table
 INSERT INTO admin (admin_tag, admin_username, password)
