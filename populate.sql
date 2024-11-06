@@ -1,5 +1,5 @@
 -- Populate authenticated_user table
-INSERT INTO authenticated_user (id, username, email, password, user_creation_date, suspended_status, pb, pronouns, bio, country)
+INSERT INTO authenticated_user (id, username, email, password, user_creation_date, suspended_status, pfp, pronouns, bio, country)
 VALUES
     (1, 'john_doe', 'john@example.com', 'password123', CURRENT_DATE, FALSE, 'profile1.jpg', 'he/him', 'Software Developer', 'USA'),
     (2, 'jane_smith', 'jane@example.com', 'password456', CURRENT_DATE, FALSE, 'profile2.jpg', 'she/her', 'Project Manager', 'UK'),
@@ -26,11 +26,11 @@ VALUES
     (3, FALSE, CURRENT_DATE, TRUE, 'Àrvore', 'Castanho');
 
 -- Populate task table
-INSERT INTO task (project_id, task_name, status, details, assigned_to, due_date, priority, created_at, updated_at)
+INSERT INTO task (project_id, task_name, status, details, due_date, priority, created_at, updated_at)
 VALUES
-    (1, 'Design Homepage', 'Ongoing', 'Create the homepage layout', 'jane@example.com', CURRENT_DATE + INTERVAL '5 days', 'High', CURRENT_DATE, CURRENT_DATE),
-    (2, 'Develop Backend', 'On-hold', 'Set up the backend structure', 'john@example.com', CURRENT_DATE + INTERVAL '10 days', 'Medium', CURRENT_DATE, CURRENT_DATE),
-    (3, 'Testing', 'Finished', 'Test the application thoroughly', 'alice@example.com', CURRENT_DATE + INTERVAL '15 days', 'Low', CURRENT_DATE, CURRENT_DATE);
+    (1, 'Design Homepage', 'Ongoing', 'Create the homepage layout', CURRENT_DATE + INTERVAL '5 days', 'High', CURRENT_DATE, CURRENT_DATE),
+    (2, 'Develop Backend', 'On-hold', 'Set up the backend structure', CURRENT_DATE + INTERVAL '10 days', 'Medium', CURRENT_DATE, CURRENT_DATE),
+    (3, 'Testing', 'Finished', 'Test the application thoroughly', CURRENT_DATE + INTERVAL '15 days', 'Low', CURRENT_DATE, CURRENT_DATE);
 
 -- Populate task_comments table
 INSERT INTO task_comments (id, task_id, comment, created_at)
