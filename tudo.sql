@@ -191,7 +191,30 @@ AFTER INSERT ON user_task
 FOR EACH ROW
 EXECUTE PROCEDURE notify_task_assignment();
 
+CREATE INDEX idx_post_creation_date ON post USING btree (post_creation);
+-- Add a column to the project table to store computed ts_vectors for full-text search
+ALTER TABLE project
+ADD COLUMN ts_vector_title_description TSVECTOR;
 
+-- Create a function to automatically update ts_vector_title_description
+CREATE FUNCTION update_ts_vector_project() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    NEW.ts_vector_title_description := 
+        setweight(to_tsvector('portuguese', NEW.project_title), 'A') ||
+        setweight(to_tsvector('portuguese', NEW.project_description), 'B');
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+-- Create the trigger to call the function on insert or update
+CREATE TRIGGER ts_vector_update_project
+BEFORE INSERT OR UPDATE ON project
+FOR EACH ROW EXECUTE FUNCTION update_ts_vector_project();
+
+-- Create the GIN index for full-text search on the computed ts_vector column
+CREATE INDEX idx_project_title_description ON project USING GIN (ts_vector_title_description);
 -- Populate authenticated_user table
 INSERT INTO authenticated_user (id, username, email, password, user_creation_date, suspended_status, pfp, pronouns, bio, country)
 VALUES
@@ -286,3 +309,13 @@ VALUES
     (2, 3),  -- User with id=2 assigned to Task with task_id=3
     (3, 1),  -- User with id=3 assigned to Task with task_id=1
     (2, 2);  -- User with id=2 assigned to Task with task_id=2
+	
+SET enable_seqscan TO off;
+DROP INDEX IF EXISTS idx_post_creation_date;
+CREATE INDEX idx_post_creation_date ON post USING btree (post_creation);
+DROP INDEX IF EXISTS idx_project_archived_status;
+CREATE INDEX idx_project_archived_status ON project USING btree (archived_status);
+DROP INDEX IF EXISTS idx_notifications_created_at;
+CREATE INDEX idx_notifications_created_at ON notifications USING btree (created_at);
+EXPLAIN SELECT * FROM notifications ORDER BY created_at DESC;
+
