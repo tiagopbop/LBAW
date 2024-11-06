@@ -1,8 +1,9 @@
 ROLLBACK;
 BEGIN;
 DROP TRIGGER IF EXISTS update_task_and_project_timestamp_trigger ON task;
-
 DROP FUNCTION IF EXISTS update_task_and_project_timestamp;
+DROP TRIGGER IF EXISTS TRIGGER_TASK_ASSIGN_NOTIFY ON user_task;
+DROP FUNCTION IF EXISTS notify_task_assignment;
 
 DROP TABLE IF EXISTS user_task CASCADE;
 DROP TABLE IF EXISTS authenticated_user_notifications CASCADE;
@@ -165,6 +166,30 @@ BEFORE UPDATE ON task
 FOR EACH ROW
 EXECUTE PROCEDURE update_task_and_project_timestamp();
 
+-- Step 1: Create the function to notify user on task assignment
+CREATE FUNCTION notify_task_assignment() RETURNS TRIGGER AS
+$BODY$
+DECLARE
+    notification_title VARCHAR(255) := 'New Task Assignment';
+    notification_content TEXT := 'You have been assigned a new task. Please review and start working on it as soon as possible.';
+    new_notification_id INT;
+BEGIN
+    -- Insert notification into notifications table
+    INSERT INTO notifications (title, content, created_at)
+    VALUES (notification_title, notification_content, CURRENT_DATE)
+    RETURNING notification_id INTO new_notification_id;
+    -- Link the notification to the task and user
+    INSERT INTO task_not (notification_id, task_id) VALUES (new_notification_id, NEW.task_id);
+    INSERT INTO authenticated_user_notifications (id, notification_id) VALUES (NEW.id, new_notification_id);
+    RETURN NEW;
+END
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER TRIGGER_TASK_ASSIGN_NOTIFY
+AFTER INSERT ON user_task
+FOR EACH ROW
+EXECUTE PROCEDURE notify_task_assignment();
 
 
 -- Populate authenticated_user table
@@ -261,6 +286,3 @@ VALUES
     (2, 3),  -- User with id=2 assigned to Task with task_id=3
     (3, 1),  -- User with id=3 assigned to Task with task_id=1
     (2, 2);  -- User with id=2 assigned to Task with task_id=2
-
-update task set status='Finished' where task_id=1;
-select * from project
