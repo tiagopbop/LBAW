@@ -1,5 +1,3 @@
-ROLLBACK;
-BEGIN;
 DROP TRIGGER IF EXISTS update_task_and_project_timestamp_trigger ON task;
 DROP FUNCTION IF EXISTS update_task_and_project_timestamp;
 DROP TRIGGER IF EXISTS TRIGGER_TASK_ASSIGN_NOTIFY ON user_task;
@@ -317,5 +315,4 @@ DROP INDEX IF EXISTS idx_project_archived_status;
 CREATE INDEX idx_project_archived_status ON project USING btree (archived_status);
 DROP INDEX IF EXISTS idx_notifications_created_at;
 CREATE INDEX idx_notifications_created_at ON notifications USING btree (created_at);
-EXPLAIN SELECT * FROM notifications ORDER BY created_at DESC;
 
