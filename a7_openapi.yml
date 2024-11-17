@@ -1,0 +1,218 @@
+openapi: 3.0.0
+
+info:
+  version: '1.0'
+  title: 'ManageMe Web API'
+  description: 'API specification for the ManageMe project management platform.'
+
+servers:
+  - url: http://manageme.yourserver.com
+    description: Production server
+
+tags:
+  - name: 'M01: Authentication and User Management'
+    description: 'APIs for login, logout, registration, and user management.'
+  - name: 'M02: Projects'
+    description: 'APIs for project creation, updates, and retrieval.'
+  - name: 'M03: Tasks'
+    description: 'APIs for task management within projects.'
+  - name: 'M04: Notifications'
+    description: 'APIs for user notifications.'
+
+paths:
+  /login:
+    post:
+      operationId: R101
+      summary: 'User Login'
+      description: 'Authenticate a user with email and password.'
+      tags:
+        - 'M01: Authentication and User Management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: 'Successful login. Returns user details and session token.'
+        '401':
+          description: 'Invalid credentials.'
+
+  /logout:
+    post:
+      operationId: R102
+      summary: 'User Logout'
+      description: 'Logs out the current authenticated user.'
+      tags:
+        - 'M01: Authentication and User Management'
+      responses:
+        '204':
+          description: 'Logout successful.'
+
+  /register:
+    post:
+      operationId: R103
+      summary: 'User Registration'
+      description: 'Registers a new user.'
+      tags:
+        - 'M01: Authentication and User Management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+                - name
+                - email
+                - password
+      responses:
+        '201':
+          description: 'User registered successfully.'
+        '400':
+          description: 'Invalid data.'
+
+  /projects:
+    get:
+      operationId: R201
+      summary: 'List Projects'
+      description: 'Retrieve a list of projects the user has access to.'
+      tags:
+        - 'M02: Projects'
+      responses:
+        '200':
+          description: 'Successful retrieval of projects.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+      parameters:
+        - in: query
+          name: search
+          description: 'Filter projects by name or description.'
+          schema:
+            type: string
+
+    post:
+      operationId: R202
+      summary: 'Create Project'
+      description: 'Create a new project.'
+      tags:
+        - 'M02: Projects'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+                - name
+      responses:
+        '201':
+          description: 'Project created successfully.'
+        '400':
+          description: 'Invalid project data.'
+
+  /tasks/{taskId}:
+    patch:
+      operationId: R301
+      summary: 'Update Task'
+      description: 'Update the details of a task.'
+      tags:
+        - 'M03: Tasks'
+      parameters:
+        - in: path
+          name: taskId
+          required: true
+          schema:
+            type: integer
+          description: 'ID of the task to update.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                due_date:
+                  type: string
+                  format: date-time
+                status:
+                  type: string
+                  enum: [open, in_progress, completed]
+      responses:
+        '200':
+          description: 'Task updated successfully.'
+        '404':
+          description: 'Task not found.'
+
+  /notifications:
+    get:
+      operationId: R401
+      summary: 'Get Notifications'
+      description: 'Retrieve the notifications for the logged-in user.'
+      tags:
+        - 'M04: Notifications'
+      responses:
+        '200':
+          description: 'List of notifications.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    message:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    read:
+                      type: boolean
