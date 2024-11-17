@@ -168,11 +168,11 @@ paths:
 
   /users/{id}/update:
     patch:
-      operationId: 'R302'
+      operationId: 'R401'
       summary: 'Update user profile information'
       description: 'Allows authenticated users to update their name, email, profile picture, pronouns, bio, and country.'
       tags:
-        - 'M03: Users and Roles'
+        - 'M04: User Administration and Static Pages'
       parameters:
         - in: path
           name: id
@@ -221,11 +221,11 @@ paths:
 
   /users/{id}:
     get:
-      operationId: 'R301'
+      operationId: 'R402'
       summary: 'View user profile'
       description: 'Shows the individual user profile details, including name, email, profile picture, pronouns, bio, and country.'
       tags:
-        - 'M03: Users and Roles'
+        - 'M04: User Administration and Static Pages'
       parameters:
         - in: path
           name: id
@@ -444,7 +444,7 @@ paths:
           
   /users/{id}/suspend:
     post:
-      operationId: 'R401'
+      operationId: 'R403'
       summary: 'Suspend a user account'
       description: 'Suspends the specified user account, limiting access for a set period.'
       tags:
@@ -468,7 +468,7 @@ paths:
           
   /users/{id}/unsuspend:
     post:
-      operationId: 'R402'
+      operationId: 'R404'
       summary: 'Unsuspend a user account'
       description: 'Unsuspends the specified user account, restoring access.'
       tags:
@@ -492,7 +492,7 @@ paths:
 
   /projects/{id}/suspend:
     post:
-      operationId: 'R403'
+      operationId: 'R405'
       summary: 'Suspend a project'
       description: 'Suspends the specified project, making it inactive and inaccessible for a period.'
       tags:
@@ -516,7 +516,7 @@ paths:
 
   /projects/{id}/unsuspend:
     post:
-      operationId: 'R404'
+      operationId: 'R406'
       summary: 'Unsuspend a project'
       description: 'Unsuspends the specified project, restoring its activity and access.'
       tags:
