@@ -1,0 +1,297 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: 'ManageMe Web API'
+  description: 'Web Resources Specification for ManageMe, a project management platform.'
+
+servers:
+  - url: http://api.manageme.com
+    description: Production server
+
+externalDocs:
+  description: Find more information here.
+  url: https://github.com/andremendes/manageme
+
+tags:
+  - name: 'Authentication and Profile'
+  - name: 'Projects and Tasks'
+  - name: 'Users and Teams'
+  - name: 'Notifications'
+
+paths:
+  /login:
+    get:
+      operationId: 'R101'
+      summary: 'Fetch login requirements'
+      description: 'Provides metadata for the login endpoint, including required fields and expected formats.'
+      tags:
+        - 'Authentication and Profile'
+      responses:
+        '200':
+          description: 'Metadata for login endpoint'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  required_fields:
+                    type: array
+                    items:
+                      type: string
+                      example: email, password
+                  description:
+                    type: string
+                    example: 'Submit email and password to authenticate.'
+
+    post:
+      operationId: 'R102'
+      summary: 'Perform user login'
+      description: 'Authenticates a user and returns a session token.'
+      tags:
+        - 'Authentication and Profile'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: 'user@example.com'
+                password:
+                  type: string
+                  format: password
+                  example: 'YourSecurePassword'
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: 'Successful login'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: 'jwt.token.here'
+        '401':
+          description: 'Invalid credentials'
+
+  /logout:
+    post:
+      operationId: 'R103'
+      summary: 'Logout action'
+      description: 'Logout the current authenticated user.'
+      tags:
+        - 'Authentication and Profile'
+      responses:
+        '302':
+          description: 'Redirect after processing logout.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to login form.'
+                  value: '/login'
+
+  /register:
+    get:
+      operationId: 'R104'
+      summary: 'Fetch registration requirements'
+      description: 'Provides metadata for the registration endpoint, including required fields and expected formats.'
+      tags:
+        - 'Authentication and Profile'
+      responses:
+        '200':
+          description: 'Metadata for registration endpoint'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  required_fields:
+                    type: array
+                    items:
+                      type: string
+                      example: name, email, password
+                  description:
+                    type: string
+                    example: 'Submit name, email, and password to register a new user.'
+
+    post:
+      operationId: 'R105'
+      summary: 'Register a new user'
+      description: 'Creates a new user account.'
+      tags:
+        - 'Authentication and Profile'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'John Doe'
+                email:
+                  type: string
+                  format: email
+                  example: 'user@example.com'
+                password:
+                  type: string
+                  format: password
+                  example: 'YourSecurePassword'
+              required:
+                - name
+                - email
+                - password
+      responses:
+        '201':
+          description: 'User created successfully'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: '123'
+                  message:
+                    type: string
+                    example: 'User registered successfully.'
+        '400':
+          description: 'Invalid input'
+
+  /users/{id}:
+    get:
+      operationId: 'R106'
+      summary: 'View user profile'
+      description: 'Show the individual user profile. Access: USR'
+      tags:
+        - 'Authentication and Profile'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the user.'
+      responses:
+        '200':
+          description: 'User profile fetched successfully'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                  name:
+                    type: string
+                    example: 'John Doe'
+                  email:
+                    type: string
+                    format: email
+                    example: 'user@example.com'
+
+  /projects:
+    get:
+      operationId: 'R201'
+      summary: 'Fetch all projects'
+      description: 'Fetch all the projects in the system. Returns a list of project summaries.'
+      tags:
+        - 'Projects and Tasks'
+      responses:
+        '200':
+          description: 'List of all projects'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: 'Project Alpha'
+                    description:
+                      type: string
+                      example: 'This is the first project.'
+                    owner:
+                      type: string
+                      example: 'John Doe'
+
+  /tasks:
+    get:
+      operationId: 'R202'
+      summary: 'Fetch tasks for a project'
+      description: 'Fetch all tasks associated with a project.'
+      tags:
+        - 'Projects and Tasks'
+      parameters:
+        - in: query
+          name: project_id
+          required: true
+          schema:
+            type: integer
+          description: 'The ID of the project for which tasks are fetched.'
+      responses:
+        '200':
+          description: 'List of tasks for the specified project'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    title:
+                      type: string
+                      example: 'Task 1'
+                    description:
+                      type: string
+                      example: 'This is a task under Project Alpha.'
+                    status:
+                      type: string
+                      example: 'In Progress'
+
+  /notifications:
+    get:
+      operationId: 'R203'
+      summary: 'Fetch user notifications'
+      description: 'Fetch notifications related to the user.'
+      tags:
+        - 'Notifications'
+      responses:
+        '200':
+          description: 'List of notifications'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 101
+                    message:
+                      type: string
+                      example: 'New task assigned to you.'
+                    read:
+                      type: boolean
+                      example: false
