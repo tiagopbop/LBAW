@@ -172,7 +172,7 @@ paths:
       summary: 'Update user profile information'
       description: 'Allows authenticated users to update their name, email, profile picture, pronouns, bio, and country.'
       tags:
-        - 'M01: User Administration and Static Pages'
+        - 'M01: Authentication and Individual Profile '
       parameters:
         - in: path
           name: id
@@ -225,7 +225,7 @@ paths:
       summary: 'View user profile'
       description: 'Shows the individual user profile details, including name, email, profile picture, pronouns, bio, and country.'
       tags:
-        - 'M01: User Administration and Static Pages'
+        - 'M01: Authentication and Individual Profile '
       parameters:
         - in: path
           name: id
