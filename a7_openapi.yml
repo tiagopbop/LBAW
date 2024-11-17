@@ -6,7 +6,7 @@ info:
   description: 'Web Resources Specification for ManageMe Project Management Platform'
 
 servers:
-  - url: http://manage-me-api.com
+  - url: http://lbaw.fe.up.pt
     description: Production server
 
 tags:
