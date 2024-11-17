@@ -22,7 +22,7 @@ paths:
       summary: 'Fetch login requirements'
       description: 'Provides metadata for the login endpoint, including required fields and expected formats.'
       tags:
-        - 'Authentication and Profile'
+        - 'M01: Authentication and Individual Profile'
       responses:
         '200':
           description: 'Metadata for login endpoint'
@@ -45,7 +45,7 @@ paths:
       summary: 'Perform user login'
       description: 'Authenticates a user and returns a session token.'
       tags:
-        - 'Authentication and Profile'
+        - 'M01: Authentication and Individual Profile'
       requestBody:
         required: true
         content:
@@ -84,7 +84,7 @@ paths:
       summary: 'Logout action'
       description: 'Logout the current authenticated user.'
       tags:
-        - 'Authentication and Profile'
+        - 'M01: Authentication and Individual Profile'
       responses:
         '302':
           description: 'Redirect after processing logout.'
@@ -103,7 +103,7 @@ paths:
       summary: 'Fetch registration requirements'
       description: 'Provides metadata for the registration endpoint, including required fields and expected formats.'
       tags:
-        - 'Authentication and Profile'
+        - 'M01: Authentication and Individual Profile'
       responses:
         '200':
           description: 'Metadata for registration endpoint'
@@ -126,7 +126,7 @@ paths:
       summary: 'Register a new user'
       description: 'Creates a new user account.'
       tags:
-        - 'Authentication and Profile'
+        - 'M01: Authentication and Individual Profile'
       requestBody:
         required: true
         content:
@@ -168,7 +168,7 @@ paths:
 
   /users/{id}/update:
     patch:
-      operationId: 'R108'
+      operationId: 'R302'
       summary: 'Update user profile information'
       description: 'Allows authenticated users to update their name, email, profile picture, pronouns, bio, and country.'
       tags:
@@ -221,7 +221,7 @@ paths:
 
   /users/{id}:
     get:
-      operationId: 'R106'
+      operationId: 'R301'
       summary: 'View user profile'
       description: 'Shows the individual user profile details, including name, email, profile picture, pronouns, bio, and country.'
       tags:
@@ -271,7 +271,7 @@ paths:
   # Projects and Tasks
   /projects/{id}:
     put:
-      operationId: 'R204'
+      operationId: 'R201'
       summary: 'Update project information'
       description: 'Replace the entire project data with the new values.'
       tags:
@@ -314,7 +314,7 @@ paths:
           description: 'Project not found'
 
     patch:
-      operationId: 'R205'
+      operationId: 'R202'
       summary: 'Partially update project information'
       description: 'Update specific fields of a project.'
       tags:
@@ -352,7 +352,7 @@ paths:
 
   /tasks/{id}:
     put:
-      operationId: 'R206'
+      operationId: 'R203'
       summary: 'Update task information'
       description: 'Replace the entire task data with the new values.'
       tags:
@@ -402,7 +402,7 @@ paths:
           description: 'Task not found'
 
     patch:
-      operationId: 'R207'
+      operationId: 'R204'
       summary: 'Partially update task information'
       description: 'Update specific fields of a task.'
       tags:
@@ -444,7 +444,7 @@ paths:
           
   /users/{id}/suspend:
     post:
-      operationId: 'R302'
+      operationId: 'R401'
       summary: 'Suspend a user account'
       description: 'Suspends the specified user account, limiting access for a set period.'
       tags:
@@ -466,7 +466,7 @@ paths:
           
   /users/{id}/unsuspend:
     post:
-      operationId: 'R309'
+      operationId: 'R402'
       summary: 'Unsuspend a user account'
       description: 'Unsuspends the specified user account, restoring access.'
       tags:
