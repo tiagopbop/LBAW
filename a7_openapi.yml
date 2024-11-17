@@ -461,6 +461,8 @@ paths:
           description: 'User successfully suspended'
         '404':
           description: 'User not found'
+        '403':
+          description: 'Forbidden, only admins can suspend users'
         '401':
           description: 'Unauthorized, user must be authenticated'
           
@@ -483,5 +485,55 @@ paths:
           description: 'User successfully unsuspended'
         '404':
           description: 'User not found'
+        '403':
+          description: 'Forbidden, only admins can unsuspend users'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+  /projects/{id}/suspend:
+    post:
+      operationId: 'R403'
+      summary: 'Suspend a project'
+      description: 'Suspends the specified project, making it inactive and inaccessible for a period.'
+      tags:
+        - 'M04: User Administration and Static Pages'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The project ID to suspend'
+      responses:
+        '200':
+          description: 'Project successfully suspended'
+        '404':
+          description: 'Project not found'
+        '403':
+          description: 'Forbidden, only admins can suspend projects'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+  /projects/{id}/unsuspend:
+    post:
+      operationId: 'R404'
+      summary: 'Unsuspend a project'
+      description: 'Unsuspends the specified project, restoring its activity and access.'
+      tags:
+        - 'M04: User Administration and Static Pages'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The project ID to unsuspend'
+      responses:
+        '200':
+          description: 'Project successfully unsuspended'
+        '404':
+          description: 'Project not found'
+        '403':
+          description: 'Forbidden, only admins can unsuspend projects'
         '401':
           description: 'Unauthorized, user must be authenticated'
