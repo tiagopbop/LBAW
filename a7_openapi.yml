@@ -168,11 +168,11 @@ paths:
 
   /users/{id}/update:
     patch:
-      operationId: 'R401'
+      operationId: 'R106'
       summary: 'Update user profile information'
       description: 'Allows authenticated users to update their name, email, profile picture, pronouns, bio, and country.'
       tags:
-        - 'M04: User Administration and Static Pages'
+        - 'M01: User Administration and Static Pages'
       parameters:
         - in: path
           name: id
@@ -221,11 +221,11 @@ paths:
 
   /users/{id}:
     get:
-      operationId: 'R402'
+      operationId: 'R107'
       summary: 'View user profile'
       description: 'Shows the individual user profile details, including name, email, profile picture, pronouns, bio, and country.'
       tags:
-        - 'M04: User Administration and Static Pages'
+        - 'M01: User Administration and Static Pages'
       parameters:
         - in: path
           name: id
