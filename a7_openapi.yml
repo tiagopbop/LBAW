@@ -13,6 +13,7 @@ tags:
   - name: 'M01: Authentication and Individual Profile'
   - name: 'M02: Projects and Tasks'
   - name: 'M03: Users and Roles'
+  - name: 'M04: User Administration and Static Pages'
 
 paths:
   /login:
@@ -387,3 +388,47 @@ paths:
           description: 'Invalid input'
         '404':
           description: 'Task not found'
+          
+  /users/{id}/suspend:
+    post:
+      operationId: 'R302'
+      summary: 'Suspend a user account'
+      description: 'Suspends the specified user account, limiting access for a set period.'
+      tags:
+        - 'M04: User Administration and Static Pages'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The user ID to suspend'
+      responses:
+        '200':
+          description: 'User successfully suspended'
+        '404':
+          description: 'User not found'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+          
+  /users/{id}/unsuspend:
+    post:
+      operationId: 'R309'
+      summary: 'Unsuspend a user account'
+      description: 'Unsuspends the specified user account, restoring access.'
+      tags:
+        - 'M04: User Administration and Static Pages'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The user ID to unsuspend'
+      responses:
+        '200':
+          description: 'User successfully unsuspended'
+        '404':
+          description: 'User not found'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
