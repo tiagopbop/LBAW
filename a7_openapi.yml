@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   version: '1.0'
-  title: 'ManageMe Web API'
+  title: 'LBAW ManageMe Web API'
   description: 'Web Resources Specification for ManageMe Project Management Platform'
 
 servers:
