@@ -12,7 +12,7 @@ servers:
 tags:
   - name: 'M01: Authentication and Individual Profile'
   - name: 'M02: Projects and Tasks'
-  - name: 'M03: Users and Roles'
+  - name: 'M03: Posts and Replies'
   - name: 'M04: User Administration and Static Pages'
 
 paths:
@@ -535,5 +535,278 @@ paths:
           description: 'Project not found'
         '403':
           description: 'Forbidden, only admins can unsuspend projects'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+  /posts:
+    post:
+      operationId: 'R301'
+      summary: 'Create a new post'
+      description: 'Creates a new post in a project discussion or forum.'
+      tags:
+        - 'M03: Posts and Replies'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+                project_id:
+                  type: integer
+                  example: 10
+                content:
+                  type: string
+                  example: 'This is a post about the project.'
+              required:
+                - user_id
+                - project_id
+                - content
+      responses:
+        '201':
+          description: 'Post successfully created'
+        '400':
+          description: 'Invalid input'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+  /posts/{id}:
+    get:
+      operationId: 'R302'
+      summary: 'View a post'
+      description: 'Retrieves a specific post with its details.'
+      tags:
+        - 'M03: Posts and Replies'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The post ID to retrieve'
+      responses:
+        '200':
+          description: 'Post details'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  project_id:
+                    type: integer
+                  content:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                example:
+                  id: 1
+                  user_id: 1
+                  project_id: 10
+                  content: 'This is a post about the project.'
+                  created_at: '2024-11-17T12:00:00Z'
+        '404':
+          description: 'Post not found'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+    put:
+      operationId: 'R303'
+      summary: 'Update a post'
+      description: 'Updates the content of a post.'
+      tags:
+        - 'M03: Posts and Replies'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The post ID to update'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  example: 'Updated post content.'
+              required:
+                - content
+      responses:
+        '200':
+          description: 'Post successfully updated'
+        '400':
+          description: 'Invalid input'
+        '404':
+          description: 'Post not found'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+    delete:
+      operationId: 'R304'
+      summary: 'Delete a post'
+      description: 'Deletes a post from the system.'
+      tags:
+        - 'M03: Posts and Replies'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The post ID to delete'
+      responses:
+        '204':
+          description: 'Post successfully deleted'
+        '404':
+          description: 'Post not found'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+  # Replies
+  /posts/{post_id}/replies:
+    post:
+      operationId: 'R305'
+      summary: 'Create a reply to a post'
+      description: 'Creates a reply to an existing post.'
+      tags:
+        - 'M03: Posts and Replies'
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: integer
+          description: 'The post ID to reply to'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+                content:
+                  type: string
+                  example: 'This is a reply to the post.'
+              required:
+                - user_id
+                - content
+      responses:
+        '201':
+          description: 'Reply successfully created'
+        '400':
+          description: 'Invalid input'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+  /replies/{id}:
+    get:
+      operationId: 'R306'
+      summary: 'View a reply'
+      description: 'Retrieves a specific reply to a post.'
+      tags:
+        - 'M03: Posts and Replies'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The reply ID to retrieve'
+      responses:
+        '200':
+          description: 'Reply details'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  post_id:
+                    type: integer
+                  content:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                example:
+                  id: 1
+                  user_id: 1
+                  post_id: 10
+                  content: 'This is a reply to the post.'
+                  created_at: '2024-11-17T12:00:00Z'
+        '404':
+          description: 'Reply not found'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+    put:
+      operationId: 'R307'
+      summary: 'Update a reply'
+      description: 'Updates the content of a reply.'
+      tags:
+        - 'M03: Posts and Replies'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The reply ID to update'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  example: 'Updated reply content.'
+              required:
+                - content
+      responses:
+        '200':
+          description: 'Reply successfully updated'
+        '400':
+          description: 'Invalid input'
+        '404':
+          description: 'Reply not found'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+    delete:
+      operationId: 'R308'
+      summary: 'Delete a reply'
+      description: 'Deletes a reply from the system.'
+      tags:
+        - 'M03: Posts and Replies'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The reply ID to delete'
+      responses:
+        '204':
+          description: 'Reply successfully deleted'
+        '404':
+          description: 'Reply not found'
         '401':
           description: 'Unauthorized, user must be authenticated'
