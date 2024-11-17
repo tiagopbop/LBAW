@@ -15,7 +15,6 @@ tags:
   - name: 'M03: Users and Roles'
 
 paths:
-  # Authentication and Profile
   /login:
     post:
       operationId: R101
@@ -113,7 +112,6 @@ paths:
                   description: 'Failed registration. Redirect to login form.'
                   value: '/login'
 
-paths:
   /users/{id}/update:
     patch:
       operationId: 'R108'
