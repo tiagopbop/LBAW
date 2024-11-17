@@ -1,0 +1,391 @@
+openapi: 3.0.0
+
+info:
+  version: '1.0'
+  title: 'LBAW ManageMe Web API'
+  description: 'Web Resources Specification for ManageMe Project Management Platform'
+
+servers:
+  - url: http://manage-me-api.com
+    description: Production server
+
+tags:
+  - name: 'M01: Authentication and Individual Profile'
+  - name: 'M02: Projects and Tasks'
+  - name: 'M03: Users and Roles'
+
+paths:
+  # Authentication and Profile
+  /login:
+    post:
+      operationId: R101
+      summary: 'Login Action'
+      description: 'Processes the login form submission.'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '302':
+          description: 'Redirect after processing login credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful login. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed login. Redirect to login form.'
+                  value: '/login'
+
+  /logout:
+    post:
+      operationId: R103
+      summary: 'Logout Action'
+      description: 'Logout the current authenticated user.'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+      responses:
+        '302':
+          description: 'Redirect after processing logout.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to login form.'
+                  value: '/login'
+
+  /register:
+    post:
+      operationId: R105
+      summary: 'Register Action'
+      description: 'Processes the new user registration.'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                picture:
+                  type: string
+                  format: binary
+              required:
+                - name
+                - email
+                - password
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful registration. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed registration. Redirect to login form.'
+                  value: '/login'
+
+paths:
+  /users/{id}/update:
+    patch:
+      operationId: 'R108'
+      summary: 'Update user profile information'
+      description: 'Allows authenticated users to update their name, email, profile picture, pronouns, bio, and country.'
+      tags:
+        - 'M03: Users and Roles'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 'The user ID to update'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'Jane Doe'
+                email:
+                  type: string
+                  example: 'jane.doe@example.com'
+                picture:
+                  type: string
+                  format: binary
+                  example: 'http://example.com/pictures/jane_doe.jpg'
+                pronouns:
+                  type: string
+                  example: 'she/her'
+                bio:
+                  type: string
+                  example: 'Passionate project manager and team collaborator.'
+                country:
+                  type: string
+                  example: 'United States'
+              required:
+                - name
+                - email
+      responses:
+        '200':
+          description: 'User profile updated successfully'
+        '400':
+          description: 'Invalid input'
+        '404':
+          description: 'User not found'
+        '401':
+          description: 'Unauthorized, user must be authenticated'
+
+  /users/{id}:
+    get:
+      operationId: 'R106'
+      summary: 'View user profile'
+      description: 'Shows the individual user profile details, including name, email, profile picture, pronouns, bio, and country.'
+      tags:
+        - 'M03: Users and Roles'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Ok. Show user profile'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  picture:
+                    type: string
+                    format: binary
+                  pronouns:
+                    type: string
+                  bio:
+                    type: string
+                  country:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                example:
+                  id: 1
+                  name: 'John Doe'
+                  email: 'john.doe@example.com'
+                  picture: 'http://example.com/pictures/john_doe.jpg'
+                  pronouns: 'he/him'
+                  bio: 'Project manager with a love for technology and innovation.'
+                  country: 'Canada'
+                  created_at: '2024-11-17T12:00:00Z'
+
+  # Projects and Tasks
+  /projects/{id}:
+    put:
+      operationId: 'R204'
+      summary: 'Update project information'
+      description: 'Replace the entire project data with the new values.'
+      tags:
+        - 'M02: Projects and Tasks'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'Project Alpha'
+                description:
+                  type: string
+                  example: 'Updated description for the project.'
+                deadline:
+                  type: string
+                  format: date
+                  example: '2024-12-31'
+                owner:
+                  type: string
+                  example: 'John Doe'
+              required:
+                - name
+                - description
+      responses:
+        '200':
+          description: 'Project updated successfully'
+        '400':
+          description: 'Invalid input'
+        '404':
+          description: 'Project not found'
+
+    patch:
+      operationId: 'R205'
+      summary: 'Partially update project information'
+      description: 'Update specific fields of a project.'
+      tags:
+        - 'M02: Projects and Tasks'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: 'Updated project description.'
+                deadline:
+                  type: string
+                  format: date
+                  example: '2024-12-31'
+                owner:
+                  type: string
+                  example: 'Jane Smith'
+      responses:
+        '200':
+          description: 'Project updated successfully'
+        '400':
+          description: 'Invalid input'
+        '404':
+          description: 'Project not found'
+
+  /tasks/{id}:
+    put:
+      operationId: 'R206'
+      summary: 'Update task information'
+      description: 'Replace the entire task data with the new values.'
+      tags:
+        - 'M02: Projects and Tasks'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: 'Task 1'
+                description:
+                  type: string
+                  example: 'Updated description for the task.'
+                status:
+                  type: string
+                  example: 'In Progress'
+                due_date:
+                  type: string
+                  format: date
+                  example: '2024-12-15'
+                priority:
+                  type: string
+                  enum:
+                    - Low
+                    - Medium
+                    - High
+                  example: 'Medium'
+              required:
+                - title
+                - status
+      responses:
+        '200':
+          description: 'Task updated successfully'
+        '400':
+          description: 'Invalid input'
+        '404':
+          description: 'Task not found'
+
+    patch:
+      operationId: 'R207'
+      summary: 'Partially update task information'
+      description: 'Update specific fields of a task.'
+      tags:
+        - 'M02: Projects and Tasks'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: 'Completed'
+                due_date:
+                  type: string
+                  format: date
+                  example: '2024-12-20'
+                priority:
+                  type: string
+                  enum:
+                    - Low
+                    - Medium
+                    - High
+                  example: 'High'
+      responses:
+        '200':
+          description: 'Task updated successfully'
+        '400':
+          description: 'Invalid input'
+        '404':
+          description: 'Task not found'
