@@ -17,48 +17,74 @@ tags:
 
 paths:
   /login:
-    post:
-      operationId: R101
-      summary: 'Login Action'
-      description: 'Processes the login form submission.'
+    get:
+      operationId: 'R101'
+      summary: 'Fetch login requirements'
+      description: 'Provides metadata for the login endpoint, including required fields and expected formats.'
       tags:
-        - 'M01: Authentication and Individual Profile'
+        - 'Authentication and Profile'
+      responses:
+        '200':
+          description: 'Metadata for login endpoint'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  required_fields:
+                    type: array
+                    items:
+                      type: string
+                      example: email, password
+                  description:
+                    type: string
+                    example: 'Submit email and password to authenticate.'
+
+    post:
+      operationId: 'R102'
+      summary: 'Perform user login'
+      description: 'Authenticates a user and returns a session token.'
+      tags:
+        - 'Authentication and Profile'
       requestBody:
         required: true
         content:
-          application/x-www-form-urlencoded:
+          application/json:
             schema:
               type: object
               properties:
                 email:
                   type: string
+                  format: email
+                  example: 'user@example.com'
                 password:
                   type: string
+                  format: password
+                  example: 'YourSecurePassword'
               required:
                 - email
                 - password
       responses:
-        '302':
-          description: 'Redirect after processing login credentials.'
-          headers:
-            Location:
+        '200':
+          description: 'Successful login'
+          content:
+            application/json:
               schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful login. Redirect to user profile.'
-                  value: '/users/{id}'
-                302Failure:
-                  description: 'Failed login. Redirect to login form.'
-                  value: '/login'
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: 'jwt.token.here'
+        '401':
+          description: 'Invalid credentials'
 
   /logout:
     post:
-      operationId: R103
-      summary: 'Logout Action'
+      operationId: 'R103'
+      summary: 'Logout action'
       description: 'Logout the current authenticated user.'
       tags:
-        - 'M01: Authentication and Individual Profile'
+        - 'Authentication and Profile'
       responses:
         '302':
           description: 'Redirect after processing logout.'
@@ -72,46 +98,73 @@ paths:
                   value: '/login'
 
   /register:
-    post:
-      operationId: R105
-      summary: 'Register Action'
-      description: 'Processes the new user registration.'
+    get:
+      operationId: 'R104'
+      summary: 'Fetch registration requirements'
+      description: 'Provides metadata for the registration endpoint, including required fields and expected formats.'
       tags:
-        - 'M01: Authentication and Individual Profile'
+        - 'Authentication and Profile'
+      responses:
+        '200':
+          description: 'Metadata for registration endpoint'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  required_fields:
+                    type: array
+                    items:
+                      type: string
+                      example: name, email, password
+                  description:
+                    type: string
+                    example: 'Submit name, email, and password to register a new user.'
+
+    post:
+      operationId: 'R105'
+      summary: 'Register a new user'
+      description: 'Creates a new user account.'
+      tags:
+        - 'Authentication and Profile'
       requestBody:
         required: true
         content:
-          application/x-www-form-urlencoded:
+          application/json:
             schema:
               type: object
               properties:
                 name:
                   type: string
+                  example: 'John Doe'
                 email:
                   type: string
+                  format: email
+                  example: 'user@example.com'
                 password:
                   type: string
-                picture:
-                  type: string
-                  format: binary
+                  format: password
+                  example: 'YourSecurePassword'
               required:
                 - name
                 - email
                 - password
       responses:
-        '302':
-          description: 'Redirect after processing the new user information.'
-          headers:
-            Location:
+        '201':
+          description: 'User created successfully'
+          content:
+            application/json:
               schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful registration. Redirect to user profile.'
-                  value: '/users/{id}'
-                302Failure:
-                  description: 'Failed registration. Redirect to login form.'
-                  value: '/login'
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: '123'
+                  message:
+                    type: string
+                    example: 'User registered successfully.'
+        '400':
+          description: 'Invalid input'
 
   /users/{id}/update:
     patch:
