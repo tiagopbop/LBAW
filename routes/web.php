@@ -2,8 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\CardController;
-use App\Http\Controllers\ItemController;
+use App\Http\Controllers\TesteController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -23,10 +22,12 @@ use App\Http\Controllers\Auth\RegisterController;
 Route::redirect('/', '/login');
 
 // Cards
-Route::controller(CardController::class)->group(function () {
-    Route::get('/cards', 'list')->name('cards');
-    Route::get('/cards/{id}', 'show');
-});
+
+// Route to show user details (username and email).
+Route::get('/tests', [TesteController::class, 'showUserDetails'])->name('tests');
+
+// Route to log the user out.
+Route::post('/logout', [TesteController::class, 'logout'])->name('logout');
 
 
 // API
@@ -35,11 +36,7 @@ Route::controller(CardController::class)->group(function () {
     Route::delete('/api/cards/{card_id}', 'delete');
 });
 
-Route::controller(ItemController::class)->group(function () {
-    Route::put('/api/cards/{card_id}', 'create');
-    Route::post('/api/item/{id}', 'update');
-    Route::delete('/api/item/{id}', 'delete');
-});
+
 
 
 // Authentication
@@ -51,5 +48,5 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
-    Route::post('/register', 'register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register');
 });

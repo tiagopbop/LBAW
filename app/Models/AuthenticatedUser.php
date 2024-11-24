@@ -1,0 +1,94 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+class AuthenticatedUser extends Authenticatable
+{
+
+    protected $table = 'authenticated_user';
+
+    use HasApiTokens, HasFactory, Notifiable;
+
+    // Don't add create and update timestamps in database.
+    public $timestamps  = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'username',
+        'email',
+        'password',
+        'user_creation_date',
+        'suspended_status',
+        'pfp',
+        'pronouns',
+        'bio',
+        'country'
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'user_creation_date' => 'date',
+        'suspended_status' => 'boolean',
+    ];
+
+    /**
+     * Get the projects for the user.
+     */
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'project_member', 'user_id', 'project_id')
+                    ->using(ProjectMember::class)
+                    ->withPivot('role');
+    }
+
+    /**
+     * Get the comments for the user.
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get the notifications for the user.
+     */
+    public function notifs(): BelongsToMany
+    {
+        return $this->belongsToMany(Notif::class, 'authenticated_user_notif', 'id', 'notif_id');
+    }
+
+    /**
+     * Get the tasks for the user.
+     */
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class, 'user_task', 'id', 'task_id');
+    }
+}

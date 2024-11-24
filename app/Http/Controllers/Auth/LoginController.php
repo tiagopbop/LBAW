@@ -19,7 +19,7 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
-            return redirect('/cards');
+            return redirect('/test');
         } else {
             return view('auth.login');
         }
@@ -31,14 +31,14 @@ class LoginController extends Controller
     public function authenticate(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required ','email'],
             'password' => ['required'],
         ]);
  
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
  
-            return redirect()->intended('/cards');
+            return redirect()->intended('/tests');
         }
  
         return back()->withErrors([

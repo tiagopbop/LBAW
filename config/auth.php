@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'authenticated_user',
     ],
 
     /*
@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'authenticated_user',
         ],
     ],
 
@@ -60,9 +60,10 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+        'authenticated_user' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\AuthenticatedUser::class, // Your custom model
+
         ],
 
         // 'users' => [
@@ -92,7 +93,7 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'users',
+            'provider' => 'authenticated_user',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

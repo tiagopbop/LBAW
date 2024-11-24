@@ -6,27 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('authenticated_user', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->date('user_creation_date')->default(DB::raw('CURRENT_DATE'));
+            $table->boolean('suspended_status')->default(false);
+            $table->string('pfp')->nullable();
+            $table->string('pronouns', 50)->nullable();
+            $table->text('bio')->nullable();
+            $table->string('country', 100)->nullable();
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    
+    public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('authenticated_user');
     }
+    
 };
