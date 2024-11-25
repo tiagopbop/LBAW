@@ -14,6 +14,12 @@ class Task extends Model
 
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
+    protected $table = 'task';
+    protected $primaryKey = 'task_id';
+
+    public $incrementing = true;
+
+    protected $keyType = 'int';
 
     /**
      * The attributes that are mass assignable.
@@ -47,7 +53,7 @@ class Task extends Model
      */
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project_id', 'project_id');
     }
 
     /**

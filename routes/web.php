@@ -6,6 +6,8 @@ use App\Http\Controllers\TesteController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,3 +52,14 @@ Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', [RegisterController::class, 'register'])->name('register');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+});
+
+Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
+
+Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');

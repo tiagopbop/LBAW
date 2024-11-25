@@ -310,6 +310,10 @@ SELECT MAX(id) FROM authenticated_user;
 
 SELECT setval('authenticated_user_id_seq', (SELECT MAX(id) FROM authenticated_user));
 
+SELECT MAX(project_id) FROM project;
+
+SELECT setval('project_project_id_seq', (SELECT MAX(project_id) FROM project));
+
 
 
 -- Populate user_task table
