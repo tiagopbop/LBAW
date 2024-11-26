@@ -14,6 +14,8 @@ class Post extends Model
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
+    protected $table = 'post';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -49,5 +51,21 @@ class Post extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(Reply::class);
+    }
+
+    /**
+     * Get the content of the post.
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Get the creation date of the post.
+     */
+    public function getPostCreation()
+    {
+        return $this->post_creation;
     }
 }

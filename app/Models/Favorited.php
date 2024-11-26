@@ -13,6 +13,8 @@ class Favorited extends Model
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
+    protected $table = 'favorited';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -25,17 +27,17 @@ class Favorited extends Model
     ];
 
     /**
-     * Get the user that owns the favorite.
+     * Get the user that the favorite is associated with
      */
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(AuthenticatedUser::class, 'id');
     }
 
     /**
-     * Get the project that owns the favorite.
+     * Get the project the favorite is associated with
      */
-    public function project(): BelongsTo
+    public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');
     }

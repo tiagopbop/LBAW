@@ -13,6 +13,8 @@ class TaskComment extends Model
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
+    protected $table = 'task_comment';
+
     /**
      * The attributes that are mass assignable.
      *

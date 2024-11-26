@@ -38,4 +38,28 @@ class TaskNotif extends Model
     {
         return $this->belongsTo(Task::class, 'task_id');
     }
+
+    /**
+     * Get the title of the notification.
+     */
+    public function getTitle()
+    {
+        return $this->notif()->title;
+    }
+
+    /**
+     * Get the content of the notification.
+     */
+    public function getContent()
+    {
+        return $this->notif()->content;
+    }
+
+    /**
+     * Get the created_at of the notification.
+     */
+    public function getCreatedAt()
+    {
+        return $this->notif()->created_at;
+    }
 }

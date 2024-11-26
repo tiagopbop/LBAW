@@ -12,7 +12,10 @@ class Admin extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     // Don't add create and update timestamps in database.
+
     public $timestamps  = false;
+
+    protected $table = 'admin';
 
     /**
      * The attributes that are mass assignable.

@@ -78,7 +78,7 @@ class Project extends Model
      */
     public function getTitle(): string
     {
-        return $this->getAttribute('project_title');
+        return $this->project_title;
     }
 
     /**
@@ -86,7 +86,7 @@ class Project extends Model
      */
     public function getDescription(): string
     {
-        return $this->getAttribute('project_description');
+        return $this->project_description;
     }
 
     /**
@@ -94,7 +94,7 @@ class Project extends Model
      */
     public function getCreationDate(): string
     {
-        return $this->getAttribute('project_creation_date');
+        return $this->project_creation_date;
     }
 
     /**
@@ -102,7 +102,7 @@ class Project extends Model
      */
     public function getAvailability(): bool
     {
-        return $this->getAttribute('availability');
+        return $this->availability;
     }
 
     /**
@@ -110,7 +110,7 @@ class Project extends Model
      */
     public function getArchivedStatus(): bool
     {
-        return $this->getAttribute('archived_status');
+        return $this->archived_status;
     }
 
     /**
@@ -118,62 +118,6 @@ class Project extends Model
      */
     public function getUpdatedAt(): string
     {
-        return $this->getAttribute('updated_at');
-    }
-
-    /**
-     * Set the title for the project.
-     */
-    public function setTitle(string $title): void
-    {
-        $this->setAttribute('project_title', $title);
-    }
-
-    /**
-     * Set the description for the project.
-     */
-    public function setDescription(string $description): void
-    {
-        $this->setAttribute('project_description', $description);
-    }
-
-    /**
-     * Set the availability for the project.
-     */
-    public function setAvailability(bool $availability): void
-    {
-        $this->setAttribute('availability', $availability);
-    }
-
-    /**
-     * Set the archived status for the project.
-     */
-    public function setArchivedStatus(bool $archivedStatus): void
-    {
-        $this->setAttribute('archived_status', $archivedStatus);
-    }
-
-    /**
-     * Delete the project.
-     */
-    public function deleteProject(): void
-    {
-        $this->delete();
-    }
-
-    /**
-     * Archive the project.
-     */
-    public function archiveProject(): void
-    {
-        $this->update(['archived_status' => true]);
-    }
-
-    /**
-     * Restore the project.
-     */
-    public function restoreProject(): void
-    {
-        $this->update(['archived_status' => false]);
+        return $this->updated_at;
     }
 }

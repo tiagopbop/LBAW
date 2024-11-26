@@ -13,6 +13,8 @@ class Reply extends Model
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
+    protected $table = 'reply';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -40,5 +42,21 @@ class Reply extends Model
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
+    }
+
+    /**
+     * Get the content of the reply.
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Get the created_at of the reply.
+     */
+    public function getCreatedAt()
+    {
+        return $this->reply_creation;
     }
 }

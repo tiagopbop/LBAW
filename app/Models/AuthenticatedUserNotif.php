@@ -14,6 +14,8 @@ class AuthenticatedUserNotif extends Authenticatable
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
+    protected $table = 'authenticated_user_notif';
+
     /**
      * The attributes that are mass assignable.
      *

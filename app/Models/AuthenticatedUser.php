@@ -12,13 +12,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class AuthenticatedUser extends Authenticatable
 {
 
-    protected $table = 'authenticated_user';
-
     use HasApiTokens, HasFactory, Notifiable;
 
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
+    protected $table = 'authenticated_user';
     /**
      * The attributes that are mass assignable.
      *
@@ -71,15 +70,15 @@ class AuthenticatedUser extends Authenticatable
     /**
      * Get the comments for the user.
      */
-    public function comments(): HasMany
+    public function taskComments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(TaskComment::class);
     }
 
     /**
      * Get the notifications for the user.
      */
-    public function notifs(): BelongsToMany
+    public function notifs()
     {
         return $this->belongsToMany(Notif::class, 'authenticated_user_notif', 'id', 'notif_id');
     }
@@ -87,8 +86,56 @@ class AuthenticatedUser extends Authenticatable
     /**
      * Get the tasks for the user.
      */
-    public function tasks(): BelongsToMany
+    public function tasks()
     {
         return $this->belongsToMany(Task::class, 'user_task', 'id', 'task_id');
+    }
+
+    /**
+     * Get the creation date for the user.
+     */
+    public function getUserCreationDate()
+    {
+        return $this->user_creation_date;
+    }
+    
+    /**
+     * Get the username for the user.
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Get the suspended status for the user.
+     */
+    public function getSuspendedStatus(): bool
+    {
+        return $this->suspended_status;
+    }
+
+    /**
+     * Get the pronouns for the user.
+     */
+    public function getPronouns(): string
+    {
+        return $this->pronouns;
+    }
+
+    /**
+     * Get the bio for the user.
+     */
+    public function getBio(): string
+    {
+        return $this->bio;
+    }
+
+    /**
+     * Get the country for the user.
+     */
+    public function getCountry(): string
+    {
+        return $this->country;
     }
 }

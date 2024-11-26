@@ -13,6 +13,8 @@ class InviteNotif extends Model
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
+    protected $table = 'invite_notif';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,7 +26,7 @@ class InviteNotif extends Model
     ];
 
     /**
-     * Get the notification that owns the invite notification.
+     * Get the notification associated with the invite
      */
     public function notif(): BelongsTo
     {
@@ -32,10 +34,31 @@ class InviteNotif extends Model
     }
 
     /**
-     * Get the project that owns the invite notification.
+     * Get the project associated with the invite
      */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class, 'project_id');
+    }
+
+    public function getTitle()
+    {
+        return $this->notif()->getTitle();
+    }
+
+    /**
+     * Get the content of the notification.
+     */
+    public function getContent()
+    {
+        return $this->notif()->getContent();
+    }
+
+    /**
+     * Get the created_at of the notification.
+     */
+    public function getCreatedAt()
+    {
+        return $this->notif()->getCreatedAt();
     }
 }

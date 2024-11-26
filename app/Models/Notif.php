@@ -13,6 +13,8 @@ class Notif extends Model
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
+    protected $table = 'notif';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -39,5 +41,29 @@ class Notif extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(AuthenticatedUser::class, 'authenticated_user_notif', 'notif_id', 'id');
+    }
+
+    /**
+     * Get the title of the notification.
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Get the content of the notification.
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Get the creation date of the notification.
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
     }
 }
