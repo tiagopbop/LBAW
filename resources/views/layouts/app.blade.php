@@ -32,6 +32,7 @@
             <section id="content">
                 @yield('content')
             </section>
+            @stack('scripts')
         </main>
     </body>
 </html>

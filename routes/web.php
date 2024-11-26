@@ -67,3 +67,4 @@ Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create']
 Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
 
 Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+Route::get('/search-projects', [TesteController::class, 'searchProjects']);

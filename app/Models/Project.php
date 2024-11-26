@@ -120,4 +120,13 @@ class Project extends Model
     {
         return $this->updated_at;
     }
+
+    /**
+     * Search projects by a term in the title or description.
+     */
+
+    public function scopeSearchByTerm(Builder $query, string $term): Builder
+    {
+        return $query->whereRaw("ts_vector_title_description @@ to_tsquery('portuguese', ?)", [$term]);
+    }
 }
