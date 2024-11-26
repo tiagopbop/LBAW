@@ -22,7 +22,7 @@ class AuthenticatedUserPolicy
 
     public function updateTaskComment(AuthenticatedUser $user, TaskComment $taskComment): bool
     {
-        return $user->id === $taskComment->id;
+        return $user->id === $taskComment->user_id;
     }
 
     public function viewProject(AuthenticatedUser $user, Project $project): bool
