@@ -1423,6 +1423,10 @@ SELECT MAX(project_id) FROM project;
 
 SELECT setval('project_project_id_seq', (SELECT MAX(project_id) FROM project));
 
+SELECT MAX(task_id) FROM task;
+
+SELECT setval('task_task_id_seq', (SELECT MAX(task_id) FROM task));
+
 
 
 -- Populate user_task table

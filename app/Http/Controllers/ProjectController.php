@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -19,21 +20,40 @@ class ProjectController extends Controller
             'project_description' => 'nullable|string|max:500',
             'availability' => 'required|boolean',
         ]);
-    
+
         $project = Project::create([
             'project_title' => $validated['project_title'],
-            'project_description' => $validated['project_description'],
+            'project_description' => $validated['project_description'] ?? 'No description',
             'availability' => $validated['availability'],
-            'archived_status' => false, // Default value
-            'project_creation_date' => now(), // Default to current date
+            'archived_status' => false,
         ]);
-    
-        return redirect()->route('projects.show', $project->project_id)
-            ->with('success', 'Project created successfully!');
+
+        $project->members()->attach(Auth::id(), ['role' => 'Project owner']);
+
+        return redirect()->route('projects.myProjects');
     }
 
     public function show(Project $project) {
-        $project->load('tasks');
+        $project->load(['tasks', 'members']);
         return view('projects.show', compact('project'));
     }
+
+    public function myProjects()
+    {
+        $projects = auth()->user()->projects;
+
+        return view('projects.myProjects', compact('projects'));
+    }
+
+    public function destroy(Project $project)
+{
+    if (auth()->id() !== $project->members()->wherePivot('role', 'Project owner')->first()->id) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $project->delete();
+
+    return redirect()->route('projects.myProjects')->with('success', 'Project deleted successfully!');
+}
+
 }

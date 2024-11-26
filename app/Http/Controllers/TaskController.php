@@ -13,6 +13,13 @@ class TaskController extends Controller
         return view('tasks.create', compact('project'));
     }
 
+    public function viewTasks(Project $project)
+    {
+        $tasks = $project->tasks;
+
+        return view('tasks.viewTasks', compact('project', 'tasks'));
+    }
+
     public function store(Request $request, Project $project)
     {
         $validated = $request->validate([
@@ -21,6 +28,13 @@ class TaskController extends Controller
             'details' => 'nullable|string|max:500',
             'due_date' => 'nullable|date|after_or_equal:today',
             'priority' => 'required|string|in:High,Medium,Low',
+        ]);
+
+        Task::create([
+            'task_name' => $validated['task_name'],
+            'status' => $validated['status'] ?? 'Ongoing',
+            'details' => $validated['details'] ?? null,
+            'due_date' => $validated['due_date'] ?? null,
         ]);
 
         if (!$project->exists) {
@@ -34,5 +48,16 @@ class TaskController extends Controller
         return redirect()->route('projects.show', $project->project_id)
             ->with('success', 'Task added successfully!');
     }
+
+    public function destroy(Task $task)
+{
+    if (auth()->id() !== $task->project->members()->wherePivot('role', 'Project owner')->first()->id) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $task->delete();
+
+    return back()->with('success', 'Task deleted successfully!');
+}
 }
 

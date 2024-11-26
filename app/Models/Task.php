@@ -71,4 +71,9 @@ class Task extends Model
     {
         return $this->belongsToMany(AuthenticatedUser::class, 'user_task', 'task_id', 'id');
     }
+
+    public function getDueDateAttribute($value)
+    {
+        return $value ? $value : 'No Due Date';
+    }
 }

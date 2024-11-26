@@ -10,15 +10,8 @@
 
         <body>
             <p><strong>Username:</strong> {{ $username }}</p>
-            <p><strong>Email:</strong> {{ $email }}</p>
-        tudo testado=?    
-
-        <div class="container">
-            <h1>peepeepoopoo</h1>
-            <a href="{{ route('projects.create') }}" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">
-                Create Project
-            </a>
-        </div>
+            <p><strong>Email:</strong> {{ $email }}</p>   
+            
             <!-- Search Bar -->
         <div>
             <h4>Search Projects</h4>

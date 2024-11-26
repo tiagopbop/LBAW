@@ -66,5 +66,12 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
 Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
 
+Route::get('/my-projects', [ProjectController::class, 'myProjects'])->name('projects.myProjects');
 Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
 Route::get('/search-projects', [TesteController::class, 'searchProjects']);
+
+Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+
+Route::get('/projects/{project}/tasks', [TaskController::class, 'viewTasks'])->name('tasks.viewTasks');
+
