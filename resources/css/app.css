@@ -1,0 +1,300 @@
+/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    background: #f4f6f8;
+    color: #333;
+}
+
+/* Header Styles */
+header {
+    background: #2d89ef;
+    color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #1e5cb3;
+}
+
+header h1 a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header .button {
+    background: #ff5e5e;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: background 0.3s ease;
+    font-size: 14px;
+}
+
+header .button:hover {
+    background: #ff2d2d;
+}
+
+/* Profile Container */
+.profile-container {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.profile-container h1 {
+    text-align: center;
+    color: #2d89ef;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.profile-container p {
+    font-size: 16px;
+    margin: 8px 0;
+    text-align: center;
+}
+
+/* Profile Picture */
+.profile-container img {
+    display: block;
+    margin: 20px auto;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #2d89ef;
+    object-fit: cover;
+}
+
+/* Edit Profile Button */
+#edit-profile-button {
+    display: block;
+    margin: 20px auto;
+    background: #2d89ef;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#edit-profile-button:hover {
+    background: #1e5cb3;
+    transform: scale(1.05);
+}
+
+/* Edit Profile Form */
+#edit-profile-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+    animation: fadeIn 0.5s ease;
+}
+
+#edit-profile-form label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+    color: #2d89ef;
+}
+
+#edit-profile-form input,
+#edit-profile-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+#edit-profile-form textarea {
+    resize: none;
+    height: 100px;
+}
+
+#edit-profile-form button {
+    display: block;
+    margin: 0 auto;
+    background: #2d89ef;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#edit-profile-form button:hover {
+    background: #1e5cb3;
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+
+    header .button {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    #edit-profile-button,
+    #edit-profile-form button {
+        font-size: 14px;
+    }
+}
+
+/* Animation for Edit Form */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+}
+
+/* Form Container */
+form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Labels */
+form label {
+    display: block;
+    font-weight: bold;
+    color: #2d89ef;
+    margin-bottom: 5px;
+}
+
+/* Input Fields */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="checkbox"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Checkbox */
+form input[type="checkbox"] {
+    width: auto;
+    margin-right: 5px;
+}
+
+/* Error Messages */
+.error {
+    color: #ff5e5e;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Success Messages */
+.success {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Buttons */
+form button {
+    display: block;
+    width: 100%;
+    background: #2d89ef;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+form button:hover {
+    background: #1e5cb3;
+    transform: scale(1.05);
+}
+
+/* Outline Buttons */
+.button-outline {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: 2px solid #2d89ef;
+    background: transparent;
+    color: #2d89ef;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.button-outline:hover {
+    background: #2d89ef;
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    form {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    form button {
+        font-size: 14px;
+    }
+
+    .button-outline {
+        font-size: 12px;
+    }
+}

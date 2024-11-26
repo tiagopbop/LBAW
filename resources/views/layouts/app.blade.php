@@ -11,8 +11,8 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Styles -->
-        <link href="{{ url('css/milligram.min.css') }}" rel="stylesheet">
         <link href="{{ url('css/app.css') }}" rel="stylesheet">
+
         <script type="text/javascript">
             // Fix for Firefox autofocus CSS bug
             // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
@@ -23,9 +23,10 @@
     <body>
         <main>
             <header>
-                <h1><a href="{{ url('/cards') }}">ManageMe</a></h1>
+                <h1><a href="{{ url('/tests') }}">ManageMe</a></h1>
                 @if (Auth::check())
                     <a class="button" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
+                    <a class="button" href="{{ url('/profile') }}"> Profile </a> <span>{{ Auth::user()->name }}</span>
                 @endif
             </header>
             <section id="content">

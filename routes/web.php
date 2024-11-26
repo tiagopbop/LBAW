@@ -8,6 +8,9 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ProfileController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,13 +35,14 @@ Route::get('/tests', [TesteController::class, 'showUserDetails'])->name('tests')
 Route::post('/logout', [TesteController::class, 'logout'])->name('logout');
 
 
-// API
-Route::controller(CardController::class)->group(function () {
-    Route::put('/api/cards', 'create');
-    Route::delete('/api/cards/{card_id}', 'delete');
-});
 
 
+
+//Profile
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+Route::delete('/profile/remove-image', [ProfileController::class, 'removeImage'])->name('profile.removeImage');
 
 
 // Authentication
