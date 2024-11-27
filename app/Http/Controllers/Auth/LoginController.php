@@ -19,7 +19,7 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
-            return redirect('/test');
+            return redirect('/home');
         } else {
             return view('auth.login');
         }
@@ -34,13 +34,13 @@ class LoginController extends Controller
             'email' => ['required ','email'],
             'password' => ['required'],
         ]);
- 
+
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
- 
-            return redirect()->intended('/tests');
+
+            return redirect()->route('home');
         }
- 
+
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
@@ -51,6 +51,9 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
+        if (session()->has('admin_id')) {
+            session()->forget('admin_id'); // Clear admin session if admin logs out
+        }
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

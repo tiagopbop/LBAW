@@ -7,19 +7,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
 
-class TesteController extends Controller
+class HomeController extends Controller
 {
     /**
      * Show the logged-in user's username, email and all projects.
      */
     public function showUserDetails(): View
     {
-        // Get the currently authenticated user.
-        $user = Auth::user(); // This retrieves the logged-in user (AuthenticatedUser model)
-        // Get all projects to display by default.
+        $user = Auth::user();
         $projects = Project::select('project_title', 'project_description')->get();
-        // Return the view with user details (username and email).
-        return view('pages.tests', [
+        return view('pages.home', [
             'username' => $user->username,
             'email' => $user->email,
             'projects' => $projects,
@@ -31,14 +28,14 @@ class TesteController extends Controller
      */
     public function logout()
     {
-        Auth::logout(); // Logs out the current user
-        return redirect('/login'); // Redirect to login page after logout
+        Auth::logout();
+        return redirect('/login');
     }
 
 
     public function searchProjects(Request $request): JsonResponse
     {
-        $searchTerm = $request->input('query'); // Get the search term from the request
+        $searchTerm = $request->input('query');
     
         if ($searchTerm) {
             // Use the full-text search to filter projects

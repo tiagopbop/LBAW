@@ -2,13 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\TesteController;
+use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 
 
 
@@ -29,12 +31,18 @@ Route::redirect('/', '/login');
 // Cards
 
 // Route to show user details (username and email).
-Route::get('/tests', [TesteController::class, 'showUserDetails'])->name('tests');
+Route::get('/home', [HomeController::class, 'showUserDetails'])->name('home');
 
 // Route to log the user out.
-Route::post('/logout', [TesteController::class, 'logout'])->name('logout');
+Route::post('/logout', [HomeController::class, 'logout'])->name('logout');
 
 
+//Admin
+Route::middleware('admin.auth')->get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/supersecretlogin', [AdminController::class, 'showLoginForm'])->name('admin.loginForm');
+Route::post('/supersecretlogin', [AdminController::class, 'login'])->name('admin.login');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 
 
@@ -68,7 +76,7 @@ Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name
 
 Route::get('/my-projects', [ProjectController::class, 'myProjects'])->name('projects.myProjects');
 Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
-Route::get('/search-projects', [TesteController::class, 'searchProjects']);
+Route::get('/search-projects', [HomeController::class, 'searchProjects']);
 
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
 Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');

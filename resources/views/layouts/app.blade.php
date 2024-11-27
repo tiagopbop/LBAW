@@ -23,14 +23,14 @@
     <body>
         <main>
             <header>
-                <h1><a href="{{ url('/tests') }}">ManageMe</a></h1>
+                <h1><a href="{{ url('/home') }}">ManageMe</a></h1>
                 @if (Auth::check())
                     <nav class="navbar">
                         <div class="navbar-right">
-                            <a href="/tests" class="btn btn-secondary">Home</a>
+                            <a href="/home" class="btn btn-secondary">Home</a>
                             <a href="{{ route('projects.myProjects') }}" class="btn btn-primary">My Projects</a>
-                            <a href="{{ url('/profile') }}" class="btn btn-secondary">Profile</a> 
-                            <a href="{{ url('/logout') }}" class="btn btn-danger">Logout</a> 
+                            <a href="{{ url('/profile') }}" class="btn btn-secondary">Profile</a>
+                            <a href="{{ url('/logout') }}" class="btn btn-danger">Logout</a>
                         </div>
                     </nav>
                 @endif
