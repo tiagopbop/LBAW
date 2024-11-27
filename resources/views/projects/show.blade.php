@@ -8,7 +8,7 @@
 
     <div class="card shadow-sm mb-4" style="padding: 20px; border-radius: 10px; border: 1px solid #ddd;">
         <p><strong>Description:</strong> {{ $project->project_description }}</p>
-        <p><strong>Availability:</strong> {{ $project->availability ? 'Available' : 'Unavailable' }}</p>
+        <p><strong>Availability:</strong> {{ $project->availability ? 'Public' : 'Private' }}</p>
         <p><strong>Archived:</strong> {{ $project->archived_status ? 'Yes' : 'No' }}</p>
     </div>
 

@@ -15,8 +15,8 @@
         <div>
             <label for="availability">Availability:</label>
             <select id="availability" name="availability" required>
-                <option value="1">Available</option>
-                <option value="0">Unavailable</option>
+                <option value="1">Public</option>
+                <option value="0">Private</option>
             </select>
         </div>
         <button type="submit">Create Project</button>

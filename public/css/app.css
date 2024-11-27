@@ -243,6 +243,7 @@ form input[type="email"],
 form input[type="password"],
 form input[type="checkbox"] {
   width: 100%;
+  box-sizing: border-box;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -348,6 +349,16 @@ form button:hover {
 .card-text {
   font-size: 16px;
   color: #555;
+}
+
+select {
+  font-size: 16px;
+  padding: 10px;
+  height: auto;
+}
+
+button {
+  margin-top: 20px;
 }
 
 .btn-primary {
