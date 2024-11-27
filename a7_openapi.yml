@@ -12,8 +12,8 @@ servers:
 
 tags:
   - name: 'M01: Authentication and User Management'
-  - name: 'M02: Projects and Tasks'
-  - name: 'M03: Administration'
+  - name: 'M02: Administration'
+  - name: 'M03: Projects and Tasks'
 
 paths:
   /login:
@@ -290,3 +290,70 @@ paths:
       responses:
         '204':
           description: 'Task deleted'
+
+  /projects/create:
+    get:
+      operationId: 'R308'
+      summary: 'R308: Create project form'
+      description: 'Displays the form to create a new project.'
+      tags:
+        - 'M02: Projects and Tasks'
+      responses:
+        '200':
+          description: 'Project creation form displayed'
+
+  /projects/{project}/tasks/create:
+    get:
+      operationId: 'R309'
+      summary: 'R309: Create task form'
+      description: 'Displays the form to create a new task under a project.'
+      tags:
+        - 'M02: Projects and Tasks'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Task creation form displayed'
+
+  /my-projects:
+    get:
+      operationId: 'R310'
+      summary: 'R310: My projects'
+      description: 'Displays the projects owned by the authenticated user.'
+      tags:
+        - 'M02: Projects and Tasks'
+      responses:
+        '200':
+          description: 'User projects displayed'
+
+  /search-projects:
+    get:
+      operationId: 'R311'
+      summary: 'R311: Search projects'
+      description: 'Search for projects based on criteria.'
+      tags:
+        - 'M02: Projects and Tasks'
+      responses:
+        '200':
+          description: 'Search results displayed'
+
+  /tasks/{task}/edit:
+    get:
+      operationId: 'R312'
+      summary: 'R312: Edit task form'
+      description: 'Displays the form to edit a task.'
+      tags:
+        - 'M02: Projects and Tasks'
+      parameters:
+        - in: path
+          name: task
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Task edit form displayed'
