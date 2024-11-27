@@ -15,7 +15,7 @@ class HomeController extends Controller
     public function showUserDetails(): View
     {
         $user = Auth::user();
-        $projects = Project::select('project_title', 'project_description')->get();
+        $projects = Project::public()->select('project_title', 'project_description')->get(); //get only public projects
         return view('pages.home', [
             'username' => $user->username,
             'email' => $user->email,
@@ -38,13 +38,14 @@ class HomeController extends Controller
         $searchTerm = $request->input('query');
     
         if ($searchTerm) {
-            // Use the full-text search to filter projects
-            $projects = Project::select('project_title', 'project_description')
-                ->whereRaw("ts_vector_title_description @@ plainto_tsquery('portuguese', ?)", [$searchTerm])
+            // Use the full-text search to search for public projects
+            $projects = Project::public()
+                ->select('project_title', 'project_description')
+                ->whereRaw("ts_vector_title_description @@ plainto_tsquery('english', ?)", [$searchTerm])
                 ->get();
         } else {
             // If no search term, return all projects
-            $projects = Project::select('project_title', 'project_description')->get();
+            $projects = Project::public()->select('project_title', 'project_description')->get();
         }
     
         return response()->json($projects);

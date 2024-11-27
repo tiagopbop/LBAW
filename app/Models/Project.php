@@ -125,9 +125,19 @@ class Project extends Model
     /**
      * Search projects by a term in the title or description.
      */
+    
+    
 
     public function scopeSearchByTerm(Builder $query, string $term): Builder
     {
-        return $query->whereRaw("ts_vector_title_description @@ to_tsquery('portuguese', ?)", [$term]);
+        return $query->whereRaw("ts_vector_title_description @@ to_tsquery('english', ?)", [$term]);
+    }
+    
+    /**
+     * Show only public projects
+     */
+    public function scopePublic($query)
+    {
+        return $query->where('availability', true);
     }
 }

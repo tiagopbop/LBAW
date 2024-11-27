@@ -206,8 +206,8 @@ CREATE FUNCTION update_ts_vector_project() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     NEW.ts_vector_title_description := 
-        setweight(to_tsvector('portuguese', NEW.project_title), 'A') ||
-        setweight(to_tsvector('portuguese', NEW.project_description), 'B');
+        setweight(to_tsvector('english', NEW.project_title), 'A') ||
+        setweight(to_tsvector('english', NEW.project_description), 'B');
     RETURN NEW;
 END;
 $BODY$
