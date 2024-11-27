@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PostPolicy
 {
+    public function __construct()
+    {
+        //
+    }
+    
     public function view(AuthenticatedUser $user, Post $post): bool
     {
         return $post->project->members->contains($user);
