@@ -1,4 +1,3 @@
-
 openapi: 3.0.0
 
 info:
@@ -12,8 +11,8 @@ servers:
 
 tags:
   - name: 'M01: Authentication and User Management'
-  - name: 'M02: Administration'
-  - name: 'M03: Projects and Tasks'
+  - name: 'M02: Projects and Tasks'
+  - name: 'M03: Administration'
 
 paths:
   /login:
@@ -55,9 +54,18 @@ paths:
           description: 'The provided credentials do not match our records'
 
   /logout:
-    post:
+    get:
       operationId: 'R103'
       summary: 'R103: Logout user'
+      description: 'Ends the user session.'
+      tags:
+        - 'M01: Authentication and User Management'
+      responses:
+        '200':
+          description: 'User logged out'
+    post:
+      operationId: 'R104'
+      summary: 'R104: Logout user'
       description: 'Ends the user session.'
       tags:
         - 'M01: Authentication and User Management'
@@ -67,8 +75,8 @@ paths:
 
   /register:
     get:
-      operationId: 'R104'
-      summary: 'R104: Show registration form'
+      operationId: 'R105'
+      summary: 'R105: Show registration form'
       description: 'Displays the registration form for new users.'
       tags:
         - 'M01: Authentication and User Management'
@@ -76,8 +84,8 @@ paths:
         '200':
           description: 'Registration form displayed'
     post:
-      operationId: 'R105'
-      summary: 'R105: Register user'
+      operationId: 'R106'
+      summary: 'R106: Register user'
       description: 'Registers a new user.'
       tags:
         - 'M01: Authentication and User Management'
@@ -102,17 +110,19 @@ paths:
 
   /profile:
     get:
-      operationId: 'R106'
-      summary: 'R106: Show profile'
+      operationId: 'R107'
+      summary: 'R107: Show profile'
       description: 'Displays user profile information.'
       tags:
         - 'M01: Authentication and User Management'
       responses:
         '200':
           description: 'Profile displayed'
+
+  /profile/update:
     put:
-      operationId: 'R107'
-      summary: 'R107: Update profile'
+      operationId: 'R108'
+      summary: 'R108: Update profile'
       description: 'Updates user profile details.'
       tags:
         - 'M01: Authentication and User Management'
@@ -130,34 +140,96 @@ paths:
       responses:
         '200':
           description: 'Profile updated'
+
+  /profile/remove-image:
     delete:
-      operationId: 'R108'
-      summary: 'R108: Remove profile image'
+      operationId: 'R109'
+      summary: 'R109: Remove profile image'
       description: 'Deletes the user profile image.'
       tags:
         - 'M01: Authentication and User Management'
       responses:
         '204':
           description: 'Profile image removed'
+  
+  /home:
+    get:
+      operationId: 'R110'
+      summary: 'R110: Show user details'
+      description: 'Displays the user details (username and email).'
+      tags:
+        - 'M01: Authentication and User Management'
+      responses:
+        '200':
+          description: 'User details displayed'
 
   /admin/dashboard:
     get:
-      operationId: 'R201'
-      summary: 'R201: Admin dashboard'
+      operationId: 'R301'
+      summary: 'R301: Admin dashboard'
       description: 'Displays the admin dashboard.'
       tags:
-        - 'M02: Administration'
+        - 'M03: Administration'
       responses:
         '200':
           description: 'Admin dashboard displayed'
 
+  /supersecretlogin:
+    get:
+      operationId: 'R302'
+      summary: 'R302: Admin login form'
+      description: 'Displays the admin login form.'
+      tags:
+        - 'M03: Administration'
+      responses:
+        '200':
+          description: 'Admin login form displayed'
+    post:
+      operationId: 'R303'
+      summary: 'R303: Admin login'
+      description: 'Authenticates the admin user.'
+      tags:
+        - 'M03: Administration'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: 'Admin authenticated'
+        '401':
+          description: 'The provided credentials do not match our records'
+
+  /admin/logout:
+    post:
+      operationId: 'R304'
+      summary: 'R304: Admin logout'
+      description: 'Ends the admin user session.'
+      tags:
+        - 'M03: Administration'
+      responses:
+        '200':
+          description: 'Admin logged out'
+
   /projects:
     post:
-      operationId: 'R301'
-      summary: 'R301: Create new project'
+      operationId: 'R201'
+      summary: 'R201: Create new project'
       description: 'Stores a new project in the system.'
       tags:
-        - 'M03: Projects and Tasks'
+        - 'M02: Projects and Tasks'
       requestBody:
         required: true
         content:
@@ -175,11 +247,11 @@ paths:
 
   /projects/{project}:
     get:
-      operationId: 'R302'
-      summary: 'R302: View project'
+      operationId: 'R202'
+      summary: 'R202: View project'
       description: 'Displays details of a specific project.'
       tags:
-        - 'M03: Projects and Tasks'
+        - 'M02: Projects and Tasks'
       parameters:
         - in: path
           name: project
@@ -190,11 +262,11 @@ paths:
         '200':
           description: 'Project details displayed'
     delete:
-      operationId: 'R303'
-      summary: 'R303: Delete project'
+      operationId: 'R203'
+      summary: 'R203: Delete project'
       description: 'Deletes a specific project.'
       tags:
-        - 'M03: Projects and Tasks'
+        - 'M02: Projects and Tasks'
       parameters:
         - in: path
           name: project
@@ -205,13 +277,24 @@ paths:
         '204':
           description: 'Project deleted'
 
+  /projects/create:
+    get:
+      operationId: 'R204'
+      summary: 'R204: Create project form'
+      description: 'Displays the form to create a new project.'
+      tags:
+        - 'M02: Projects and Tasks'
+      responses:
+        '200':
+          description: 'Project creation form displayed'
+
   /projects/{project}/tasks:
     get:
-      operationId: 'R304'
-      summary: 'R304: View tasks'
+      operationId: 'R205'
+      summary: 'R205: View tasks'
       description: 'Displays tasks under a project.'
       tags:
-        - 'M03: Projects and Tasks'
+        - 'M02: Projects and Tasks'
       parameters:
         - in: path
           name: project
@@ -222,11 +305,11 @@ paths:
         '200':
           description: 'Tasks displayed'
     post:
-      operationId: 'R305'
-      summary: 'R305: Create task'
+      operationId: 'R206'
+      summary: 'R206: Create task'
       description: 'Adds a new task to the project.'
       tags:
-        - 'M03: Projects and Tasks'
+        - 'M02: Projects and Tasks'
       parameters:
         - in: path
           name: project
@@ -248,13 +331,52 @@ paths:
         '201':
           description: 'Task created'
 
+  /projects/{project}/tasks/create:
+    get:
+      operationId: 'R207'
+      summary: 'R207: Create task form'
+      description: 'Displays the form to create a new task under a project.'
+      tags:
+        - 'M02: Projects and Tasks'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Task creation form displayed'
+
+  /my-projects:
+    get:
+      operationId: 'R208'
+      summary: 'R208: My projects'
+      description: 'Displays the projects owned by the authenticated user.'
+      tags:
+        - 'M02: Projects and Tasks'
+      responses:
+        '200':
+          description: 'User projects displayed'
+
+  /search-projects:
+    get:
+      operationId: 'R209'
+      summary: 'R209: Search projects'
+      description: 'Search for projects based on criteria.'
+      tags:
+        - 'M02: Projects and Tasks'
+      responses:
+        '200':
+          description: 'Search results displayed'
+
   /tasks/{task}:
     put:
-      operationId: 'R306'
-      summary: 'R306: Update task'
+      operationId: 'R210'
+      summary: 'R210: Update task'
       description: 'Updates details of a task.'
       tags:
-        - 'M03: Projects and Tasks'
+        - 'M02: Projects and Tasks'
       parameters:
         - in: path
           name: task
@@ -276,11 +398,11 @@ paths:
         '200':
           description: 'Task updated'
     delete:
-      operationId: 'R307'
-      summary: 'R307: Delete task'
+      operationId: 'R211'
+      summary: 'R211: Delete task'
       description: 'Deletes a task from the project.'
       tags:
-        - 'M03: Projects and Tasks'
+        - 'M02: Projects and Tasks'
       parameters:
         - in: path
           name: task
@@ -291,63 +413,13 @@ paths:
         '204':
           description: 'Task deleted'
 
-  /projects/create:
-    get:
-      operationId: 'R308'
-      summary: 'R308: Create project form'
-      description: 'Displays the form to create a new project.'
-      tags:
-        - 'M03: Projects and Tasks'
-      responses:
-        '200':
-          description: 'Project creation form displayed'
-
-  /projects/{project}/tasks/create:
-    get:
-      operationId: 'R309'
-      summary: 'R309: Create task form'
-      description: 'Displays the form to create a new task under a project.'
-      tags:
-        - 'M03: Projects and Tasks'
-      parameters:
-        - in: path
-          name: project
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: 'Task creation form displayed'
-
-  /my-projects:
-    get:
-      operationId: 'R310'
-      summary: 'R310: My projects'
-      description: 'Displays the projects owned by the authenticated user.'
-      tags:
-        - 'M03: Projects and Tasks'
-      responses:
-        '200':
-          description: 'User projects displayed'
-
-  /search-projects:
-    get:
-      operationId: 'R311'
-      summary: 'R311: Search projects'
-      description: 'Search for projects based on criteria.'
-      tags:
-        - 'M03: Projects and Tasks'
-      responses:
-        '200':
-          description: 'Search results displayed'
-
   /tasks/{task}/edit:
     get:
-      operationId: 'R312'
-      summary: 'R312: Edit task form'
+      operationId: 'R212'
+      summary: 'R212: Edit task form'
       description: 'Displays the form to edit a task.'
       tags:
-        - 'M03: Projects and Tasks'
+        - 'M02: Projects and Tasks'
       parameters:
         - in: path
           name: task
