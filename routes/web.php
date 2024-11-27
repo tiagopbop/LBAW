@@ -86,3 +86,4 @@ Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.e
 Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 
 Route::post('/projects/{project}/invite', [ProjectController::class, 'invite'])->name('projects.invite');
+Route::get('/tasks/search', [TaskController::class, 'searchTasks'])->name('tasks.search');
