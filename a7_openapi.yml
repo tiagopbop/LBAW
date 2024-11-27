@@ -157,7 +157,7 @@ paths:
       summary: 'R301: Create new project'
       description: 'Stores a new project in the system.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       requestBody:
         required: true
         content:
@@ -179,7 +179,7 @@ paths:
       summary: 'R302: View project'
       description: 'Displays details of a specific project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       parameters:
         - in: path
           name: project
@@ -194,7 +194,7 @@ paths:
       summary: 'R303: Delete project'
       description: 'Deletes a specific project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       parameters:
         - in: path
           name: project
@@ -211,7 +211,7 @@ paths:
       summary: 'R304: View tasks'
       description: 'Displays tasks under a project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       parameters:
         - in: path
           name: project
@@ -226,7 +226,7 @@ paths:
       summary: 'R305: Create task'
       description: 'Adds a new task to the project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       parameters:
         - in: path
           name: project
@@ -254,7 +254,7 @@ paths:
       summary: 'R306: Update task'
       description: 'Updates details of a task.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       parameters:
         - in: path
           name: task
@@ -280,7 +280,7 @@ paths:
       summary: 'R307: Delete task'
       description: 'Deletes a task from the project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       parameters:
         - in: path
           name: task
@@ -297,7 +297,7 @@ paths:
       summary: 'R308: Create project form'
       description: 'Displays the form to create a new project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       responses:
         '200':
           description: 'Project creation form displayed'
@@ -308,7 +308,7 @@ paths:
       summary: 'R309: Create task form'
       description: 'Displays the form to create a new task under a project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       parameters:
         - in: path
           name: project
@@ -325,7 +325,7 @@ paths:
       summary: 'R310: My projects'
       description: 'Displays the projects owned by the authenticated user.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       responses:
         '200':
           description: 'User projects displayed'
@@ -336,7 +336,7 @@ paths:
       summary: 'R311: Search projects'
       description: 'Search for projects based on criteria.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       responses:
         '200':
           description: 'Search results displayed'
@@ -347,7 +347,7 @@ paths:
       summary: 'R312: Edit task form'
       description: 'Displays the form to edit a task.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M03: Projects and Tasks'
       parameters:
         - in: path
           name: task
