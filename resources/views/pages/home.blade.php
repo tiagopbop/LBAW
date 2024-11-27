@@ -25,8 +25,11 @@
         <li>No projects available. Use the search bar to find projects.</li>
     @else
         @foreach ($projects as $project)
-            <li data-id="{{ $project->id }}">
-                {{ $project->project_title }}: {{ $project->project_description }}
+            <li data-id="{{ $project->project_id }}">
+                
+                <a href="{{ route('projects.show', $project) }}" class="btn view-project-btn">
+                    {{ $project->project_title }}: {{ $project->project_description }}
+                </a>
             </li>
         @endforeach
     @endif
@@ -47,11 +50,19 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 resultsList.innerHTML = ''; // Clear previous results
+
                 if (data.length > 0) {
                     data.forEach(project => {
                         const listItem = document.createElement('li');
-                        listItem.textContent = `${project.project_title}: ${project.project_description}`;
-                        resultsList.appendChild(listItem);
+                        listItem.setAttribute('data-id', project.project_id);  // Adding the data-id
+
+                        const link = document.createElement('a');
+                        link.href = `/projects/${project.project_id}`;  // Correctly link to the project page
+                        link.className = 'btn view-project-btn';  // Add the button styling class
+                        link.textContent = `${project.project_title}: ${project.project_description}`; // Text content of the project
+                        listItem.appendChild(link);  // Append the link to the list item
+                        resultsList.appendChild(listItem);  // Append the list item to the results list
+                        console.log("After adding the things form query:", resultsList.innerHTML);
                     });
                 } else {
                     resultsList.innerHTML = '<li>No results found.</li>'; // Display no results message
