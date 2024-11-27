@@ -146,7 +146,7 @@ paths:
       summary: 'R201: Admin dashboard'
       description: 'Displays the admin dashboard.'
       tags:
-        - 'M03: Administration'
+        - 'M02: Administration'
       responses:
         '200':
           description: 'Admin dashboard displayed'
