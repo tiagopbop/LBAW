@@ -1,4 +1,3 @@
-```
 openapi: 3.0.0
 
 info:
@@ -811,4 +810,3 @@ paths:
           description: 'Reply not found'
         '401':
           description: 'Unauthorized, user must be authenticated'
-```
