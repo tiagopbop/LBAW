@@ -17,7 +17,7 @@ tags:
 paths:
   /login:
     get:
-      operationId: 'showLoginForm'
+      operationId: 'R101'
       summary: 'Show login form'
       description: 'Displays the login form for users.'
       tags:
@@ -26,7 +26,7 @@ paths:
         '200':
           description: 'Login form displayed'
     post:
-      operationId: 'authenticate'
+      operationId: 'R102'
       summary: 'Authenticate user'
       description: 'Authenticates the user and starts a session.'
       tags:
@@ -50,7 +50,7 @@ paths:
 
   /logout:
     post:
-      operationId: 'logout'
+      operationId: 'R103'
       summary: 'Logout user'
       description: 'Ends the user session.'
       tags:
@@ -61,7 +61,7 @@ paths:
 
   /register:
     get:
-      operationId: 'showRegistrationForm'
+      operationId: 'R104'
       summary: 'Show registration form'
       description: 'Displays the registration form for new users.'
       tags:
@@ -70,7 +70,7 @@ paths:
         '200':
           description: 'Registration form displayed'
     post:
-      operationId: 'register'
+      operationId: 'R105'
       summary: 'Register user'
       description: 'Registers a new user.'
       tags:
@@ -96,7 +96,7 @@ paths:
 
   /profile:
     get:
-      operationId: 'showProfile'
+      operationId: 'R106'
       summary: 'Show profile'
       description: 'Displays user profile information.'
       tags:
@@ -105,7 +105,7 @@ paths:
         '200':
           description: 'Profile displayed'
     put:
-      operationId: 'updateProfile'
+      operationId: 'R107'
       summary: 'Update profile'
       description: 'Updates user profile details.'
       tags:
@@ -125,7 +125,7 @@ paths:
         '200':
           description: 'Profile updated'
     delete:
-      operationId: 'removeProfileImage'
+      operationId: 'R108'
       summary: 'Remove profile image'
       description: 'Deletes the user\'s profile image.'
       tags:
@@ -136,7 +136,7 @@ paths:
 
   /admin/dashboard:
     get:
-      operationId: 'adminDashboard'
+      operationId: 'R201'
       summary: 'Admin dashboard'
       description: 'Displays the admin dashboard.'
       tags:
@@ -147,7 +147,7 @@ paths:
 
   /projects:
     post:
-      operationId: 'storeProject'
+      operationId: 'R301'
       summary: 'Create new project'
       description: 'Stores a new project in the system.'
       tags:
@@ -169,7 +169,7 @@ paths:
 
   /projects/{project}:
     get:
-      operationId: 'showProject'
+      operationId: 'R302'
       summary: 'View project'
       description: 'Displays details of a specific project.'
       tags:
@@ -184,7 +184,7 @@ paths:
         '200':
           description: 'Project details displayed'
     delete:
-      operationId: 'destroyProject'
+      operationId: 'R303'
       summary: 'Delete project'
       description: 'Deletes a specific project.'
       tags:
@@ -201,7 +201,7 @@ paths:
 
   /projects/{project}/tasks:
     get:
-      operationId: 'viewTasks'
+      operationId: 'R304'
       summary: 'View tasks'
       description: 'Displays tasks under a project.'
       tags:
@@ -216,7 +216,7 @@ paths:
         '200':
           description: 'Tasks displayed'
     post:
-      operationId: 'storeTask'
+      operationId: 'R305'
       summary: 'Create task'
       description: 'Adds a new task to the project.'
       tags:
@@ -244,7 +244,7 @@ paths:
 
   /tasks/{task}:
     put:
-      operationId: 'updateTask'
+      operationId: 'R306'
       summary: 'Update task'
       description: 'Updates details of a task.'
       tags:
@@ -270,7 +270,7 @@ paths:
         '200':
           description: 'Task updated'
     delete:
-      operationId: 'destroyTask'
+      operationId: 'R307'
       summary: 'Delete task'
       description: 'Deletes a task from the project.'
       tags:
