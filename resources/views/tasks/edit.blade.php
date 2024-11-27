@@ -5,6 +5,8 @@
     <h1>
         Edit Task
     </h1>
+
+    @can('update', [App\Models\Task::class, $task])
     <form id="edit-profile-form" action="{{ route('tasks.update', $task) }}" method="POST">
         @csrf
         @method('PUT')
@@ -27,6 +29,8 @@
 
         <button type="submit" class="large-button">Update Task</button>
     </form>
+    @else
+    <p>You do not have permission to edit this task.</p>
+    @endcan
 </div>
 @endsection
-

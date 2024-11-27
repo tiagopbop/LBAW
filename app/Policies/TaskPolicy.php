@@ -22,11 +22,17 @@ class TaskPolicy
 
     public function delete(AuthenticatedUser $user, Task $task): bool
     {
-        return $task->project->members->contains($user) && ($user->pivot->role === 'Project manager' || $user->pivot->role === 'Project owner');
+        $project = $task->project;
+
+        return $project->members()->wherePivot('role', 'Project owner')->first()->id === $user->id
+            || $project->members()->wherePivot('role', 'Manager')->pluck('id')->contains($user->id);
     }
 
     public function create(AuthenticatedUser $user, Task $task): bool
     {
-        return $task->project->members->contains($user) && ($user->pivot->role === 'Project manager' || $user->pivot->role === 'Project owner');
+        $project = $task->project;
+
+        return $project->members()->wherePivot('role', 'Project owner')->first()->id === $user->id
+            || $project->members()->wherePivot('role', 'Manager')->pluck('id')->contains($user->id);
     }
 }
