@@ -85,6 +85,20 @@ public function update(Request $request, Task $task)
     return redirect()->route('projects.show', $task->project_id)
         ->with('success', 'Task updated successfully!');
 }
+public function searchTasks(Request $request)
+{
+    // Get the query string from the request
+    $query = $request->input('query');
+    $projectId = $request->input('project_id');
+
+    // Query tasks by project_id and filter by task_name
+    $tasks = Task::where('project_id', $projectId)
+                ->where('task_name', 'like', '%' . $query . '%') // Only tasks with matching names
+                ->get(['task_id', 'task_name', 'status', 'due_date']); // Select relevant fields
+
+    // Return tasks as a JSON response
+    return response()->json($tasks);
+}
 
 }
 
