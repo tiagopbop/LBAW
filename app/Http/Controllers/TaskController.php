@@ -10,6 +10,8 @@ class TaskController extends Controller
 {
     public function create(Project $project)
     {
+        $this->authorize('create', $task);
+
         return view('tasks.create', compact('project'));
     }
 
