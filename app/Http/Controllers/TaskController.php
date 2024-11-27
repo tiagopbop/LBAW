@@ -59,5 +59,30 @@ class TaskController extends Controller
 
     return back()->with('success', 'Task deleted successfully!');
 }
+
+public function edit(Task $task)
+{
+    $this->authorize('update', $task);
+
+    return view('tasks.edit', compact('task'));
+}
+
+public function update(Request $request, Task $task)
+{
+    $this->authorize('update', $task);
+
+    $validated = $request->validate([
+        'task_name' => 'required|string|max:255',
+        'status' => 'required|string|in:Ongoing,On-hold,Finished',
+        'details' => 'nullable|string|max:500',
+        'due_date' => 'nullable|date|after_or_equal:today',
+    ]);
+
+    $task->update($validated);
+
+    return redirect()->route('projects.show', $task->project_id)
+        ->with('success', 'Task updated successfully!');
+}
+
 }
 

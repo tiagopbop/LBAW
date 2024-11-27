@@ -3,8 +3,8 @@
 @section('title', 'My Projects')
 
 @section('content')
-<div>
-    <h1>My Projects</h1>
+<div class="profile-container" style="max-width: 100%; color: #027478;">
+    <h1 style="color: #3e56b0;">My Projects</h1>
 
     @forelse ($projects as $project)
         <div class="strip" style="border: 1px solid #ddd; border-radius: 10px; margin-bottom: 20px;">
@@ -12,7 +12,7 @@
                 <h3 style="margin: 0;">
                     {{ $project->project_title }}
                 </h3>
-                <p class="project-creation_date">
+                <p class="project-creation_date" style="text-align: left; margin: 0;">
                     Created on: {{ $project->project_creation_date->format('Y-m-d') }}
                 </p>
             </div>
@@ -21,7 +21,7 @@
                 <a href="{{ route('projects.show', $project) }}" class="view-project-button">
                     View Project
                 </a>
-                <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display: inline-block; box-shadow: none; outline: none; background-color: #f4f6f8;">
+                <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display: inline-block; box-shadow: none; outline: none;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this project?')">Delete Project</button>

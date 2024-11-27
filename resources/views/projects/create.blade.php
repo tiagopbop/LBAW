@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Create a New Project</h1>
-    <form action="{{ route('projects.store') }}" method="POST">
+<div class="profile-container">
+    <h1>
+        Create a New Project
+    </h1>
+    <form id="edit-profile-form" action="{{ route('projects.store') }}" method="POST">
         @csrf
         <div>
             <label for="project_title">Project Title:</label>
@@ -21,4 +24,5 @@
         </div>
         <button type="submit">Create Project</button>
     </form>
+</div>
 @endsection

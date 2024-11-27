@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Add a Task to {{ $project->project_title }}</h1>
+<div class="profile-container">
+    <h1>
+        Add a Task to {{ $project->project_title }}
+    </h1>
 
-    <form action="{{ route('tasks.store', $project->project_id) }}" method="POST">
+    <form id="edit-profile-form" action="{{ route('tasks.store', $project->project_id) }}" method="POST">
         @csrf
         <div>
             <label for="task_name">Task Name:</label>
@@ -35,4 +38,5 @@
         </div>
         <button type="submit">Add Task</button>
     </form>
+</div>
 @endsection
