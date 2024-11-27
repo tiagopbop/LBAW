@@ -49,7 +49,7 @@ paths:
           description: 'Invalid credentials'
 
   /logout:
-    get:
+    post:
       operationId: 'logout'
       summary: 'Logout user'
       description: 'Ends the user session.'
