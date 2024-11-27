@@ -85,3 +85,4 @@ Route::get('/projects/{project}/tasks', [TaskController::class, 'viewTasks'])->n
 Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
 Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 
+Route::post('/projects/{project}/invite', [ProjectController::class, 'invite'])->name('projects.invite');

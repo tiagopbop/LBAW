@@ -6,7 +6,7 @@
         Add a Task to {{ $project->project_title }}
     </h1>
 
-    @can('create', [App\Models\Task::class, $project])
+    @can('create', $project)
     <form id="edit-profile-form" action="{{ route('tasks.store', $project->project_id) }}" method="POST">
         @csrf
         <div>

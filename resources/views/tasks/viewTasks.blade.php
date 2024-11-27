@@ -27,8 +27,8 @@
                         <p style="text-align: left;"><strong>Status:</strong> {{ $task->status }}</p>
                         <p style="text-align: left;"><strong>Due date:</strong> {{ $task->due_date }}</p>
                         <div style="text-align: right;">
-                            @if(auth()->id() === $project->members()->wherePivot('role', 'Project owner')->first()->id || $project->members()->wherePivot('role', 'Manager')->pluck('id')->contains(auth()->id()))
-                            <a href="{{ route('tasks.edit', ['project' => $project->project_id, 'task' => $task]) }}" class="view-project-button" style="background-color: #bfc900;">
+                            @if(auth()->id() === $project->members()->wherePivot('role', 'Project owner')->first()?->pivot->user_id || $project->members()->wherePivot('role', 'Manager')->pluck('id')->contains(auth()->id()))
+                            <a href="{{ route('tasks.edit', ['project' => $project->project_id, 'task' => $task->task_id]) }}" class="view-project-button" style="background-color: #bfc900;">
                                 Edit Task
                             </a>
                             @endif

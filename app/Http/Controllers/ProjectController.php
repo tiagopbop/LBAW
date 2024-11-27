@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AuthenticatedUser;
 
 class ProjectController extends Controller
 {
@@ -54,6 +55,23 @@ class ProjectController extends Controller
     $project->delete();
 
     return redirect()->route('projects.myProjects')->with('success', 'Project deleted successfully!');
+}
+
+public function invite(Request $request, Project $project)
+{
+    $request->validate([
+        'username' => 'required|string|exists:authenticated_user,username',
+    ]);
+
+    $user = AuthenticatedUser::where('username', $request->input('username'))->first();
+
+    if (!$user) {
+        return back()->withErrors(['username' => 'User not found.']);
+    }
+
+    $project->members()->attach($user->id, ['role' => 'Project member']);
+
+    return back()->with('success', 'User invited successfully!');
 }
 
 }

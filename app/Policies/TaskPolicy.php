@@ -28,11 +28,13 @@ class TaskPolicy
             || $project->members()->wherePivot('role', 'Manager')->pluck('id')->contains($user->id);
     }
 
-    public function create(AuthenticatedUser $user, Task $task): bool
+    public function create(AuthenticatedUser $user, ?Project $project): bool
     {
         $project = $task->project;
 
-        return $project->members()->wherePivot('role', 'Project owner')->first()->id === $user->id
-            || $project->members()->wherePivot('role', 'Manager')->pluck('id')->contains($user->id);
+        return $project 
+            ? $project->members()->wherePivot('role', 'Project owner')->first()->id === $user->id
+            || $project->members()->wherePivot('role', 'Manager')->pluck('id')->contains($user->id)
+            : false;
     }
 }
