@@ -17,12 +17,12 @@ class AuthenticatedUserPolicy
     
     public function show(AuthenticatedUser $user): bool
     {
-        return Auth::user()->id === $user->id;
+        return Auth::check() && Auth::user()->id === $user->id;
     }
 
     public function edit(AuthenticatedUser $user): bool
     {
-        return Auth::user()->id === $user->id;
+        return Auth::check() && Auth::user()->id === $user->id;
     }
 
     public function updateTaskComment(AuthenticatedUser $user, TaskComment $taskComment): bool
