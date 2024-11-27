@@ -332,7 +332,8 @@ VALUES
 INSERT INTO admin (admin_tag, admin_username, password)
 VALUES
     ('admin01', 'admin_john', 'adminpass1'),
-    ('admin02', 'admin_jane', 'adminpass2');
+    ('admin02', 'admin_jane', 'adminpass2'),
+    ('admin123','SuperAdmin','$2y$10$Tj4Y8c0Zt0lbuOKmJI14/.lNoHD54UkLI2xHpTsa5Pb6OnfacMhnW');
 
 -- Populate notif table
 INSERT INTO notif (title, content, created_at)

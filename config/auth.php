@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'authenticated_user',
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
     ],
 
     /*
@@ -62,8 +66,12 @@ return [
     'providers' => [
         'authenticated_user' => [
         'driver' => 'eloquent',
-        'model' => App\Models\AuthenticatedUser::class, // Your custom model
+        'model' => App\Models\AuthenticatedUser::class,
 
+        ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
         ],
 
         // 'users' => [
