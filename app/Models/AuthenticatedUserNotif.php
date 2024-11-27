@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AuthenticatedUserNotif extends Authenticatable
 {
@@ -22,9 +23,8 @@ class AuthenticatedUserNotif extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
-        'email',
-        'password',
+        'id',
+        'notif_id'
     ];
 
     /**
@@ -34,7 +34,6 @@ class AuthenticatedUserNotif extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -43,7 +42,47 @@ class AuthenticatedUserNotif extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'id' => 'integer',
+        'notif_id' => 'integer',
     ];
+
+    /**
+     * Get the notification associated with the user notification.
+     */
+    public function notif(): BelongsTo
+    {
+        return $this->belongsTo(Notif::class, 'notif_id');
+    }
+
+    /**
+     * Get the authenticated user associated with the user notification.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(AuthenticatedUser::class, 'id');
+    }
+
+    /**
+     * Get the title of the notification.
+     */
+    public function getTitle(): string
+    {
+        return $this->notif->title;
+    }
+
+    /**
+     * Get the content of the notification.
+     */
+    public function getContent(): string
+    {
+        return $this->notif->content;
+    }
+
+    /**
+     * Get the created_at timestamp of the notification.
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->notif->created_at;
+    }
 }

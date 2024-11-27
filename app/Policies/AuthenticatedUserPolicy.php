@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedUserPolicy
 {
+    public function __construct()
+    {
+        //
+    }
+    
     public function show(AuthenticatedUser $user): bool
     {
         return Auth::user()->id === $user->id;

@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\AuthenticatedUser;
+use App\Models\AuthenticatedUserNotif;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
 
 class TaskNotif extends Model
 {
@@ -37,6 +42,21 @@ class TaskNotif extends Model
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class, 'task_id');
+    }
+
+    /**
+     * Get the authenticated user associated with the task notification.
+     */
+    public function user(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            AuthenticatedUser::class,
+            AuthenticatedUserNotif::class,
+            'notif_id', // Foreign key on AuthenticatedUserNotif table...
+            'id', // Foreign key on AuthenticatedUser table...
+            'notif_id', // Local key on TaskNotif table...
+            'id' // Local key on AuthenticatedUserNotif table...
+        );
     }
 
     /**

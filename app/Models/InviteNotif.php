@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\AuthenticatedUser;
+use App\Models\AuthenticatedUserNotif;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class InviteNotif extends Model
 {
@@ -34,11 +38,18 @@ class InviteNotif extends Model
     }
 
     /**
-     * Get the project associated with the invite
+     * Get the authenticated user associated with the invite notification.
      */
-    public function project(): BelongsTo
+    public function user(): HasManyThrough
     {
-        return $this->belongsTo(Project::class, 'project_id');
+        return $this->hasManyThrough(
+            AuthenticatedUser::class,
+            AuthenticatedUserNotif::class,
+            'notif_id', // Foreign key on AuthenticatedUserNotif table...
+            'id', // Foreign key on AuthenticatedUser table...
+            'notif_id', // Local key on TaskNotif table...
+            'id' // Local key on AuthenticatedUserNotif table...
+        );
     }
 
     public function getTitle()

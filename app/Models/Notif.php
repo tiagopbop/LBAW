@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Notif extends Model
 {
@@ -36,11 +38,26 @@ class Notif extends Model
     ];
 
     /**
-     * Get the users for the notification.
+     * Get the authenticated user associated with the notification.
      */
-    public function users(): BelongsToMany
+    public function user(): HasOneThrough
     {
-        return $this->belongsToMany(AuthenticatedUser::class, 'authenticated_user_notif', 'notif_id', 'id');
+        return $this->hasOneThrough(
+            AuthenticatedUser::class,
+            AuthenticatedUserNotif::class,
+            'notif_id', // Foreign key on AuthenticatedUserNotif table...
+            'id', // Foreign key on AuthenticatedUser table...
+            'notif_id', // Local key on InviteNotif table...
+            secondLocalKey: 'id' // Local key on AuthenticatedUserNotif table...
+        );
+    }
+
+    /**
+     * Get the authenticated user notifications associated with the notification.
+     */
+    public function authenticatedUserNotifs(): HasMany
+    {
+        return $this->hasMany(AuthenticatedUserNotif::class, 'notif_id');
     }
 
     /**

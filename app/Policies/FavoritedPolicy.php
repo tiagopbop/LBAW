@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoritedPolicy
 {
+    public function __construct()
+    {
+        //
+    }
+    
     public function view(AuthenticatedUser $user, Favorited $favorited): bool
     {
         return $favorited->user->id === $user->id;
