@@ -70,7 +70,7 @@ class AuthenticatedUser extends Authenticatable
     /**
      * Get the comments for the user.
      */
-    public function taskComments()
+    public function taskComments() : hasMany
     {
         return $this->hasMany(TaskComment::class);
     }
@@ -78,7 +78,7 @@ class AuthenticatedUser extends Authenticatable
     /**
      * Get the notifications for the user.
      */
-    public function notifs()
+    public function notifs() : belongsToMany
     {
         return $this->belongsToMany(Notif::class, 'authenticated_user_notif', 'id', 'notif_id');
     }
@@ -86,7 +86,7 @@ class AuthenticatedUser extends Authenticatable
     /**
      * Get the tasks for the user.
      */
-    public function tasks()
+    public function tasks() : belongsToMany
     {
         return $this->belongsToMany(Task::class, 'user_task', 'id', 'task_id');
     }
@@ -96,7 +96,7 @@ class AuthenticatedUser extends Authenticatable
      */
     public function getUserCreationDate()
     {
-        return $this->user_creation_date;
+        return $this->getAttribute('user_creation_date');
     }
     
     /**
@@ -104,7 +104,7 @@ class AuthenticatedUser extends Authenticatable
      */
     public function getUsername()
     {
-        return $this->username;
+        return $this->getAttribute('username');
     }
 
     /**
@@ -112,7 +112,7 @@ class AuthenticatedUser extends Authenticatable
      */
     public function getSuspendedStatus(): bool
     {
-        return $this->suspended_status;
+        return $this->getAttribute('suspended_status');
     }
 
     /**
@@ -120,7 +120,7 @@ class AuthenticatedUser extends Authenticatable
      */
     public function getPronouns(): string
     {
-        return $this->pronouns;
+        return $this->getAttribute('pronouns');
     }
 
     /**
@@ -128,7 +128,7 @@ class AuthenticatedUser extends Authenticatable
      */
     public function getBio(): string
     {
-        return $this->bio;
+        return $this->getAttribute('bio');
     }
 
     /**
@@ -136,6 +136,6 @@ class AuthenticatedUser extends Authenticatable
      */
     public function getCountry(): string
     {
-        return $this->country;
+        return $this->getAttribute('country');
     }
 }

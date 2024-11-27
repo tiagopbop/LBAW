@@ -52,24 +52,24 @@ class InviteNotif extends Model
         );
     }
 
-    public function getTitle()
+    public function getTitle() : string
     {
-        return $this->notif()->getTitle();
+        return $this->notif()->first()->title;
     }
 
     /**
      * Get the content of the notification.
      */
-    public function getContent()
+    public function getContent() : string
     {
-        return $this->notif()->getContent();
+        return $this->notif()->first()->content;
     }
 
     /**
      * Get the created_at of the notification.
      */
-    public function getCreatedAt()
+    public function getCreatedAt() : string
     {
-        return $this->notif()->getCreatedAt();
+        return $this->notif()->first()->createdAt;
     }
 }

@@ -64,7 +64,7 @@ class TaskNotif extends Model
      */
     public function getTitle()
     {
-        return $this->notif()->title;
+        return $this->notif()->first()->title;
     }
 
     /**
@@ -72,7 +72,7 @@ class TaskNotif extends Model
      */
     public function getContent()
     {
-        return $this->notif()->content;
+        return $this->notif()->first()->content;
     }
 
     /**
@@ -80,6 +80,6 @@ class TaskNotif extends Model
      */
     public function getCreatedAt()
     {
-        return $this->notif()->created_at;
+        return $this->notif()->first()->created_at;
     }
 }

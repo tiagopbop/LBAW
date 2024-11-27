@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProjectMember extends Pivot
 {
@@ -17,7 +18,7 @@ class ProjectMember extends Pivot
     /**
      * Get the project that the member belongs to.
      */
-    public function project()
+    public function project() : BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
@@ -25,7 +26,7 @@ class ProjectMember extends Pivot
     /**
      * Get the user class of the member
      */
-    public function user()
+    public function user() : BelongsTo
     {
         return $this->belongsTo(AuthenticatedUser::class);
     }

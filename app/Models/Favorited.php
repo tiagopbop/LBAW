@@ -29,7 +29,7 @@ class Favorited extends Model
     /**
      * Get the user that the favorite is associated with
      */
-    public function user()
+    public function user() : BelongsTo
     {
         return $this->belongsTo(AuthenticatedUser::class, 'id');
     }
@@ -37,7 +37,7 @@ class Favorited extends Model
     /**
      * Get the project the favorite is associated with
      */
-    public function project()
+    public function project() : BelongsTo
     {
         return $this->belongsTo(Project::class, 'project_id');
     }

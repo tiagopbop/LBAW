@@ -65,7 +65,7 @@ class Notif extends Model
      */
     public function getTitle()
     {
-        return $this->title;
+        return $this->getAttribute('title');
     }
 
     /**
@@ -73,7 +73,7 @@ class Notif extends Model
      */
     public function getContent()
     {
-        return $this->content;
+        return $this->getAttribute('content');
     }
 
     /**
@@ -81,6 +81,6 @@ class Notif extends Model
      */
     public function getCreatedAt()
     {
-        return $this->created_at;
+        return $this->getAttribute('created_at');
     }
 }

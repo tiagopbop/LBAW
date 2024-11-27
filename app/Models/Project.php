@@ -79,7 +79,7 @@ class Project extends Model
      */
     public function getTitle(): string
     {
-        return $this->project_title;
+        return $this->getAttribute('project_title');
     }
 
     /**
@@ -87,7 +87,7 @@ class Project extends Model
      */
     public function getDescription(): string
     {
-        return $this->project_description;
+        return $this->getAttribute('project_description');
     }
 
     /**
@@ -95,7 +95,7 @@ class Project extends Model
      */
     public function getCreationDate(): string
     {
-        return $this->project_creation_date;
+        return $this->getAttribute('project_creation_date');
     }
 
     /**
@@ -103,7 +103,7 @@ class Project extends Model
      */
     public function getAvailability(): bool
     {
-        return $this->availability;
+        return $this->getAttribute('availability');
     }
 
     /**
@@ -111,7 +111,7 @@ class Project extends Model
      */
     public function getArchivedStatus(): bool
     {
-        return $this->archived_status;
+        return $this->getAttribute('archived_status');
     }
 
     /**
@@ -119,7 +119,7 @@ class Project extends Model
      */
     public function getUpdatedAt(): string
     {
-        return $this->updated_at;
+        return $this->getAttribute('updated_at');
     }
 
     /**

@@ -58,7 +58,7 @@ class Post extends Model
      */
     public function getContent()
     {
-        return $this->content;
+        return $this->getAttribute('content');
     }
 
     /**
@@ -66,6 +66,6 @@ class Post extends Model
      */
     public function getPostCreation()
     {
-        return $this->post_creation;
+        return $this->getAttribute('post_creation');
     }
 }

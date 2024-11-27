@@ -67,7 +67,7 @@ class AuthenticatedUserNotif extends Authenticatable
      */
     public function getTitle(): string
     {
-        return $this->notif->title;
+        return $this->notif()->first()->title;
     }
 
     /**
@@ -75,7 +75,7 @@ class AuthenticatedUserNotif extends Authenticatable
      */
     public function getContent(): string
     {
-        return $this->notif->content;
+        return $this->notif()->first()->content;
     }
 
     /**
@@ -83,6 +83,6 @@ class AuthenticatedUserNotif extends Authenticatable
      */
     public function getCreatedAt(): string
     {
-        return $this->notif->created_at;
+        return $this->notif()->first()->created_at;
     }
 }

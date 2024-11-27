@@ -49,7 +49,7 @@ class Reply extends Model
      */
     public function getContent()
     {
-        return $this->content;
+        return $this->getAttribute('content');
     }
 
     /**
@@ -57,6 +57,6 @@ class Reply extends Model
      */
     public function getCreatedAt()
     {
-        return $this->reply_creation;
+        return $this->getAttribute('reply_creation');
     }
 }
