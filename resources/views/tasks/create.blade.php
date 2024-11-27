@@ -6,6 +6,7 @@
         Add a Task to {{ $project->project_title }}
     </h1>
 
+    @can('create', [App\Models\Task::class, $project])
     <form id="edit-profile-form" action="{{ route('tasks.store', $project->project_id) }}" method="POST">
         @csrf
         <div>
@@ -38,5 +39,8 @@
         </div>
         <button type="submit">Add Task</button>
     </form>
+    @else
+    <p>You do not have permission to add tasks to this project.</p>
+    @endcan
 </div>
 @endsection
