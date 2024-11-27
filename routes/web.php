@@ -11,6 +11,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PleaController;
 
 
 
@@ -38,11 +39,25 @@ Route::post('/logout', [HomeController::class, 'logout'])->name('logout');
 
 
 //Admin
-Route::middleware('admin.auth')->get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::middleware('admin.auth')->group(function () {
+    Route::get('/admin/unsuspended_users', [AdminController::class, 'unsuspendedUsers'])->name('admin.unsuspended_users');
+    Route::get('/admin/suspended_users', [AdminController::class, 'suspendedUsers'])->name('admin.suspended_users');
+    Route::get('/admin/pleas_dashboard', [AdminController::class, 'pleasDashboard'])->name('admin.pleas_dashboard');
+});
+
+// Admin login/logout routes
 Route::get('/supersecretlogin', [AdminController::class, 'showLoginForm'])->name('admin.loginForm');
 Route::post('/supersecretlogin', [AdminController::class, 'login'])->name('admin.login');
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+Route::patch('/admin/user/{id}/suspend', [AdminController::class, 'toggleSuspend'])->name('admin.toggleSuspend');
+Route::middleware(['auth', 'check.suspension'])->group(function () {
+    Route::get('/home', [HomeController::class, 'showUserDetails'])->name('home');
+});
+Route::get('/pleading', [HomeController::class, 'pleading'])->name('pleading.page');
+Route::post('/pleading', [PleaController::class, 'submit'])->name('pleading.submit');
+
 
 
 

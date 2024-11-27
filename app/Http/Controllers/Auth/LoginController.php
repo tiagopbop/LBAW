@@ -36,6 +36,9 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
+            if (Auth::user()->suspended_status) {
+                return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
+            }
             $request->session()->regenerate();
 
             return redirect()->route('home');

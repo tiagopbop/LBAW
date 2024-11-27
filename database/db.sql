@@ -149,6 +149,12 @@ CREATE TABLE user_task (
     PRIMARY KEY (id, task_id)
 );
 
+CREATE TABLE pleas (
+   id SERIAL PRIMARY KEY,
+   authenticated_user_id INT REFERENCES authenticated_user(id)ON UPDATE CASCADE ON DELETE CASCADE,
+   plea TEXT CHECK (LENGTH(plea) < 500) NOT NULL,
+   created_at DATE DEFAULT CURRENT_DATE NOT NULL
+);
 
 CREATE FUNCTION update_task_and_project_timestamp() RETURNS TRIGGER AS $$
 

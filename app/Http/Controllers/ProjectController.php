@@ -11,6 +11,9 @@ class ProjectController extends Controller
 {
     public function create()
     {
+        if (Auth::user()->suspended_status) {
+            return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
+        }
         return view('projects.create');
     }
 
@@ -35,12 +38,18 @@ class ProjectController extends Controller
     }
 
     public function show(Project $project) {
+        if (Auth::user()->suspended_status) {
+            return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
+        }
         $project->load(['tasks', 'members']);
         return view('projects.show', compact('project'));
     }
 
     public function myProjects()
     {
+        if (Auth::user()->suspended_status) {
+            return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
+        }
         $projects = auth()->user()->projects;
 
         return view('projects.myProjects', compact('projects'));

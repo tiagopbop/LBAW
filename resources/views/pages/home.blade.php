@@ -26,7 +26,7 @@
     @else
         @foreach ($projects as $project)
             <li data-id="{{ $project->project_id }}">
-                
+
                 <a href="{{ route('projects.show', $project) }}" class="view-project-button" style="margin-top: 10px;">
                     {{ $project->project_title }}: {{ $project->project_description }}
                 </a>

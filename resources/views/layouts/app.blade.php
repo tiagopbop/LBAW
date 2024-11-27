@@ -24,7 +24,7 @@
         <main>
             <header>
                 <h1><a href="{{ url('/home') }}">ManageMe</a></h1>
-                @if (Auth::check())
+                @if (Auth::check()&& !Auth::user()->suspended_status))
                     <nav class="navbar-background">
                         <div class="navbar-buttons">
                             <a href="/home" class="regular-button">Home</a>
@@ -34,6 +34,14 @@
                         </div>
                     </nav>
                 @endif
+                @if (Auth::check()&& Auth::user()->suspended_status))
+                <nav class="navbar">
+                    <div class="navbar-right">
+                         <a href="{{ url('/logout') }}" class="btn btn-danger">Logout</a>
+                    </div>
+                </nav>
+                @endif
+
             </header>
             <section id="content">
                 @yield('content')

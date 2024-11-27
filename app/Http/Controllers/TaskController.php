@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -17,6 +18,9 @@ class TaskController extends Controller
 
     public function viewTasks(Project $project)
     {
+        if (Auth::user()->suspended_status) {
+            return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
+        }
         $tasks = $project->tasks;
 
         return view('tasks.viewTasks', compact('project', 'tasks'));

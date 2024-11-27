@@ -32,6 +32,10 @@ class HomeController extends Controller
         return redirect('/login');
     }
 
+    public function pleading()
+    {
+        return view('pages.pleading');
+    }
 
     public function searchProjects(Request $request): JsonResponse
     {
