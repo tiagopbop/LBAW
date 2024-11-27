@@ -25,12 +25,12 @@
             <header>
                 <h1><a href="{{ url('/home') }}">ManageMe</a></h1>
                 @if (Auth::check())
-                    <nav class="navbar">
-                        <div class="navbar-right">
-                            <a href="/home" class="btn btn-secondary">Home</a>
-                            <a href="{{ route('projects.myProjects') }}" class="btn btn-primary">My Projects</a>
-                            <a href="{{ url('/profile') }}" class="btn btn-secondary">Profile</a>
-                            <a href="{{ url('/logout') }}" class="btn btn-danger">Logout</a>
+                    <nav class="navbar-background">
+                        <div class="navbar-buttons">
+                            <a href="/home" class="regular-button">Home</a>
+                            <a href="{{ route('projects.myProjects') }}" class="projects-button">My Projects</a>
+                            <a href="{{ url('/profile') }}" class="regular-button">Profile</a>
+                            <a href="{{ url('/logout') }}" class="logout-button">Logout</a>
                         </div>
                     </nav>
                 @endif

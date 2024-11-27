@@ -11,7 +11,7 @@
         </div>
         <div>
             <label for="status">Status:</label>
-            <select id="status" name="status" required>
+            <select id="status" name="status" style="resize: none; width: 25%; height: 1.4cm; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; margin-bottom: 15px; box-sizing: border-box;" required>
                 <option value="Ongoing">Ongoing</option>
                 <option value="On-hold">On-hold</option>
                 <option value="Finished">Finished</option>
@@ -19,15 +19,15 @@
         </div>
         <div>
             <label for="details">Details:</label>
-            <textarea id="details" name="details" maxlength="500"></textarea>
+            <textarea id="details" name="details" maxlength="500" style="resize: none; width: 100%; height: 2cm; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; margin-bottom: 15px; box-sizing: border-box;"></textarea>
         </div>
         <div>
             <label for="due_date">Due Date:</label>
-            <input type="date" id="due_date" name="due_date">
+            <input type="date" id="due_date" name="due_date" style="resize: none; width: 34%; height: 1.4cm; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; margin-bottom: 15px; box-sizing: border-box;">
         </div>
         <div>
             <label for="priority">Priority:</label>
-            <select id="priority" name="priority" required>
+            <select id="priority" name="priority" required style="resize: none; width: 25%; height: 1.4cm; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; margin-bottom: 15px; box-sizing: border-box;">
                 <option value="High">High</option>
                 <option value="Medium">Medium</option>
                 <option value="Low">Low</option>

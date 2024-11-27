@@ -38,7 +38,7 @@ header .button {
   font-size: 14px;
 }
 
-.navbar {
+.navbar-background {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -47,13 +47,13 @@ header .button {
   color: #fff;
 }
 
-.navbar-right {
+.navbar-buttons {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-.navbar a {
+.navbar-background a {
   text-decoration: none;
   color: #fff;
   padding: 8px 15px;
@@ -61,15 +61,24 @@ header .button {
   transition: background-color 0.3s ease;
 }
 
-.navbar a.btn-primary:hover {
-  background-color: #0056b3;
+.projects-button {
+  background-color: #28a745;
+  border: 1px solid #1e7e34;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
 }
 
-.navbar a.btn-secondary:hover {
+.projects-button:hover {
+  background-color: #1e7e34;
+  border-color: #28a745;
+  color: white;
+}
+
+.navbar-background a.regular-button:hover {
   background-color: #5a6268;
 }
 
-.navbar a.btn-danger:hover {
+.navbar-background a.logout-button:hover {
   background-color: #bd2130;
 }
 
@@ -330,25 +339,17 @@ form button:hover {
   }
 }
 
-/* My projects page */
-.card {
+/* Common buttons/structures */
+.strip {
+  margin-bottom: 25px;
+  padding: 20px; 
+  border-radius: 10px; 
+  border: 1px solid #ddd;
   transition: all 0.3s ease-in-out;
 }
 
-.card:hover {
-  border-color: #28a745;
+.strip:hover {
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  font-size: 18px;
-  color: #333;
-  font-weight: bold;
-}
-
-.card-text {
-  font-size: 16px;
-  color: #555;
 }
 
 select {
@@ -361,43 +362,34 @@ button {
   margin-top: 20px;
 }
 
-.btn-primary {
-  background-color: #28a745;
-  border: 1px solid #1e7e34;
-  font-size: 16px;
-  transition: all 0.2s ease-in-out;
-}
-
-.btn-primary:hover {
-  background-color: #1e7e34;
-  border-color: #28a745;
-  color: white;
-}
-
-.btn-success {
-  background-color: #28a745;
+.large-button {
+  background-color: #218b3a;
   border: none;
   color: white;
+  display: inline-flex;
+  margin: 20px;
+  text-align: center;
+  padding: 12px 25px; 
+  font-size: 18px; 
+  border-radius: 5px; 
+  text-decoration: none;
   transition: background-color 0.2s ease-in-out;
 }
 
-.btn-success:hover {
-  background-color: #218838;
+.large-button:hover {
+  background-color: #2dbe4c;
   color: white;
 }
 
-.card-title {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.project-details p {
+/* My projects page */
+.project-creation_date {
   font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
+  padding: 5px;
   margin: 0;
 }
 
-.view-project-btn {
+.view-project-button {
   display: inline-flex;
   background-color: #218838;
   border: none;
@@ -408,37 +400,15 @@ button {
   text-decoration: none;
 }
 
-.view-project-btn:hover {
+.view-project-button:hover {
   background-color: #2fa148;
   color: white;
   cursor: pointer;
   transform: scale(1.05);
 }
 
-.card {
-  margin-bottom: 25px;
-}
-
-.create-project-btn {
-  display: block;
-  margin: 20px;
-  text-align: center;
-}
-
-.task-box {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.task-box:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transform: translateY(-3px);
-}
-
 /* Delete buttons */
-.btn-danger {
+.delete-button {
   background-color: #dc3545;
   border: none;
   color: white;
@@ -447,7 +417,7 @@ button {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-danger:hover {
+.delete-button:hover {
   background-color: #bd2130;
   cursor: pointer;
 }
