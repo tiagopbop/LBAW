@@ -22,7 +22,7 @@ paths:
     get:
       operationId: 'R101'
       summary: 'R101: Show user details'
-      description: 'Displays the user details (username and email).'
+      description: 'Displays the user details (username and email). Access: USR'
       tags:
         - 'M01: Home'
       responses:
@@ -33,7 +33,7 @@ paths:
     get:
       operationId: 'R201'
       summary: 'R201: Unsuspended users'
-      description: 'Displays a list of unsuspended users.'
+      description: 'Displays a list of unsuspended users. Access: ADM'
       tags:
         - 'M02: Admin'
       responses:
@@ -44,7 +44,7 @@ paths:
     get:
       operationId: 'R202'
       summary: 'R202: Suspended users'
-      description: 'Displays a list of suspended users.'
+      description: 'Displays a list of suspended users. Access: ADM'
       tags:
         - 'M02: Admin'
       responses:
@@ -55,7 +55,7 @@ paths:
     get:
       operationId: 'R203'
       summary: 'R203: Pleas dashboard'
-      description: 'Displays the pleas dashboard.'
+      description: 'Displays the pleas dashboard. Access: ADM'
       tags:
         - 'M02: Admin'
       responses:
@@ -66,7 +66,7 @@ paths:
     get:
       operationId: 'R204'
       summary: 'R204: Admin login form'
-      description: 'Displays the admin login form.'
+      description: 'Displays the admin login form. Access: PUB'
       tags:
         - 'M02: Admin'
       responses:
@@ -75,7 +75,7 @@ paths:
     post:
       operationId: 'R205'
       summary: 'R205: Admin login'
-      description: 'Authenticates the admin user.'
+      description: 'Authenticates the admin user. Access: PUB'
       tags:
         - 'M02: Admin'
       requestBody:
@@ -104,7 +104,7 @@ paths:
     post:
       operationId: 'R206'
       summary: 'R206: Admin logout'
-      description: 'Ends the admin user session.'
+      description: 'Ends the admin user session. Access: ADM'
       tags:
         - 'M02: Admin'
       responses:
@@ -115,7 +115,7 @@ paths:
     patch:
       operationId: 'R207'
       summary: 'R207: Suspend user'
-      description: 'Toggles the suspension status of a user.'
+      description: 'Toggles the suspension status of a user. Access: ADM'
       tags:
         - 'M02: Admin'
       parameters:
@@ -132,7 +132,7 @@ paths:
     get:
       operationId: 'R301'
       summary: 'R301: Show profile'
-      description: 'Displays user profile information.'
+      description: 'Displays user profile information. Access: USR'
       tags:
         - 'M03: Profile'
       responses:
@@ -143,7 +143,7 @@ paths:
     put:
       operationId: 'R302'
       summary: 'R302: Update profile'
-      description: 'Updates user profile details.'
+      description: 'Updates user profile details. Access: USR'
       tags:
         - 'M03: Profile'
       requestBody:
@@ -165,7 +165,7 @@ paths:
     delete:
       operationId: 'R303'
       summary: 'R303: Remove profile image'
-      description: 'Deletes the user profile image.'
+      description: 'Deletes the user profile image. Access: USR'
       tags:
         - 'M03: Profile'
       responses:
@@ -176,7 +176,7 @@ paths:
     get:
       operationId: 'R401'
       summary: 'R401: Login form'
-      description: 'Displays the login form for users.'
+      description: 'Displays the login form for users. Access: PUB'
       tags:
         - 'M04: Authentication'
       responses:
@@ -185,7 +185,7 @@ paths:
     post:
       operationId: 'R402'
       summary: 'R402: Authenticate user'
-      description: 'Authenticates the user and starts a session.'
+      description: 'Authenticates the user and starts a session. Access: PUB'
       tags:
         - 'M04: Authentication'
       requestBody:
@@ -214,7 +214,7 @@ paths:
     get:
       operationId: 'R403'
       summary: 'R403: Logout user'
-      description: 'Ends the user session.'
+      description: 'Ends the user session. Access: USR'
       tags:
         - 'M04: Authentication'
       responses:
@@ -223,7 +223,7 @@ paths:
     post:
       operationId: 'R404'
       summary: 'R404: Logout user'
-      description: 'Ends the user session.'
+      description: 'Ends the user session. Access: USR'
       tags:
         - 'M04: Authentication'
       responses:
@@ -234,7 +234,7 @@ paths:
     get:
       operationId: 'R405'
       summary: 'R405: Show registration form'
-      description: 'Displays the registration form for new users.'
+      description: 'Displays the registration form for new users. Access: PUB'
       tags:
         - 'M04: Authentication'
       responses:
@@ -243,7 +243,7 @@ paths:
     post:
       operationId: 'R406'
       summary: 'R406: Register user'
-      description: 'Registers a new user.'
+      description: 'Registers a new user. Access: PUB'
       tags:
         - 'M04: Authentication'
       requestBody:
@@ -269,7 +269,7 @@ paths:
     get:
       operationId: 'R501'
       summary: 'R501: Create project form'
-      description: 'Displays the form to create a new project.'
+      description: 'Displays the form to create a new project. Access: USR'
       tags:
         - 'M05: Projects'
       responses:
@@ -280,7 +280,7 @@ paths:
     post:
       operationId: 'R502'
       summary: 'R502: Create new project'
-      description: 'Stores a new project in the system.'
+      description: 'Stores a new project in the system. Access: USR'
       tags:
         - 'M05: Projects'
       requestBody:
@@ -302,7 +302,7 @@ paths:
     get:
       operationId: 'R503'
       summary: 'R503: View project'
-      description: 'Displays details of a specific project.'
+      description: 'Displays details of a specific project. Access: MBR, MNG, OWN'
       tags:
         - 'M05: Projects'
       parameters:
@@ -317,7 +317,7 @@ paths:
     delete:
       operationId: 'R504'
       summary: 'R504: Delete project'
-      description: 'Deletes a specific project.'
+      description: 'Deletes a specific project. Access: OWN'
       tags:
         - 'M05: Projects'
       parameters:
@@ -332,9 +332,9 @@ paths:
 
   /my-projects:
     get:
-      operationId: 'R506'
-      summary: 'R506: My projects'
-      description: 'Displays the projects owned by the authenticated user.'
+      operationId: 'R505'
+      summary: 'R505: My projects'
+      description: 'Displays the projects owned by the authenticated user. Access: USR'
       tags:
         - 'M05: Projects'
       responses:
@@ -343,9 +343,9 @@ paths:
 
   /search-projects:
     get:
-      operationId: 'R507'
-      summary: 'R507: Search projects'
-      description: 'Search for projects based on criteria.'
+      operationId: 'R506'
+      summary: 'R506: Search projects'
+      description: 'Search for projects based on criteria. Access: USR'
       tags:
         - 'M05: Projects'
       responses:
@@ -354,9 +354,9 @@ paths:
 
   /projects/{project}/invite:
     post:
-      operationId: 'R508'
-      summary: 'R508: Invite to project'
-      description: 'Invite a user to the project.'
+      operationId: 'R507'
+      summary: 'R507: Invite to project'
+      description: 'Invite a user to the project. Access: MNG, OWN'
       tags:
         - 'M05: Projects'
       parameters:
@@ -382,7 +382,7 @@ paths:
     get:
       operationId: 'R601'
       summary: 'R601: View tasks'
-      description: 'Displays tasks under a project.'
+      description: 'Displays tasks under a project. Access: MBR, MNG, OWN'
       tags:
         - 'M06: Tasks'
       parameters:
@@ -397,7 +397,7 @@ paths:
     post:
       operationId: 'R602'
       summary: 'R602: Create task'
-      description: 'Adds a new task to the project.'
+      description: 'Adds a new task to the project. Access: MNG, OWN'
       tags:
         - 'M06: Tasks'
       parameters:
@@ -421,11 +421,28 @@ paths:
         '201':
           description: 'Task created'
 
+  /projects/{project}/tasks/create:
+    get:
+      operationId: 'R603'
+      summary: 'R603: Create task form'
+      description: 'Displays the form to create a new task under a project. Access: MNG, OWN'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Task creation form displayed'
+
   /tasks/{task}:
     put:
-      operationId: 'R603'
-      summary: 'R603: Update task'
-      description: 'Updates details of a task.'
+      operationId: 'R604'
+      summary: 'R604: Update task'
+      description: 'Updates details of a task. Access: MNG, OWN'
       tags:
         - 'M06: Tasks'
       parameters:
@@ -449,9 +466,9 @@ paths:
         '200':
           description: 'Task updated'
     delete:
-      operationId: 'R604'
-      summary: 'R604: Delete task'
-      description: 'Deletes a task from the project.'
+      operationId: 'R605'
+      summary: 'R605: Delete task'
+      description: 'Deletes a task from the project. Access: MNG, OWN'
       tags:
         - 'M06: Tasks'
       parameters:
@@ -464,28 +481,11 @@ paths:
         '204':
           description: 'Task deleted'
 
-  /projects/{project}/tasks/create:
-    get:
-      operationId: '6505'
-      summary: 'R605: Create task form'
-      description: 'Displays the form to create a new task under a project.'
-      tags:
-        - 'M06: Tasks'
-      parameters:
-        - in: path
-          name: project
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: 'Task creation form displayed'
-  
   /tasks/{task}/edit:
     get:
       operationId: 'R606'
       summary: 'R606: Edit task form'
-      description: 'Displays the form to edit a task.'
+      description: 'Displays the form to edit a task. Access: MNG, OWN'
       tags:
         - 'M06: Tasks'
       parameters:
@@ -502,7 +502,7 @@ paths:
     get:
       operationId: 'R607'
       summary: 'R607: Search tasks'
-      description: 'Search for tasks based on criteria.'
+      description: 'Search for tasks based on criteria. Access: USR'
       tags:
         - 'M06: Tasks'
       responses:
