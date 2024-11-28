@@ -5,17 +5,12 @@
 @section('content')
     <section id="tests">
 
-
-        <!-- Logout Button -->
-
-        <body>
-            <p><strong>Username:</strong> {{ $username }}</p>
-            <p><strong>Email:</strong> {{ $email }}</p>   
+        <body>  
             
             <!-- Search Bar -->
-        <div>
-            <h4>Search Projects</h4>
-            <input type="text" id="search-bar" placeholder="Type to search projects..." />
+        <div class="profile-container">
+            <h2>Search Projects</h2>
+            <input type="text" class="profile-container" style="display: flex; justify-content: center; align-items: center; height: 80%; width: 95%; " id="search-bar" placeholder="Type to search projects..." />
         </div>
 
         <!-- Projects List -->
@@ -25,12 +20,14 @@
         <li>No projects available. Use the search bar to find projects.</li>
     @else
         @foreach ($projects as $project)
-            <li data-id="{{ $project->project_id }}">
+        <div class="search-projects">
+            <li data-id="{{ $project->project_id }}" style="display: inline-block; width: 107%; text-align: center; margin-bottom: 10px; width: 100%;">
 
-                <a href="{{ route('projects.show', $project) }}" class="view-project-button" style="margin-top: 10px;">
+                <a href="{{ route('projects.show', $project) }}" class="search-projects-buttons">
                     {{ $project->project_title }}: {{ $project->project_description }}
                 </a>
             </li>
+        </div>
         @endforeach
     @endif
 </ul>
@@ -58,7 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         const link = document.createElement('a');
                         link.href = `/projects/${project.project_id}`;  // Correctly link to the project page
-                        link.className = 'btn view-project-btn';  // Add the button styling class
+                        link.className = 'search-projects-buttons';  // Add the button styling class
+                        link.style ='width: 96%; margin-bottom: 10px;'
                         link.textContent = `${project.project_title}: ${project.project_description}`; // Text content of the project
                         listItem.appendChild(link);  // Append the link to the list item
                         resultsList.appendChild(listItem);  // Append the list item to the results list

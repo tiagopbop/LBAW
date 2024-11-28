@@ -10,7 +10,12 @@
             {{ session('success') }}
         </div>
     @endif
-
+    <?php
+        $isManagerOrOwner = $project->members
+        ->where('id', auth()->id())
+        ->whereIn('pivot.role', ['Project owner', 'Manager'])
+        ->isNotEmpty();
+    ?>
 
     <a href="{{ url()->previous() }}" class="large-button" style="display: inline-block;">
         Go Back
@@ -26,9 +31,6 @@
                 @if($project->tasks->isEmpty())
                     <p style="text-align: left;">No tasks available for this project. You can add one now!</p>
                 @else
-                    @php
-                        $userRole = $project->members()->where('project_member.id', auth()->id())->first()->pivot->role;
-                    @endphp
                     @foreach($project->tasks as $task)
                         <div class="task" data-id="{{ $task->task_id }}" style="text-align: left; margin-top: 20px;">
                             <p><strong>Title:</strong> {{ $task->task_name }}</p>
@@ -42,9 +44,7 @@
                                 @endif
                             </p>
                             <div style="text-align: right;">
-
-                                @if(in_array($userRole, ['Project owner', 'Project manager']))
-
+                                <?php if ($isManagerOrOwner): ?>
                                     <a href="{{ route('tasks.edit', ['project' => $project->project_id, 'task' => $task]) }}" class="view-project-button" style="background-color: #bfc900;">
                                         Edit Task
                                     </a>
@@ -56,17 +56,17 @@
                                         Delete Task
                                     </button>
                                 </form>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
                     @endforeach
                 @endif
             </div>
-
-            <a href="{{ route('tasks.create', $project) }}" class="large-button" style="margin-top: 20px;">
-                Add Task
-            </a>
-
+            <?php if ($isManagerOrOwner): ?>
+                <a href="{{ route('tasks.create', $project) }}" class="large-button" style="margin-top: 20px;">
+                    Add Task
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -96,18 +96,22 @@
                                 taskDiv.classList.add('task');
                                 taskDiv.setAttribute('data-id', task.task_id);
                                 taskDiv.innerHTML = `
-                            <p><strong>Title:</strong> ${task.task_name}</p>
-                            <p><strong>Status:</strong> ${task.status}</p>
-                            <p><strong>Due date:</strong> ${task.due_date}</p>
+                            <div class="strip">
+                                <p style="text-align: left;"><strong>Title:</strong> ${task.task_name}</p>
+                                <p style="text-align: left;"><strong>Status:</strong> ${task.status}</p>
+                                <p style="text-align: left;"><strong>Due date:</strong> ${task.due_date}</p>
 
-                            <div style="text-align: right;">
-                                <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
-                                <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex;">
-                                    @csrf
-                                @method('DELETE')
-                                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
-                            </form>
-                        </div>
+                                <div style="text-align: right;">
+                                <?php if ($isManagerOrOwner): ?>
+                                    <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
+                                    <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex; border: none; box-shadow: none;">
+                                        @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
+                                    </form>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
 `;
                                 taskList.appendChild(taskDiv);
                             });

@@ -24,7 +24,7 @@
         <main>
             <header>
                 <h1><a href="{{ url('/home') }}">ManageMe</a></h1>
-                @if (Auth::check()&& !Auth::user()->suspended_status))
+                @if (Auth::check()&& !Auth::user()->suspended_status)
                     <nav class="navbar-background">
                         <div class="navbar-buttons">
                             <a href="/home" class="regular-button">Home</a>
