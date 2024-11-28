@@ -20,7 +20,7 @@ class TaskController extends Controller
 
     public function viewTasks(Project $project)
     {
-        if (Auth::user()->suspended_status) {
+        if (Auth::check() && Auth::user()->suspended_status) {
             return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
         }
         $tasks = $project->tasks;
