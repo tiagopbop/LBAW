@@ -96,8 +96,11 @@ Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->nam
 Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
 Route::get('/projects/{project}/tasks', [TaskController::class, 'viewTasks'])->name('tasks.viewTasks');
+Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
 Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
 Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
+Route::get('/tasks/{task}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('tasks.assigned_users');
 
 Route::post('/projects/{project}/invite', [ProjectController::class, 'invite'])->name('projects.invite');
 Route::get('/tasks/search', [TaskController::class, 'searchTasks'])->name('tasks.search');

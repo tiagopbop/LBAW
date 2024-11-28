@@ -17,15 +17,15 @@
         ->isNotEmpty();
     ?>
 
-    <a href="{{ url()->previous() }}" class="large-button" style="display: inline-block;">
-        Go Back
-    </a>
+        <a href="{{ url()->previous() }}" class="large-button" style="display: inline-block;">
+            Go Back
+        </a>
 
-    <div class="strip">
-        <div style="text-align: center;">
-            <h1 style="color: #3e56b0;">Tasks</h1>
+        <div class="strip">
+            <div style="text-align: center;">
+                <h1 style="color: #3e56b0;">Tasks</h1>
 
-            <input type="text" id="task-search" placeholder="Search tasks by title..." style="margin-bottom: 20px; padding: 10px; width: 300px;">
+                <input type="text" id="task-search" placeholder="Search tasks by title..." style="margin-bottom: 20px; padding: 10px; width: 300px;">
 
             <div id="task-list">
                 @if($project->tasks->isEmpty())
@@ -100,18 +100,25 @@
                                 <p style="text-align: left;"><strong>Title:</strong> ${task.task_name}</p>
                                 <p style="text-align: left;"><strong>Status:</strong> ${task.status}</p>
                                 <p style="text-align: left;"><strong>Due date:</strong> ${task.due_date}</p>
-
-                                <div style="text-align: right;">
-                                <?php if ($isManagerOrOwner): ?>
+                                <p><strong>Assigned To:</strong>
+                                @if ($task->users && $task->users->isNotEmpty())
+                                {{ $task->users->pluck('username')->join(', ') }}
+                                @else
+                                Not assigned
+                                @endif
+                                </p>
+                                    <div style="text-align: right;">
+                                    <?php if ($isManagerOrOwner): ?>
                                     <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
-                                    <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex; border: none; box-shadow: none;">
-                                        @csrf
+                                        <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex; border: none; box-shadow: none;">
+                                            @csrf
                                     @method('DELETE')
                                     <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
                                     </form>
-                                    <?php endif; ?>
+                                <?php endif; ?>
                                 </div>
                             </div>
+
 `;
                                 taskList.appendChild(taskDiv);
                             });

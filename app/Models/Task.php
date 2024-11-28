@@ -76,4 +76,35 @@ class Task extends Model
     {
         return $value ? $value : 'No Due Date';
     }
+
+    public function getAssignedUsers()
+    {
+        $assignedUsers = $this->users;
+
+        if ($assignedUsers->isNotEmpty()) {
+            return $assignedUsers->pluck('username')->join(', ');
+        }
+
+        return 'Not assigned';
+    }
+
+    public function searchTasks(Request $request)
+    {
+        $tasks = Task::where('project_id', $request->project_id)
+            ->where('task_name', 'like', '%' . $request->query . '%')
+            ->get();
+
+        $tasksData = $tasks->map(function ($task) {
+            return [
+                'task_id' => $task->task_id,
+                'task_name' => $task->task_name,
+                'status' => $task->status,
+                'due_date' => $task->due_date,
+                'assigned_users' => $task->assignedUsers()->pluck('username')->toArray(),
+            ];
+        });
+
+        return response()->json($tasksData);
+    }
+
 }

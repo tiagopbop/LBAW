@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\Project;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserTask;
@@ -51,13 +52,8 @@ class TaskController extends Controller
         $task->save();
 
         if ($request->has('assigned_to') && count($request->assigned_to) > 0) {
-            foreach ($request->assigned_to as $userId) {
-                $usertask = new UserTask([
-                    'id' => $userId,
-                    'task_id' => $task->task_id,
-                ]);
-                $usertask->save();
-            }
+
+            $task->users()->attach($request->assigned_to);
         }
 
         return redirect()->route('projects.show', $project->project_id)
