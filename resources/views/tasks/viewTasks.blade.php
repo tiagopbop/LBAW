@@ -27,7 +27,8 @@
                     <p style="text-align: left;">No tasks available for this project. You can add one now!</p>
                 @else
                     @php
-                        $userRole = $project->members()->where('project_member.id', auth()->id())->first()->pivot->role;
+                        $member = $project->members()->where('project_member.id', auth()->id())->first();
+                        $userRole = $member ? $member->pivot->role : 'Guest'; 
                     @endphp
                     @foreach($project->tasks as $task)
                         <div class="task" data-id="{{ $task->task_id }}" style="text-align: left; margin-top: 20px;">
