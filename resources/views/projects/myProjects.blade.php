@@ -29,7 +29,7 @@
 
                     $userRole = $userRole ? $userRole->pivot->role : null;
                 @endphp
-                @if($userRole && in_array($userRole, ['Project owner', 'Project manager']))
+                @if($userRole === 'Project owner')
                     <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display: inline-block; box-shadow: none; outline: none;">
                         @csrf
                         @method('DELETE')
