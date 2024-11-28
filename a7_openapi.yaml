@@ -10,38 +10,188 @@ servers:
     description: Production server
 
 tags:
-  - name: 'M01: Authentication and User Management'
-  - name: 'M02: Projects and Tasks'
-  - name: 'M03: Administration'
+  - name: 'M01: Home'
+  - name: 'M02: Admin'
+  - name: 'M03: Profile'
+  - name: 'M04: Authentication'
+  - name: 'M05: Projects'
+  - name: 'M06: Tasks'
 
 paths:
-  /:
-    get:
-      operationId: 'redirectHome'
-      summary: 'Redirect to login'
-      description: 'Redirects the root URL to the login page.'
-      tags:
-        - 'M01: Authentication and User Management'
-      responses:
-        '302':
-          description: 'Redirected to /login'
-
-  /login:
+  # 1. Home
+  /home:
     get:
       operationId: 'R101'
-      summary: 'R101: Login form'
+      summary: 'R101: Show user details'
+      description: 'Displays the user details (username and email).'
+      tags:
+        - 'M01: Home'
+      responses:
+        '200':
+          description: 'User details displayed'
+
+  # 2. Admin
+  /admin/unsuspended_users:
+    get:
+      operationId: 'R201'
+      summary: 'R201: Unsuspended users'
+      description: 'Displays a list of unsuspended users.'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'List of unsuspended users displayed'
+
+  /admin/suspended_users:
+    get:
+      operationId: 'R202'
+      summary: 'R202: Suspended users'
+      description: 'Displays a list of suspended users.'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'List of suspended users displayed'
+
+  /admin/pleas_dashboard:
+    get:
+      operationId: 'R203'
+      summary: 'R203: Pleas dashboard'
+      description: 'Displays the pleas dashboard.'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'Pleas dashboard displayed'
+
+  /supersecretlogin:
+    get:
+      operationId: 'R204'
+      summary: 'R204: Admin login form'
+      description: 'Displays the admin login form.'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'Admin login form displayed'
+    post:
+      operationId: 'R205'
+      summary: 'R205: Admin login'
+      description: 'Authenticates the admin user.'
+      tags:
+        - 'M02: Admin'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: 'Admin authenticated'
+        '401':
+          description: 'The provided credentials do not match our records'
+
+  /admin/logout:
+    post:
+      operationId: 'R206'
+      summary: 'R206: Admin logout'
+      description: 'Ends the admin user session.'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'Admin logged out'
+
+  /admin/user/{id}/suspend:
+    patch:
+      operationId: 'R207'
+      summary: 'R207: Suspend user'
+      description: 'Toggles the suspension status of a user.'
+      tags:
+        - 'M02: Admin'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'User suspension status toggled'
+
+  # 3. Profile
+  /profile:
+    get:
+      operationId: 'R301'
+      summary: 'R301: Show profile'
+      description: 'Displays user profile information.'
+      tags:
+        - 'M03: Profile'
+      responses:
+        '200':
+          description: 'Profile displayed'
+
+  /profile/update:
+    put:
+      operationId: 'R302'
+      summary: 'R302: Update profile'
+      description: 'Updates user profile details.'
+      tags:
+        - 'M03: Profile'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: 'Profile updated'
+
+  /profile/remove-image:
+    delete:
+      operationId: 'R303'
+      summary: 'R303: Remove profile image'
+      description: 'Deletes the user profile image.'
+      tags:
+        - 'M03: Profile'
+      responses:
+        '204':
+          description: 'Profile image removed'
+
+  # 4. Authentication
+  /login:
+    get:
+      operationId: 'R401'
+      summary: 'R401: Login form'
       description: 'Displays the login form for users.'
       tags:
-        - 'M01: Authentication and User Management'
+        - 'M04: Authentication'
       responses:
         '200':
           description: 'Login form displayed'
     post:
-      operationId: 'R102'
-      summary: 'R102: Authenticate user'
+      operationId: 'R402'
+      summary: 'R402: Authenticate user'
       description: 'Authenticates the user and starts a session.'
       tags:
-        - 'M01: Authentication and User Management'
+        - 'M04: Authentication'
       requestBody:
         required: true
         content:
@@ -66,40 +216,40 @@ paths:
 
   /logout:
     get:
-      operationId: 'R103'
-      summary: 'R103: Logout user'
+      operationId: 'R403'
+      summary: 'R403: Logout user'
       description: 'Ends the user session.'
       tags:
-        - 'M01: Authentication and User Management'
+        - 'M04: Authentication'
       responses:
         '200':
           description: 'User logged out'
     post:
-      operationId: 'R104'
-      summary: 'R104: Logout user'
+      operationId: 'R404'
+      summary: 'R404: Logout user'
       description: 'Ends the user session.'
       tags:
-        - 'M01: Authentication and User Management'
+        - 'M04: Authentication'
       responses:
         '200':
           description: 'User logged out'
 
   /register:
     get:
-      operationId: 'R105'
-      summary: 'R105: Show registration form'
+      operationId: 'R405'
+      summary: 'R405: Show registration form'
       description: 'Displays the registration form for new users.'
       tags:
-        - 'M01: Authentication and User Management'
+        - 'M04: Authentication'
       responses:
         '200':
           description: 'Registration form displayed'
     post:
-      operationId: 'R106'
-      summary: 'R106: Register user'
+      operationId: 'R406'
+      summary: 'R406: Register user'
       description: 'Registers a new user.'
       tags:
-        - 'M01: Authentication and User Management'
+        - 'M04: Authentication'
       requestBody:
         required: true
         content:
@@ -113,183 +263,113 @@ paths:
                   type: string
                 password:
                   type: string
-              required:
-                - email
-                - password
       responses:
         '201':
           description: 'User registered'
         '400':
           description: 'Invalid input'
 
-  /profile:
+  # 5. Projects
+  /projects/create:
     get:
-      operationId: 'R107'
-      summary: 'R107: Show profile'
-      description: 'Displays user profile information.'
+      operationId: 'R501'
+      summary: 'R501: Create project form'
+      description: 'Displays the form to create a new project.'
       tags:
-        - 'M01: Authentication and User Management'
+        - 'M05: Projects'
       responses:
         '200':
-          description: 'Profile displayed'
-
-  /profile/update:
-    put:
-      operationId: 'R108'
-      summary: 'R108: Update profile'
-      description: 'Updates user profile details.'
-      tags:
-        - 'M01: Authentication and User Management'
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                email:
-                  type: string
-      responses:
-        '200':
-          description: 'Profile updated'
-
-  /profile/remove-image:
-    delete:
-      operationId: 'R109'
-      summary: 'R109: Remove profile image'
-      description: 'Deletes the user profile image.'
-      tags:
-        - 'M01: Authentication and User Management'
-      responses:
-        '204':
-          description: 'Profile image removed'
-
-  /home:
-    get:
-      operationId: 'R110'
-      summary: 'R110: Show user details'
-      description: 'Displays the user details (username and email).'
-      tags:
-        - 'M01: Authentication and User Management'
-      responses:
-        '200':
-          description: 'User details displayed'
-
-  /pleading:
-    get:
-      operationId: 'R111'
-      summary: 'R111: Show pleading form'
-      description: 'Displays the pleading form for suspended users.'
-      tags:
-        - 'M01: Authentication and User Management'
-      responses:
-        '200':
-          description: 'Pleading form displayed'
-    post:
-      operationId: 'R112'
-      summary: 'R112: Submit pleading form'
-      description: 'Submits the pleading form for suspension appeal.'
-      tags:
-        - 'M01: Authentication and User Management'
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                reason:
-                  type: string
-      responses:
-        '201':
-          description: 'Plea submitted'
+          description: 'Project creation form displayed'
 
   /projects:
     post:
-      operationId: 'R201'
-      summary: 'R201: Create project'
-      description: 'Creates a new project.'
+      operationId: 'R502'
+      summary: 'R502: Create new project'
+      description: 'Stores a new project in the system.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M05: Projects'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
       responses:
         '201':
           description: 'Project created'
 
   /projects/{project}:
     get:
-      operationId: 'R202'
-      summary: 'R202: View project'
-      description: 'Displays project details.'
+      operationId: 'R503'
+      summary: 'R503: View project'
+      description: 'Displays details of a specific project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M05: Projects'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: 'Project details displayed'
     delete:
-      operationId: 'R203'
-      summary: 'R203: Delete project'
-      description: 'Deletes a project.'
+      operationId: 'R504'
+      summary: 'R504: Delete project'
+      description: 'Deletes a specific project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M05: Projects'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
       responses:
         '204':
           description: 'Project deleted'
 
-  /projects/{project}/tasks:
-    post:
-      operationId: 'R204'
-      summary: 'R204: Add task'
-      description: 'Adds a new task to the project.'
-      tags:
-        - 'M02: Projects and Tasks'
-      responses:
-        '201':
-          description: 'Task added'
-
-  /projects/{project}/tasks/{task}:
+  /my-projects:
     get:
-      operationId: 'R205'
-      summary: 'R205: View task details'
-      description: 'Displays details of a specific task within a project.'
+      operationId: 'R506'
+      summary: 'R506: My projects'
+      description: 'Displays the projects owned by the authenticated user.'
       tags:
-        - 'M02: Projects and Tasks'
-      parameters:
-        - name: project
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 'Project ID'
-        - name: task
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 'Task ID'
+        - 'M05: Projects'
       responses:
         '200':
-          description: 'Task details displayed'
-    put:
-      operationId: 'R206'
-      summary: 'R206: Update task'
-      description: 'Updates details of a specific task within a project.'
+          description: 'User projects displayed'
+
+  /search-projects:
+    get:
+      operationId: 'R507'
+      summary: 'R507: Search projects'
+      description: 'Search for projects based on criteria.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M05: Projects'
+      responses:
+        '200':
+          description: 'Search results displayed'
+
+  /projects/{project}/invite:
+    post:
+      operationId: 'R508'
+      summary: 'R508: Invite to project'
+      description: 'Invite a user to the project.'
+      tags:
+        - 'M05: Projects'
       parameters:
-        - name: project
-          in: path
+        - in: path
+          name: project
           required: true
           schema:
             type: integer
-          description: 'Project ID'
-        - name: task
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 'Task ID'
       requestBody:
         required: true
         content:
@@ -297,137 +377,140 @@ paths:
             schema:
               type: object
               properties:
-                name:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: 'User invited to project'
+
+  # 6. Tasks
+  /projects/{project}/tasks:
+    get:
+      operationId: 'R601'
+      summary: 'R601: View tasks'
+      description: 'Displays tasks under a project.'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Tasks displayed'
+    post:
+      operationId: 'R602'
+      summary: 'R602: Create task'
+      description: 'Adds a new task to the project.'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
                   type: string
                 description:
                   type: string
-                due_date:
+      responses:
+        '201':
+          description: 'Task created'
+
+  /tasks/{task}:
+    put:
+      operationId: 'R603'
+      summary: 'R603: Update task'
+      description: 'Updates details of a task.'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: task
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
                   type: string
-                  format: date
-              required:
-                - name
-                - description
+                description:
+                  type: string
       responses:
         '200':
           description: 'Task updated'
     delete:
-      operationId: 'R207'
-      summary: 'R207: Delete task'
-      description: 'Deletes a specific task from a project.'
+      operationId: 'R604'
+      summary: 'R604: Delete task'
+      description: 'Deletes a task from the project.'
       tags:
-        - 'M02: Projects and Tasks'
+        - 'M06: Tasks'
       parameters:
-        - name: project
-          in: path
+        - in: path
+          name: task
           required: true
           schema:
             type: integer
-          description: 'Project ID'
-        - name: task
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 'Task ID'
       responses:
         '204':
           description: 'Task deleted'
 
-  /admin/users:
+  /projects/{project}/tasks/create:
     get:
-      operationId: 'R301'
-      summary: 'R301: View all users'
-      description: 'Displays a list of all users for administrative purposes.'
+      operationId: '6505'
+      summary: 'R605: Create task form'
+      description: 'Displays the form to create a new task under a project.'
       tags:
-        - 'M03: Administration'
-      responses:
-        '200':
-          description: 'List of users displayed'
-
-  /admin/users/{user}/suspend:
-    post:
-      operationId: 'R302'
-      summary: 'R302: Suspend user'
-      description: 'Suspends a user account.'
-      tags:
-        - 'M03: Administration'
+        - 'M06: Tasks'
       parameters:
-        - name: user
-          in: path
+        - in: path
+          name: project
           required: true
           schema:
             type: integer
-          description: 'User ID'
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                reason:
-                  type: string
-                  description: 'Reason for suspension'
-              required:
-                - reason
       responses:
         '200':
-          description: 'User suspended'
-
-  /admin/users/{user}/unsuspend:
-    post:
-      operationId: 'R303'
-      summary: 'R303: Unsuspend user'
-      description: 'Reinstates a suspended user account.'
+          description: 'Task creation form displayed'
+  
+  /tasks/{task}/edit:
+    get:
+      operationId: 'R606'
+      summary: 'R606: Edit task form'
+      description: 'Displays the form to edit a task.'
       tags:
-        - 'M03: Administration'
+        - 'M06: Tasks'
       parameters:
-        - name: user
-          in: path
+        - in: path
+          name: task
           required: true
           schema:
             type: integer
-          description: 'User ID'
       responses:
         '200':
-          description: 'User unsuspended'
+          description: 'Task edit form displayed'
 
-  /admin/projects:
+  /tasks/search:
     get:
-      operationId: 'R304'
-      summary: 'R304: View all projects'
-      description: 'Displays a list of all projects for administrative purposes.'
+      operationId: 'R607'
+      summary: 'R607: Search tasks'
+      description: 'Search for tasks based on criteria.'
       tags:
-        - 'M03: Administration'
+        - 'M06: Tasks'
       responses:
         '200':
-          description: 'List of projects displayed'
-
-  /admin/projects/{project}/delete:
-    delete:
-      operationId: 'R305'
-      summary: 'R305: Delete project as admin'
-      description: 'Deletes a specific project for administrative purposes.'
-      tags:
-        - 'M03: Administration'
-      parameters:
-        - name: project
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: 'Project ID'
-      responses:
-        '204':
-          description: 'Project deleted'
-
-  /admin/reports:
-    get:
-      operationId: 'R306'
-      summary: 'R306: View reports'
-      description: 'Displays administrative reports.'
-      tags:
-        - 'M03: Administration'
-      responses:
-        '200':
-          description: 'Reports displayed'
+          description: 'Search results displayed'
