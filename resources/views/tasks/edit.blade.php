@@ -18,7 +18,16 @@
             <option value="On-hold" {{ $task->status === 'On-hold' ? 'selected' : '' }}>On-hold</option>
             <option value="Finished" {{ $task->status === 'Finished' ? 'selected' : '' }}>Finished</option>
         </select>
-
+        <div class="form-group">
+            <label for="assigned_to">Assign To:</label>
+            <select name="assigned_to[]" id="assigned_to" multiple size="5" style="width: 100%; padding: 5px;">
+                @foreach ($project->members as $member)
+                    <option value="{{ $member->id }}">
+                        {{ $member->username ?? 'Unknown' }} - {{ ucfirst($member->pivot->role ?? 'Member') }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
         <label for="details">Details</label>
         <textarea id="details" name="details" class="strip" rows="4">{{ $task->details }}</textarea>
 

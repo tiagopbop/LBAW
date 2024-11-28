@@ -17,7 +17,7 @@ class TaskPolicy
         $project = $task->project;
 
         return $project->members()->wherePivot('role', 'Project owner')->first()->id === $user->id
-            || $project->members()->wherePivot('role', 'Manager')->pluck('id')->contains($user->id);
+            || $project->members()->wherePivot('role', 'Project manager')->pluck('id')->contains($user->id);
     }
 
     public function delete(AuthenticatedUser $user, Task $task): bool
@@ -25,7 +25,7 @@ class TaskPolicy
         $project = $task->project;
 
         return $project->members()->wherePivot('role', 'Project owner')->first()->id === $user->id
-            || $project->members()->wherePivot('role', 'Manager')->pluck('id')->contains($user->id);
+            || $project->members()->wherePivot('role', 'Project manager')->pluck('id')->contains($user->id);
     }
 
     public function create(AuthenticatedUser $user, Project $project): bool
@@ -34,7 +34,7 @@ class TaskPolicy
             ->wherePivot('role', 'Project owner')
             ->first()?->id === $user->id ||
             $project->members()
-                ->wherePivot('role', 'Manager')
+                ->wherePivot('role', 'Project manager')
                 ->pluck('id')
                 ->contains($user->id);
     }

@@ -19,6 +19,18 @@
                 <option value="Finished">Finished</option>
             </select>
         </div>
+        <div class="form-group">
+            <label for="assigned_to">Assign To:</label>
+            <div>
+                @foreach ($project->members as $member)
+                    <label>
+                        <input type="checkbox" name="assigned_to[]" value="{{ $member->id }}">
+                        {{ $member->username }} - {{ ucfirst($member->pivot->role ?? 'Member') }}
+                    </label>
+                    <br>
+                @endforeach
+            </div>
+        </div>
         <div>
             <label for="details">Details:</label>
             <textarea id="details" name="details" maxlength="500" style="resize: none; width: 100%; height: 2cm; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; margin-bottom: 15px; box-sizing: border-box;"></textarea>

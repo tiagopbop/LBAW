@@ -108,7 +108,7 @@ git clone https://gitlab.up.pt/lbaw/lbawYYYY/lbawYYXX.git
 3. Each group member must create their own `.env` file:
 
 ```bash
-cp .env.thingy .env
+cp .env.production .env
 ```
 
 The `.env` file contains configuration settings and is not tracked by Git (see [.gitignore](.gitignore)).

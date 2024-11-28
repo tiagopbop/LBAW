@@ -35,7 +35,6 @@ Route::redirect('/', '/login');
 Route::get('/home', [HomeController::class, 'showUserDetails'])->name('home');
 
 // Route to log the user out.
-Route::post('/logout', [HomeController::class, 'logout'])->name('logout');
 
 
 //Admin
@@ -76,8 +75,8 @@ Route::controller(LoginController::class)->group(function () {
 });
 
 Route::controller(RegisterController::class)->group(function () {
-    Route::get('/register', 'showRegistrationForm')->name('register');
-    Route::post('/register', [RegisterController::class, 'register'])->name('register');
+    Route::get('/register', 'showRegistrationForm')->name('register.form');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 });
 
 Route::middleware(['auth'])->group(function () {

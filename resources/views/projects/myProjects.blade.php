@@ -21,11 +21,21 @@
                 <a href="{{ route('projects.show', $project) }}" class="view-project-button">
                     View Project
                 </a>
-                <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display: inline-block; box-shadow: none; outline: none;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this project?')">Delete Project</button>
-                </form>
+
+                @php
+                    $userRole = $project->members()
+                        ->where('project_member.id', auth()->id())
+                        ->first();
+
+                    $userRole = $userRole ? $userRole->pivot->role : null;
+                @endphp
+                @if($userRole && in_array($userRole, ['Project owner', 'Project manager']))
+                    <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display: inline-block; box-shadow: none; outline: none;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this project?')">Delete Project</button>
+                    </form>
+                @endif
             </div>
         </div>
     @empty
