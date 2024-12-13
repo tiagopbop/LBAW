@@ -29,6 +29,7 @@
                         <div class="navbar-buttons">
                             <a href="/home" class="regular-button">Home</a>
                             <a href="{{ route('projects.myProjects') }}" class="projects-button">My Projects</a>
+                            <a href="{{ url('/mytasks')}}" class="tasks-button">My tasks</a>
                             <a href="{{ url('/profile') }}" class="regular-button">Profile</a>
                             <a href="{{ url('/logout') }}" class="logout-button">Logout</a>
                         </div>

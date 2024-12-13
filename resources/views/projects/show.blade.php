@@ -52,6 +52,9 @@
                 @endforeach
             </ul>
         </div>
+        
+
+
         <a href="{{ route('tasks.viewTasks', $project) }}" class="large-button">
             View Tasks
         </a>

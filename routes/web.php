@@ -12,7 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PleaController;
-
+use App\Http\Controllers\MyTasksController;
 
 
 /*
@@ -104,3 +104,5 @@ Route::get('/tasks/{task}/assigned-users', [TaskController::class, 'getAssignedU
 
 Route::post('/projects/{project}/invite', [ProjectController::class, 'invite'])->name('projects.invite');
 Route::get('/tasks/search', [TaskController::class, 'searchTasks'])->name('tasks.search');
+
+Route::get('/mytasks', [MyTasksController::class, 'myTasks'])->name('tasks.mytasks');
