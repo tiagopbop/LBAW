@@ -87,12 +87,13 @@ class TaskController extends Controller
             'status' => 'required|string|in:Ongoing,On-hold,Finished',
             'details' => 'nullable|string|max:500',
             'due_date' => 'nullable|date|after_or_equal:today',
+            'assigned_to' => 'nullable|array',
         ]);
 
-        if ($request->has('assigned_to')) {
-            $task->users()->sync($request->assigned_to);
-        } else {
-            $task->users()->detach();
+
+        if ($request->has('assigned_to') && count($request->assigned_to) > 0) {
+
+            $task->users()->attach($request->assigned_to);
         }
 
         $task->update($validated);
