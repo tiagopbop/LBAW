@@ -3,19 +3,19 @@
 @section('title', 'Tasks')
 
 @section('content')
-<div class="profile-container" style="margin-top: 20px; max-width: 100%;">
-    <h1 style="font-weight: bold; color: #027478;">{{ $project->project_title }}</h1>
-    @if(session('success'))
-        <div>
-            {{ session('success') }}
-        </div>
-    @endif
-    <?php
+    <div class="profile-container" style="margin-top: 20px; max-width: 100%;">
+        <h1 style="font-weight: bold; color: #027478;">{{ $project->project_title }}</h1>
+        @if(session('success'))
+            <div>
+                {{ session('success') }}
+            </div>
+        @endif
+        <?php
         $isManagerOrOwner = $project->members
-        ->where('id', auth()->id())
-        ->whereIn('pivot.role', ['Project owner', 'Manager'])
-        ->isNotEmpty();
-    ?>
+            ->where('id', auth()->id())
+            ->whereIn('pivot.role', ['Project owner', 'Manager'])
+            ->isNotEmpty();
+        ?>
 
         <a href="{{ url()->previous() }}" class="large-button" style="display: inline-block;">
             Go Back
@@ -27,49 +27,49 @@
 
                 <input type="text" id="task-search" placeholder="Search tasks by title..." style="margin-bottom: 20px; padding: 10px; width: 300px;">
 
-            <div id="task-list">
-                @if($project->tasks->isEmpty())
-                    <p style="text-align: left;">No tasks available for this project. You can add one now!</p>
-                @else
-                    @foreach($project->tasks as $task)
-                        <div class="task" data-id="{{ $task->task_id }}" style="text-align: left; margin-top: 20px;">
-                            <p><strong>Title:</strong> {{ $task->task_name }}</p>
-                            <p><strong>Status:</strong> {{ $task->status }}</p>
-                            <p><strong>Due date:</strong> {{ $task->due_date }}</p>
-                            <p><strong>Assigned To:</strong>
-                                @if($task->assignedUsers && $task->assignedUsers->isNotEmpty())
-                                    {{ $task->assignedUsers->pluck('username')->join(', ') }}
-                                @else
-                                    Not assigned
-                                @endif
-                            </p>
-                            <div style="text-align: right;">
-                                <?php if ($isManagerOrOwner): ?>
+                <div id="task-list">
+                    @if($project->tasks->isEmpty())
+                        <p style="text-align: left;">No tasks available for this project. You can add one now!</p>
+                    @else
+                        @foreach($project->tasks as $task)
+                            <div class="task" data-id="{{ $task->task_id }}" style="text-align: left; margin-top: 20px;">
+                                <p><strong>Title:</strong> {{ $task->task_name }}</p>
+                                <p><strong>Status:</strong> {{ $task->status }}</p>
+                                <p><strong>Due date:</strong> {{ $task->due_date }}</p>
+                                <p><strong>Details:</strong> {{ $task->details }}</p>
+                                <p><strong>Assigned To:</strong>
+                                        <?php
+                                        $assignedUsers = $task->assignedUsers ? $task->assignedUsers->pluck('username')->toArray() : [];
+                                        echo !empty($assignedUsers) ? implode(', ', $assignedUsers) : 'Not assigned';
+                                        ?>
+                                </p>
+                                <div style="text-align: right;">
+                                        <?php if ($isManagerOrOwner): ?>
                                     <a href="{{ route('tasks.edit', ['project' => $project->project_id, 'task' => $task]) }}" class="view-project-button" style="background-color: #bfc900;">
                                         Edit Task
                                     </a>
 
-                                <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display: inline-flex; box-shadow: none; outline: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">
-                                        Delete Task
-                                    </button>
-                                </form>
-                                <?php endif; ?>
+                                    <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display: inline-flex; box-shadow: none; outline: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">
+                                            Delete Task
+                                        </button>
+                                    </form>
+                                    <?php endif; ?>
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
-                @endif
-            </div>
-            <?php if ($isManagerOrOwner): ?>
+                        @endforeach
+                    @endif
+                </div>
+                <?php if ($isManagerOrOwner): ?>
                 <a href="{{ route('tasks.create', $project) }}" class="large-button" style="margin-top: 20px;">
                     Add Task
                 </a>
-            <?php endif; ?>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
-</div>
 
 @endsection
 
@@ -100,22 +100,21 @@
                                 <p style="text-align: left;"><strong>Title:</strong> ${task.task_name}</p>
                                 <p style="text-align: left;"><strong>Status:</strong> ${task.status}</p>
                                 <p style="text-align: left;"><strong>Due date:</strong> ${task.due_date}</p>
-                                <p><strong>Assigned To:</strong>
-                                @if ($task->users && $task->users->isNotEmpty())
-                                {{ $task->users->pluck('username')->join(', ') }}
-                                @else
-                                Not assigned
-                                @endif
-                                </p>
+                                <p style="text-align: left;"><strong>Details:</strong> ${task.details}</p>
+                                <p><strong>Assigned To:</strong> ${
+                                    task.assignedUsers && task.assignedUsers.length > 0
+                                        ? task.assignedUsers.map(user => user.username).join(', ')
+                                        : 'Not assigned'
+                                }</p>
                                     <div style="text-align: right;">
                                     <?php if ($isManagerOrOwner): ?>
-                                    <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
+                                <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
                                         <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex; border: none; box-shadow: none;">
                                             @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
-                                    </form>
-                                <?php endif; ?>
+                                @method('DELETE')
+                                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
+                                </form>
+<?php endif; ?>
                                 </div>
                             </div>
 
@@ -139,3 +138,5 @@
     </script>
 @endpush
 
+message.txt
+8 KB

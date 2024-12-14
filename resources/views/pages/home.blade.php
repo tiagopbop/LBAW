@@ -26,6 +26,7 @@
                 <a href="{{ route('projects.show', $project) }}" class="search-projects-buttons">
                     {{ $project->project_title }}: {{ $project->project_description }}
                 </a>
+
             </li>
         </div>
         @endforeach
