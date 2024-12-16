@@ -69,16 +69,23 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        // Delete the current profile picture file if it exists and is not the default
         if ($user->pfp && $user->pfp !== 'profile_pictures/default-profile.jpg') {
             Storage::disk('public')->delete($user->pfp);
         }
 
-        // Set the profile picture to the default
         $user->pfp = 'profile_pictures/default-profile.jpg';
         $user->save();
 
         return redirect()->route('profile.show')->with('success', 'Profile image removed successfully.');
     }
+
+    public function deleteAccount(Request $request)
+    {
+        $user = Auth::user();
+        $user->delete();
+        Auth::logout();
+        return redirect('/')->with('status', 'Your account has been deleted successfully.');
+    }
+
 
 }

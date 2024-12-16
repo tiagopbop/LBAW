@@ -72,12 +72,45 @@ class AdminController extends Controller
     }
 
 
-    public function unsuspendUser($id)
-    {
-        $user = AuthenticatedUser::findOrFail($id);
-        $user->suspended_status = false;
-        $user->save();
 
-        return redirect()->route('admin.suspended_users')->with('success', 'User unsuspended successfully.');
+
+    public function deleteUser($id)
+    {
+        $users = AuthenticatedUser::findOrFail($id);
+        $users->delete();
+
+        return redirect()->route('admin.suspended_users')->with('success', 'User deleted successfully.');
     }
+
+    public function showCreateUserForm()
+    {
+        return view('admin.create_user');
+    }
+
+    public function create_user(Request $request)
+    {
+        $validated = $request->validate([
+            'username' => 'required|string|max:255|unique:authenticated_user',
+            'email' => 'required|email|max:255|unique:authenticated_user',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+
+        AuthenticatedUser::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'user_creation_date' => now(),
+            'suspended_status' => false,
+            'pfp' => null,
+            'pronouns' => null,
+            'bio' => null,
+            'country' => null,
+        ]);
+
+
+
+        return redirect()->route('admin.create_user')->with('success', 'User account created successfully.');
+    }
+
 }

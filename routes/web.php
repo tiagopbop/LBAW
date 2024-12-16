@@ -42,6 +42,10 @@ Route::middleware('admin.auth')->group(function () {
     Route::get('/admin/unsuspended_users', [AdminController::class, 'unsuspendedUsers'])->name('admin.unsuspended_users');
     Route::get('/admin/suspended_users', [AdminController::class, 'suspendedUsers'])->name('admin.suspended_users');
     Route::get('/admin/pleas_dashboard', [AdminController::class, 'pleasDashboard'])->name('admin.pleas_dashboard');
+    Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.delete_users');
+    Route::get('/admin/create_user', [AdminController::class, 'showCreateUserForm'])->name('admin.create_user');
+    Route::post('/admin/create_user', [AdminController::class, 'create_user'])->name('admin.storeUser');
+
 });
 
 // Admin login/logout routes
@@ -65,6 +69,7 @@ Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 Route::delete('/profile/remove-image', [ProfileController::class, 'removeImage'])->name('profile.removeImage');
+Route::delete('/profile/delete', [ProfileController::class, 'deleteAccount'])->name('profile.delete');
 
 
 // Authentication
