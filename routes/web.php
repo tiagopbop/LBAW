@@ -29,6 +29,11 @@ use App\Http\Controllers\MyTasksController;
 // Home
 Route::redirect('/', '/login');
 
+// Info
+Route::get('/about', [InfoController::class, 'about']);
+Route::get('/contact', [InfoController::class, 'contact']);
+Route::get('/faq', [InfoController::class, 'faq']);
+
 // Cards
 
 // Route to show user details (username and email).
