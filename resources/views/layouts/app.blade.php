@@ -49,5 +49,12 @@
             </section>
             @stack('scripts')
         </main>
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="{{ url('/about') }}" class="footer-link">About Us</a>
+                <a href="{{ url('/contact') }}" class="footer-link">Contacts</a>
+                <a href="{{ url('/faq') }}" class="footer-link">FAQ</a>
+            </div>
+        </footer>
     </body>
 </html>
