@@ -34,7 +34,7 @@ class ProjectPolicy
     public function update(AuthenticatedUser $user, Project $project): bool
     {
         $member = $project->members->where('id', $user->id)->first();
-        return $member && $member->pivot->role === 'Project manager';
+        return $member && in_array($member->pivot->role, ['Project manager', 'Project owner']);
     }
 
     /**

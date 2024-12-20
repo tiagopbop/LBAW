@@ -21,6 +21,24 @@
         </div>
     @endif
 
+    @if($userRole === 'Project owner')
+        <div style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+            <h3>Assign Project Manager</h3>
+            <form action="{{ route('projects.assignManager', $project) }}" method="POST">
+                @csrf
+                <label for="member_id">Select Member:</label>
+                <select id="member_id" name="member_id" required>
+                    @foreach ($project->members as $member)
+                        @if ($member->pivot->role === 'Project member')
+                            <option value="{{ $member->id }}">{{ $member->username }}</option>
+                        @endif
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-primary">Assign</button>
+            </form>
+        </div>
+    @endif
+
     @if(session('success'))
         <div class="success-message" style="margin-top: 10px; color: #28a745; font-weight: bold;">
             {{ session('success') }}

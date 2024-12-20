@@ -112,6 +112,7 @@ Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.e
 Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
 Route::get('/tasks/{task}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('tasks.assigned_users');
+Route::post('/projects/{project}/assign-manager', [ProjectController::class, 'assignManager'])->name('projects.assignManager');
 
 Route::post('/projects/{project}/invite', [ProjectController::class, 'invite'])->name('projects.invite');
 Route::get('/tasks/search', [TaskController::class, 'searchTasks'])->name('tasks.search');

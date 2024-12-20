@@ -66,21 +66,40 @@ class ProjectController extends Controller
     return redirect()->route('projects.myProjects')->with('success', 'Project deleted successfully!');
 }
 
-public function invite(Request $request, Project $project)
-{
-    $request->validate([
-        'username' => 'required|string|exists:authenticated_user,username',
-    ]);
+    public function invite(Request $request, Project $project)
+    {
+        $request->validate([
+            'username' => 'required|string|exists:authenticated_user,username',
+        ]);
 
-    $user = AuthenticatedUser::where('username', $request->input('username'))->first();
+        $user = AuthenticatedUser::where('username', $request->input('username'))->first();
 
-    if (!$user) {
-        return back()->withErrors(['username' => 'User not found.']);
+        if (!$user) {
+            return back()->withErrors(['username' => 'User not found.']);
+        }
+
+        $project->members()->attach($user->id, ['role' => 'Project member']);
+
+        return back()->with('success', 'User invited successfully!');
     }
 
-    $project->members()->attach($user->id, ['role' => 'Project member']);
+    public function assignManager(Request $request, Project $project)
+    {
+        $this->authorize('update', $project);
 
-    return back()->with('success', 'User invited successfully!');
-}
+        $validated = $request->validate([
+            'member_id' => 'required|exists:authenticated_user,id',
+        ]);
+
+        $member = $project->members()->where('authenticated_user.id', $validated['member_id'])->first();
+
+        if (!$member) {
+            return back()->withErrors(['member_id' => 'Member not found in this project.']);
+        }
+
+        $project->members()->updateExistingPivot($validated['member_id'], ['role' => 'Project manager']);
+
+        return back()->with('success', 'Project manager assigned successfully!');
+    }
 
 }
