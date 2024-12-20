@@ -9,15 +9,15 @@
         $member = $project->members()->where('project_member.id', auth()->id())->first();
         $userRole = $member ? $member->pivot->role : 'Guest'; // Default to 'Guest' or another fallback role
     @endphp
-        @if(in_array($userRole, ['Project owner', 'Project manager']))
+    @if(in_array($userRole, ['Project owner', 'Project manager']))
         <div style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
             <h3>Invite User to Project</h3>
-                <form action="{{ route('projects.invite', $project) }}" method="POST">
-                    @csrf
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                    <button type="submit" class="btn btn-primary">Invite</button>
-                </form>
+            <form action="{{ route('projects.invite', $project) }}" method="POST">
+                @csrf
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <button type="submit" class="btn btn-primary">Invite</button>
+            </form>
         </div>
     @endif
 
@@ -47,13 +47,11 @@
             <ul>
                 @foreach ($project->members as $member)
                     <li style="border: none; padding: 10px 0;">
-                        {{ $member->username ?? 'Unknown' }} - {{ ucfirst($member->pivot->role ?? 'Member') }}
+                        <a href="{{ route('profile.show', $member->id) }}">{{ $member->username ?? 'Unknown' }}</a> - {{ ucfirst($member->pivot->role ?? 'Member') }}
                     </li>
                 @endforeach
             </ul>
         </div>
-        
-
 
         <a href="{{ route('tasks.viewTasks', $project) }}" class="large-button">
             View Tasks
