@@ -13,9 +13,11 @@
         <p>Bio: {{ $bio ?? 'No bio available' }}</p>
         <p>Country: {{ $country ?? 'Not specified' }}</p>
 
+        @if (Auth::check() && Auth::user()->username === $username)
         <button id="edit-profile-button">
             <i class="fa fa-pencil"></i> Edit Profile
         </button>
+        @endif
 
         @if(Auth::check() && Auth::user()->username === $username && $pfp && $pfp !== 'profile_pictures/default-profile.jpg')
             <form id="remove-image-form" method="POST" action="{{ route('profile.removeImage') }}" style="display: none;">
@@ -48,12 +50,10 @@
             <form method="POST" action="{{ route('profile.delete') }}" style="margin-top: 20px;">
                 @csrf
                 @method('DELETE')
-                <!-- Delete Account Button -->
                 <button type="button" id="delete-account-btn" class="delete-button">
                     Delete Account
                 </button>
 
-                <!-- Custom Popup Modal (Hidden by Default) -->
                 <div id="delete-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
                     <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; width: 300px;">
                         <p style="margin-bottom: 20px;">Are you sure you want to delete your account? This action cannot be undone.</p>
@@ -68,25 +68,26 @@
 
                 <script>
                     document.getElementById('delete-account-btn').addEventListener('click', function () {
-                        document.getElementById('delete-modal').style.display = 'flex'; // Show the popup
+                        document.getElementById('delete-modal').style.display = 'flex';
                     });
 
                     document.getElementById('cancel-delete-btn').addEventListener('click', function () {
-                        document.getElementById('delete-modal').style.display = 'none'; // Hide the popup
+                        document.getElementById('delete-modal').style.display = 'none';
                     });
                 </script>
-
             </form>
         @endif
     </div>
-
-    <script>
-        document.getElementById('edit-profile-button').addEventListener('click', function () {
-            document.getElementById('edit-profile-form').style.display = 'block';
-            @if($pfp && $pfp !== 'profile_pictures/default-profile.jpg')
-            document.getElementById('remove-image-form').style.display = 'block';
-            @endif
+    
+    @if (Auth::check() && Auth::user()->username === $username)
+        <script>
+            document.getElementById('edit-profile-button').addEventListener('click', function () {
+                document.getElementById('edit-profile-form').style.display = 'block';
+                @if($pfp && $pfp !== 'profile_pictures/default-profile.jpg')
+                document.getElementById('remove-image-form').style.display = 'block';
+                @endif
                 this.style.display = 'none';
-        });
-    </script>
+            });
+        </script>
+    @endif
 @endsection

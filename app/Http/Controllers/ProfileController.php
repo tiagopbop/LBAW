@@ -9,9 +9,6 @@ use App\Models\AuthenticatedUser;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the profile page for the user.
-     */
     public function show($username)
     {
         $user = AuthenticatedUser::where('username', $username)->firstOrFail();
@@ -28,9 +25,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the profile of the currently authenticated user.
-     */
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -42,29 +36,23 @@ class ProfileController extends Controller
             'country' => 'nullable|string|max:100',
         ]);
 
-
         if ($request->hasFile('pfp')) {
-            // Delete the old profile picture if it exists and isn't the default
             if ($user->pfp && $user->pfp !== 'profile_pictures/default-profile.jpg') {
                 Storage::disk('public')->delete($user->pfp);
             }
 
-            // Save the new profile picture
             $path = $request->file('pfp')->store('profile_pictures', 'public');
-            $user->pfp = $path; // Save the path to the database
+            $user->pfp = $path;
         }
 
-
-        // Update other fields
         $user->pronouns = $request->input('pronouns');
         $user->bio = $request->input('bio');
         $user->country = $request->input('country');
 
         $user->save();
 
-        return redirect()->route('profile.show')->with('success', 'Profile updated successfully!');
+        return redirect()->route('profile.show', $user->username)->with('success', 'Profile updated successfully!');
     }
-
 
     public function removeImage(Request $request)
     {
@@ -77,7 +65,7 @@ class ProfileController extends Controller
         $user->pfp = 'profile_pictures/default-profile.jpg';
         $user->save();
 
-        return redirect()->route('profile.show')->with('success', 'Profile image removed successfully.');
+        return redirect()->route('profile.show', $user->username)->with('success', 'Profile image removed successfully.');
     }
 
     public function deleteAccount(Request $request)
@@ -92,5 +80,4 @@ class ProfileController extends Controller
         Auth::logout();
         return redirect('/')->with('status', 'Your account has been deleted successfully.');
     }
-
 }
