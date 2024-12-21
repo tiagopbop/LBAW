@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PleaController;
 use App\Http\Controllers\MyTasksController;
+use App\Http\Controllers\FavoriteController;
 
 
 /*
@@ -121,3 +122,5 @@ Route::get('/mytasks', [MyTasksController::class, 'myTasks'])->name('tasks.mytas
 
 Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
 Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
+
+Route::post('/projects/{project}/favorite', [FavoriteController::class, 'toggleFavorite'])->name('projects.favorite');

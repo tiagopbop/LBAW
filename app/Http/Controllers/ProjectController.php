@@ -6,6 +6,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AuthenticatedUser;
+use App\Models\Favorited;
 
 class ProjectController extends Controller
 {
@@ -33,6 +34,12 @@ class ProjectController extends Controller
         ]);
 
         $project->members()->attach(Auth::id(), ['role' => 'Project owner']);
+
+        Favorited::create([
+            'id' => auth()->id(),
+            'project_id' => $project->project_id,
+            'checks' => false,
+        ]);
 
         return redirect()->route('projects.myProjects');
     }
