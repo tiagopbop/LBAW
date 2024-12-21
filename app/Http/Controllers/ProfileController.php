@@ -12,9 +12,12 @@ class ProfileController extends Controller
     public function show($username)
     {
         $user = AuthenticatedUser::where('username', $username)->firstOrFail();
-        if ($user->suspended_status) {
-            return redirect()->route('pleading.page')->with('error', 'This account is suspended. Contact admin for further assistance.');
+
+        // Only redirect to pleading page if the authenticated user is viewing their own suspended profile
+        if ($user->suspended_status && Auth::check() && Auth::id() === $user->id) {
+            return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
         }
+
         return view('pages.profile', [
             'username' => $user->username,
             'email' => $user->email,
