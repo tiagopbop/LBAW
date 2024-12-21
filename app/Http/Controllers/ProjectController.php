@@ -102,4 +102,31 @@ class ProjectController extends Controller
         return back()->with('success', 'Project manager assigned successfully!');
     }
 
+    public function edit(Project $project)
+    {
+        $this->authorize('update', $project);
+
+        return view('projects.edit', compact('project'));
+    }
+
+    public function update(Request $request, Project $project)
+    {
+
+        $validatedData = $request->validate([
+            'project_title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'availability' => 'required|boolean',
+            'archived_status' => 'required|boolean',
+        ]);
+
+        $project->update([
+            'project_title' => $validatedData['project_title'],
+            'project_description' => $validatedData['description'],
+            'availability' => $validatedData['availability'],
+            'archived_status' => $validatedData['archived_status'],
+        ]);
+
+        return redirect()->route('projects.show', $project)->with('success', 'Project updated successfully!');
+    }
+
 }
