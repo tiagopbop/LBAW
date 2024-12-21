@@ -124,3 +124,5 @@ Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])->name
 Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
 
 Route::post('/projects/{project}/favorite', [FavoriteController::class, 'toggleFavorite'])->name('projects.favorite');
+
+Route::post('/projects/{project}/leave', [ProjectController::class, 'leaveProject'])->name('projects.leave');

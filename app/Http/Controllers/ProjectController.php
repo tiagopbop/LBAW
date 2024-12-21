@@ -136,4 +136,19 @@ class ProjectController extends Controller
         return redirect()->route('projects.show', $project)->with('success', 'Project updated successfully!');
     }
 
+    public function leaveProject(Project $project)
+    {
+        $userId = auth()->id();
+
+        $isMember = $project->members()->where('project_member.id', $userId)->exists();
+
+        if (!$isMember) {
+            return redirect()->route('projects.myProjects')->with('error', 'You are not a member of this project.');
+        }
+
+        $project->members()->detach($userId);
+
+        return redirect()->route('projects.myProjects')->with('success', 'You have left the project.');
+    }
+
 }

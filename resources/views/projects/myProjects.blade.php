@@ -33,7 +33,7 @@
             </div>
 
             <div style="text-align: right;">
-                <a href="{{ route('projects.show', $project) }}" class="view-project-button">
+                <a href="{{ route('projects.show', $project) }}" class="view-project-button" style="position: absolute; left: 35px; top: 56%;">
                     View Project
                 </a>
 
@@ -44,6 +44,14 @@
 
                     $userRole = $userRole ? $userRole->pivot->role : null;
                 @endphp
+                @if($userRole === 'Project manager' || $userRole === 'Project member')
+                    <form action="{{ route('projects.leave', $project) }}" method="POST" style="display: inline-block; box-shadow: none; outline: none;">
+                        @csrf
+                        <button type="submit" class="view-project-button" style="background-color: #ff6347;">
+                            Leave Project
+                        </button>
+                    </form>
+                @endif
                 @if($userRole === 'Project owner' || $userRole === 'Project manager')
                     <a href="{{ route('projects.edit', $project) }}" class="view-project-button" style="background-color: #bfc900; margin-left: 20px;">
                         Edit Project

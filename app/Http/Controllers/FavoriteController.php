@@ -13,7 +13,6 @@ class FavoriteController extends Controller
     {
         $userId = auth()->id();
 
-        // Find the favorite record for the specific project ID
         $favorite = Favorited::where('id', $userId)
             ->where('project_id', $project->project_id)
             ->first();

@@ -30,13 +30,13 @@
             @method('PUT')
 
             <label for="pfp">Profile Picture</label>
-            <input type="file" name="pfp" id="pfp">
+            <input type="file" style="max-width: 95%;" name="pfp" id="pfp">
 
             <label for="pronouns">Pronouns</label>
             <input type="text" name="pronouns" id="pronouns" value="{{ $pronouns }}">
 
             <label for="bio">Bio (max 255 characters)</label>
-            <textarea name="bio" id="bio" maxlength="255">{{ $bio }}</textarea>
+            <textarea name="bio" style="max-width: 95%;" id="bio" maxlength="255">{{ $bio }}</textarea>
 
             <label for="country">Country</label>
             <input type="text" name="country" id="country" value="{{ $country }}">
