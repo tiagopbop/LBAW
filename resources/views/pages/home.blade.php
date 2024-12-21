@@ -15,10 +15,18 @@
 
             <!-- Filter Buttons -->
             <div class="filter-container" style="margin: 10px 0;">
-                <button class="filter-button" data-filter="charity">Charity</button>
-                <button class="filter-button" data-filter="open source">Open Source</button>
-                <button class="filter-button" data-filter="">Clear Filters</button>
-            </div>
+    <h3>Filters:</h3>
+    <label>
+        <input type="checkbox" class="filter-checkbox" value="Charity"> Charity
+    </label>
+    <label>
+        <input type="checkbox" class="filter-checkbox" value="open source"> Open Source
+    </label>
+    <label>
+        <input type="checkbox" class="filter-checkbox" value="looking for people"> Looking for people
+    </label>
+</div>
+
 
             <!-- Projects List -->
             <ul id="search-results">
@@ -48,12 +56,13 @@
 document.addEventListener('DOMContentLoaded', function () {
     const searchBar = document.getElementById('search-bar');
     const resultsList = document.getElementById('search-results');
-    const filterButtons = document.querySelectorAll('.filter-button');
-    let activeFilter = '';
+    const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
 
     // Fetch and display projects
-    function fetchProjects(query = '', filter = '') {
-        const params = new URLSearchParams({ query, filter });
+    function fetchProjects(query = '', filters = []) {
+        const params = new URLSearchParams({ query });
+        filters.forEach(filter => params.append('filters[]', filter)); // Send multiple filters as an array
+
         fetch(`/search-projects?${params.toString()}`)
             .then(response => response.json())
             .then(data => {
@@ -73,28 +82,32 @@ document.addEventListener('DOMContentLoaded', function () {
                         resultsList.appendChild(listItem); // Append the list item to the results list
                     });
                 } else {
-                    resultsList.innerHTML = '<div>No results found.</div>'; // Display no results message
+                    resultsList.innerHTML = '<li>No results found.</li>';
                 }
             })
             .catch(error => console.error('Error fetching projects:', error));
     }
 
-    // Trigger search on Enter key press
+    // Trigger search and filters
+    function updateResults() {
+        const query = searchBar.value.trim();
+        const filters = Array.from(filterCheckboxes)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
+        fetchProjects(query, filters);
+    }
+
+    // Event listeners for search and filters
     searchBar.addEventListener('keypress', function (event) {
-        if (event.key === 'Enter') { // Check if Enter key was pressed
-            const query = searchBar.value.trim();
-            fetchProjects(query, activeFilter); // Fetch projects based on query and active filter
+        if (event.key === 'Enter') {
+            updateResults();
         }
     });
 
-    // Filter button click handling
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            activeFilter = this.getAttribute('data-filter');
-            const query = searchBar.value.trim();
-            fetchProjects(query, activeFilter); // Fetch projects based on query and selected filter
-        });
+    filterCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateResults);
     });
 });
+
 </script>
 @endpush

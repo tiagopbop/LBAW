@@ -559,7 +559,17 @@ VALUES
     (107,TRUE,'2024-11-06 13:55:18',FALSE,'2024-11-06 13:55:18','Charity Auction Platform','An online platform for organizing charity auctions.'),
     (108,TRUE,'2024-11-04 16:20:47',TRUE,'2024-11-04 16:20:47','Open Source Analytics Tool','A data analytics tool for open source enthusiasts.'),
     (109,TRUE,'2024-11-02 07:35:29',FALSE,'2024-11-02 07:35:29','Wireless Earbuds','High-quality wireless earbuds with noise-canceling features.'),
-    (110,FALSE,'2024-11-01 12:45:01',TRUE,'2024-11-01 12:45:01','Charity Concert Organizer','Software to manage and promote charity concerts.');
+    (110,FALSE,'2024-11-01 12:45:01',TRUE,'2024-11-01 12:45:01','Charity Concert Organizer','Software to manage and promote charity concerts.'),
+	(111,TRUE,'2024-12-10 14:12:45',FALSE,'2024-12-10 14:12:45','Volunteer Matching Platform','An open source platform looking for people to join its development team.'),
+    (112,TRUE,'2024-12-08 09:25:30',TRUE,'2024-12-08 09:25:30','Charity Fund Tracker','An open source system designed to help charities manage funds, looking for people to beta test.'),
+    (113,TRUE,'2024-12-06 16:40:10',FALSE,'2024-12-06 16:40:10','Recipe Database','A collaborative recipe database looking for people to contribute new ideas.'),
+    (114,FALSE,'2024-12-04 11:05:50',TRUE,'2024-12-04 11:05:50','Eco-Friendly Cleaning Supplies','A charity-driven project promoting sustainability, looking for people to help distribute.'),
+    (115,TRUE,'2024-12-02 10:15:25',FALSE,'2024-12-02 10:15:25','Remote Work Organizer','A productivity app for remote teams that is open source and looking for people to provide feedback.'),
+    (116,FALSE,'2024-11-30 17:30:15',TRUE,'2024-11-30 17:30:15','Charity Event Scheduler','A tool to help plan charity events, actively looking for people to test features.'),
+    (117,TRUE,'2024-11-28 08:45:35',FALSE,'2024-11-28 08:45:35','Community Forum Software','An open source forum platform looking for people to develop plugins.'),
+    (118,FALSE,'2024-11-26 13:22:10',TRUE,'2024-11-26 13:22:10','Accessible Education Program','A charity-focused educational program looking for people to volunteer as mentors.'),
+    (119,TRUE,'2024-11-24 15:50:40',FALSE,'2024-11-24 15:50:40','Open Source Graphic Design Tool','A free graphic design tool, looking for people to translate documentation.'),
+    (120,FALSE,'2024-11-22 12:10:20',TRUE,'2024-11-22 12:10:20','Charity Music Initiative','A charity initiative for music education, looking for people to organize workshops.');
 
 
 -- Populate task table
