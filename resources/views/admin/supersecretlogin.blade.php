@@ -29,5 +29,8 @@
                 </ul>
             </div>
         @endif
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="{{ route('login') }}" class="button button-primary">Go to Normal Login</a>
+        </div>
     </div>
 @endsection

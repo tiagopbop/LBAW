@@ -45,6 +45,15 @@ return [
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
+        'lbaw24146' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST'),
+            'port' => env('MAIL_PORT'),
+            'encryption' => env('MAIL_ENCRYPTION'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
+            'timeout' => null,
+        ],
 
         'ses' => [
             'transport' => 'ses',
@@ -99,8 +108,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'lbaw24146@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'ManageMe'),
     ],
 
     /*
@@ -110,7 +119,7 @@ return [
     |
     | If you are using Markdown based email rendering, you may configure your
     | theme and component paths here, allowing you to customize the design
-    | of the emails. Or, you may simply stick with the Laravel defaults!
+    | of the password. Or, you may simply stick with the Laravel defaults!
     |
     */
 

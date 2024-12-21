@@ -1,19 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\InfoController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PleaController;
 use App\Http\Controllers\MyTasksController;
+use App\Http\Controllers\PleaController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\TaskController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteController;
 
 
@@ -67,6 +67,11 @@ Route::middleware(['auth', 'check.suspension'])->group(function () {
 });
 Route::get('/pleading', [HomeController::class, 'pleading'])->name('pleading.page');
 Route::post('/pleading', [PleaController::class, 'submit'])->name('pleading.submit');
+Route::patch('/admin/toggle_suspend/{id}', [AdminController::class, 'toggleProjectSuspend'])->name('admin.toggleProjectSuspend');
+Route::delete('/admin/delete_project/{id}', [AdminController::class, 'deleteProject'])->name('admin.delete_project');
+Route::get('/admin/unsuspended_projects', [AdminController::class, 'unsuspendedProjects'])->name('admin.unsuspended_projects');
+Route::get('/admin/suspended_projects', [AdminController::class, 'suspendedProjects'])->name('admin.suspended_projects');
+
 
 
 
@@ -83,12 +88,20 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');
     Route::post('/login', 'authenticate');
     Route::get('/logout', 'logout')->name('logout');
+
 });
 
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register.form');
     Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 });
+
+
+// Reset Password Routes
+Route::view('/forgot-password', 'auth.forgot-password')->name('password.request');
+Route::post('/forgot-password', [ResetPasswordController::class, 'passwordEmail']);
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'passwordReset'])->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'passwordUpdate'])->name('password.update');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');

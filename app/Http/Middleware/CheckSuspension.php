@@ -10,6 +10,7 @@ class CheckSuspension
 
     public function handle($request, Closure $next)
     {
+
         if (auth()->check() && auth()->user()->suspended_status) {
             return redirect()->route('pleading.page');
         }
