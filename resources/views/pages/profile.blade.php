@@ -17,7 +17,7 @@
             <i class="fa fa-pencil"></i> Edit Profile
         </button>
 
-        @if($pfp && $pfp !== 'profile_pictures/default-profile.jpg')
+        @if(Auth::check() && Auth::user()->username === $username && $pfp && $pfp !== 'profile_pictures/default-profile.jpg')
             <form id="remove-image-form" method="POST" action="{{ route('profile.removeImage') }}" style="display: none;">
                 @csrf
                 @method('DELETE')
@@ -44,38 +44,40 @@
             <button type="submit">Save Changes</button>
         </form>
 
-        <form method="POST" action="{{ route('profile.delete') }}" style="margin-top: 20px;">
-            @csrf
-            @method('DELETE')
-            <!-- Delete Account Button -->
-            <button type="button" id="delete-account-btn" class="delete-button">
-                Delete Account
-            </button>
+        @if (Auth::check() && Auth::user()->username === $username)
+            <form method="POST" action="{{ route('profile.delete') }}" style="margin-top: 20px;">
+                @csrf
+                @method('DELETE')
+                <!-- Delete Account Button -->
+                <button type="button" id="delete-account-btn" class="delete-button">
+                    Delete Account
+                </button>
 
-            <!-- Custom Popup Modal (Hidden by Default) -->
-            <div id="delete-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
-                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; width: 300px;">
-                    <p style="margin-bottom: 20px;">Are you sure you want to delete your account? This action cannot be undone.</p>
-                    <form id="delete-account-form" method="POST" action="{{ route('profile.delete') }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" style="background-color: red; color: white; border: none; padding: 10px 20px; margin-right: 10px; cursor: pointer; border-radius: 5px;">Yes, Delete</button>
-                        <button type="button" id="cancel-delete-btn" style="background-color: grey; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;">Cancel</button>
-                    </form>
+                <!-- Custom Popup Modal (Hidden by Default) -->
+                <div id="delete-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+                    <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; width: 300px;">
+                        <p style="margin-bottom: 20px;">Are you sure you want to delete your account? This action cannot be undone.</p>
+                        <form id="delete-account-form" method="POST" action="{{ route('profile.delete') }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" style="background-color: red; color: white; border: none; padding: 10px 20px; margin-right: 10px; cursor: pointer; border-radius: 5px;">Yes, Delete</button>
+                            <button type="button" id="cancel-delete-btn" style="background-color: grey; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px;">Cancel</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
 
-            <script>
-                document.getElementById('delete-account-btn').addEventListener('click', function () {
-                    document.getElementById('delete-modal').style.display = 'flex'; // Show the popup
-                });
+                <script>
+                    document.getElementById('delete-account-btn').addEventListener('click', function () {
+                        document.getElementById('delete-modal').style.display = 'flex'; // Show the popup
+                    });
 
-                document.getElementById('cancel-delete-btn').addEventListener('click', function () {
-                    document.getElementById('delete-modal').style.display = 'none'; // Hide the popup
-                });
-            </script>
+                    document.getElementById('cancel-delete-btn').addEventListener('click', function () {
+                        document.getElementById('delete-modal').style.display = 'none'; // Hide the popup
+                    });
+                </script>
 
-        </form>
+            </form>
+        @endif
     </div>
 
     <script>

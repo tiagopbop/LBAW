@@ -72,7 +72,6 @@ Route::post('/pleading', [PleaController::class, 'submit'])->name('pleading.subm
 
 
 //Profile
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show_own');
 Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
 Route::delete('/profile/remove-image', [ProfileController::class, 'removeImage'])->name('profile.removeImage');

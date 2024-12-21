@@ -10,24 +10,8 @@ use App\Models\AuthenticatedUser;
 class ProfileController extends Controller
 {
     /**
-     * Display the profile page for the currently authenticated user.
+     * Display the profile page for the user.
      */
-    public function show_own()
-    {
-        $user = Auth::user();
-        if ($user->suspended_status) {
-            return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
-        }
-        return view('pages.profile', [
-            'username' => $user->username,
-            'email' => $user->email,
-            'pfp' => $user->pfp,
-            'pronouns' => $user->pronouns,
-            'country' => $user->country,
-            'bio' => $user->bio,
-        ]);
-    }
-
     public function show($username)
     {
         $user = AuthenticatedUser::where('username', $username)->firstOrFail();
@@ -99,10 +83,14 @@ class ProfileController extends Controller
     public function deleteAccount(Request $request)
     {
         $user = Auth::user();
+
+        if ($user->id !== Auth::id()) {
+            return redirect()->route('profile.show', $user->username)->withErrors(['error' => 'You can only delete your own account.']);
+        }
+
         $user->delete();
         Auth::logout();
         return redirect('/')->with('status', 'Your account has been deleted successfully.');
     }
-
 
 }
