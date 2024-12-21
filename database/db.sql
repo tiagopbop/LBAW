@@ -1,9 +1,9 @@
 DROP SCHEMA IF EXISTS lbaw24146 CASCADE;
 CREATE SCHEMA IF NOT EXISTS lbaw24146;
-SET search_path TO lbaw24146;
+--SET search_path TO lbaw24146;
 
 
-
+DROP FUNCTION IF EXISTS update_ts_vector_project CASCADE;
 DROP TRIGGER IF EXISTS update_task_and_project_timestamp_trigger ON task;
 DROP FUNCTION IF EXISTS update_task_and_project_timestamp;
 DROP TRIGGER IF EXISTS TRIGGER_TASK_ASSIGN_notifY ON user_task;
@@ -451,7 +451,7 @@ VALUES
 INSERT INTO project (project_id, availability, project_creation_date, archived_status, updated_at, project_title, project_description)
 VALUES
     (1,FALSE,'2024-11-12 16:02:32',FALSE,'2024-11-12 16:02:32','Printed Maxi Skirt','A colorful printed maxi skirt for a bohemian look.'),
-	(2,TRUE,'2024-06-05 04:56:41',TRUE,'2024-06-05 04:56:41','Cajun Seasoning','Spicy seasoning mix for all your favorite dishes.'),
+	(2,TRUE,'2024-06-05 04:56:41',TRUE,'2024-06-05 04:56:41','Cajun Seasoning','remote Spicy seasoning mix for all your favorite dishes.'),
 	(3,FALSE,'2024-03-15 22:00:39',FALSE,'2024-03-15 22:00:39','Instant Camera','Retro instant camera for capturing and printing photos instantly.'),
 	(4,TRUE,'2024-03-14 01:08:46',TRUE,'2024-03-14 01:08:46','Wireless Car Charger','Convenient charging pad for wireless charging in vehicles.'),
 	(5,TRUE,'2024-02-18 14:52:22',TRUE,'2024-02-18 14:52:22','Honey Mustard Chicken Breasts','Marinated chicken breasts coated in a sweet honey mustard glaze.'),
@@ -549,7 +549,17 @@ VALUES
 	(97,FALSE,'2024-03-24 00:23:09',FALSE,'2024-03-24 00:23:09','Savory Oatmeal Cups','Savory oatmeal ready to eat, great for breakfast or a snack.'),
 	(98,TRUE,'2024-04-02 23:51:44',TRUE,'2024-04-02 23:51:44','Fruit Infuser Water Bottle','Water bottle designed to infuse flavors from fruits.'),
 	(99,TRUE,'2024-09-20 04:25:33',TRUE,'2024-09-20 04:25:33','Trackpad for Laptop','Wireless trackpad for enhanced laptop navigation.'),
-	(100,TRUE,'2024-05-11 01:20:57',TRUE,'2024-05-11 01:20:57','Smartphone Tripod with Remote','Adjustable tripod with remote shutter for smartphones.');
+	(100,TRUE,'2024-05-11 01:20:57',TRUE,'2024-05-11 01:20:57','Smartphone Tripod with Remote','Adjustable tripod with remote shutter for smartphones.'),
+	(101,TRUE,'2024-12-01 10:15:45',FALSE,'2024-12-01 10:15:45','Open Source Calendar','A collaborative open source calendar for team scheduling.'),
+    (102,FALSE,'2024-11-20 08:30:12',TRUE,'2024-11-20 08:30:12','Charity Remote Drive App','An app designed to organize and track charity drives.'),
+    (103,TRUE,'2024-11-18 14:45:22',FALSE,'2024-11-18 14:45:22','Portable Solar Panel','Compact and efficient solar panels for on-the-go power.'),
+    (104,TRUE,'2024-11-15 09:10:33',FALSE,'2024-11-15 09:10:33','Open Source Task Manager','A user-friendly task manager built for open source projects.'),
+    (105,TRUE,'2024-11-10 17:25:49',TRUE,'2024-11-10 17:25:49','remote Charity Cookbook','A cookbook with recipes contributed by charity volunteers.'),
+    (106,FALSE,'2024-11-08 11:40:05',FALSE,'2024-11-08 11:40:05','Eco-friendly Backpack','A durable and eco-friendly backpack made from recycled materials.'),
+    (107,TRUE,'2024-11-06 13:55:18',FALSE,'2024-11-06 13:55:18','Charity Auction Platform','An online platform for organizing charity auctions.'),
+    (108,TRUE,'2024-11-04 16:20:47',TRUE,'2024-11-04 16:20:47','Open Source Analytics Tool','A data analytics tool for open source enthusiasts.'),
+    (109,TRUE,'2024-11-02 07:35:29',FALSE,'2024-11-02 07:35:29','Wireless Earbuds','High-quality wireless earbuds with noise-canceling features.'),
+    (110,FALSE,'2024-11-01 12:45:01',TRUE,'2024-11-01 12:45:01','Charity Concert Organizer','Software to manage and promote charity concerts.');
 
 
 -- Populate task table

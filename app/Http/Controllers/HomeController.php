@@ -38,20 +38,27 @@ class HomeController extends Controller
     }
 
     public function searchProjects(Request $request): JsonResponse
-    {
-        $searchTerm = $request->input('query');
-    
-        if ($searchTerm) {
-            // Use the full-text search to search for public projects
-            $projects = Project::public()
-                ->select('project_id','project_title', 'project_description')
-                ->whereRaw("ts_vector_title_description @@ plainto_tsquery('english', ?)", [$searchTerm])
-                ->get();
-        } else {
-            // If no search term, return all projects
-            $projects = Project::public()->select('project_id','project_title', 'project_description')->get();
-        }
-    
-        return response()->json($projects);
+{
+    $searchTerm = $request->input('query');
+    $filter = $request->input('filter'); // New filter input
+
+    $projects = Project::public()
+        ->select('project_id', 'project_title', 'project_description');
+
+    if ($searchTerm) {
+        // Use full-text search for the search term
+        $projects->whereRaw("ts_vector_title_description @@ plainto_tsquery('english', ?)", [$searchTerm]);
     }
+
+    if ($filter) {
+        // Apply additional filtering by checking if the filter keyword exists in the title or description
+        $projects->where(function ($query) use ($filter) {
+            $query->where('project_title', 'ILIKE', "%{$filter}%")
+                  ->orWhere('project_description', 'ILIKE', "%{$filter}%");
+        });
+    }
+
+    return response()->json($projects->get());
+}
+
 }
