@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (data.length > 0) {
                     data.forEach(project => {
-                        const listItem = document.createElement('li');
+                        const listItem = document.createElement('div');
                         listItem.setAttribute('data-id', project.project_id); // Adding the data-id
 
                         const link = document.createElement('a');
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         resultsList.appendChild(listItem); // Append the list item to the results list
                     });
                 } else {
-                    resultsList.innerHTML = '<li>No results found.</li>'; // Display no results message
+                    resultsList.innerHTML = '<div>No results found.</div>'; // Display no results message
                 }
             })
             .catch(error => console.error('Error fetching projects:', error));
