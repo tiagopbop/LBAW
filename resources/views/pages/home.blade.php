@@ -28,7 +28,7 @@
                 @else
                     @foreach ($projects as $project)
                         <div class="search-projects">
-                            <li data-id="{{ $project->project_id }}" style="display: inline-block; width: 107%; text-align: center; margin-bottom: 10px; width: 100%;">
+                            <li data-id="{{ $project->project_id }}" style="display: inline-block; width: 96%; text-align: center; margin-bottom: 10px; width: 100%;position: relative;left: -21px;">
 
                                 <a href="{{ route('projects.show', $project) }}" class="search-projects-buttons">
                                     {{ $project->project_title }}: {{ $project->project_description }}
