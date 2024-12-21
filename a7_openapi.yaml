@@ -1,0 +1,510 @@
+openapi: 3.0.0
+
+info:
+  version: '1.0'
+  title: 'ManageMe Web API'
+  description: 'API Specification for ManageMe Project Management Platform'
+
+servers:
+  - url: http://lbaw.fe.up.pt
+    description: Production server
+
+tags:
+  - name: 'M01: Home'
+  - name: 'M02: Admin'
+  - name: 'M03: Profile'
+  - name: 'M04: Authentication'
+  - name: 'M05: Projects'
+  - name: 'M06: Tasks'
+
+paths:
+  /home:
+    get:
+      operationId: 'R101'
+      summary: 'R101: Show user details'
+      description: 'Displays the user details (username and email). Access: USR'
+      tags:
+        - 'M01: Home'
+      responses:
+        '200':
+          description: 'User details displayed'
+
+  /admin/unsuspended_users:
+    get:
+      operationId: 'R201'
+      summary: 'R201: Unsuspended users'
+      description: 'Displays a list of unsuspended users. Access: ADM'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'List of unsuspended users displayed'
+
+  /admin/suspended_users:
+    get:
+      operationId: 'R202'
+      summary: 'R202: Suspended users'
+      description: 'Displays a list of suspended users. Access: ADM'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'List of suspended users displayed'
+
+  /admin/pleas_dashboard:
+    get:
+      operationId: 'R203'
+      summary: 'R203: Pleas dashboard'
+      description: 'Displays the pleas dashboard. Access: ADM'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'Pleas dashboard displayed'
+
+  /supersecretlogin:
+    get:
+      operationId: 'R204'
+      summary: 'R204: Admin login form'
+      description: 'Displays the admin login form. Access: PUB'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'Admin login form displayed'
+    post:
+      operationId: 'R205'
+      summary: 'R205: Admin login'
+      description: 'Authenticates the admin user. Access: PUB'
+      tags:
+        - 'M02: Admin'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: 'Admin authenticated'
+        '401':
+          description: 'The provided credentials do not match our records'
+
+  /admin/logout:
+    post:
+      operationId: 'R206'
+      summary: 'R206: Admin logout'
+      description: 'Ends the admin user session. Access: ADM'
+      tags:
+        - 'M02: Admin'
+      responses:
+        '200':
+          description: 'Admin logged out'
+
+  /admin/user/{id}/suspend:
+    patch:
+      operationId: 'R207'
+      summary: 'R207: Suspend user'
+      description: 'Toggles the suspension status of a user. Access: ADM'
+      tags:
+        - 'M02: Admin'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'User suspension status toggled'
+
+  /profile:
+    get:
+      operationId: 'R301'
+      summary: 'R301: Show profile'
+      description: 'Displays user profile information. Access: USR'
+      tags:
+        - 'M03: Profile'
+      responses:
+        '200':
+          description: 'Profile displayed'
+
+  /profile/update:
+    put:
+      operationId: 'R302'
+      summary: 'R302: Update profile'
+      description: 'Updates user profile details. Access: USR'
+      tags:
+        - 'M03: Profile'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: 'Profile updated'
+
+  /profile/remove-image:
+    delete:
+      operationId: 'R303'
+      summary: 'R303: Remove profile image'
+      description: 'Deletes the user profile image. Access: USR'
+      tags:
+        - 'M03: Profile'
+      responses:
+        '204':
+          description: 'Profile image removed'
+
+  /login:
+    get:
+      operationId: 'R401'
+      summary: 'R401: Login form'
+      description: 'Displays the login form for users. Access: PUB'
+      tags:
+        - 'M04: Authentication'
+      responses:
+        '200':
+          description: 'Login form displayed'
+    post:
+      operationId: 'R402'
+      summary: 'R402: Authenticate user'
+      description: 'Authenticates the user and starts a session. Access: PUB'
+      tags:
+        - 'M04: Authentication'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: 'User authenticated'
+        '401':
+          description: 'The provided credentials do not match our records'
+
+  /logout:
+    get:
+      operationId: 'R403'
+      summary: 'R403: Logout user'
+      description: 'Ends the user session. Access: USR'
+      tags:
+        - 'M04: Authentication'
+      responses:
+        '200':
+          description: 'User logged out'
+    post:
+      operationId: 'R404'
+      summary: 'R404: Logout user'
+      description: 'Ends the user session. Access: USR'
+      tags:
+        - 'M04: Authentication'
+      responses:
+        '200':
+          description: 'User logged out'
+
+  /register:
+    get:
+      operationId: 'R405'
+      summary: 'R405: Show registration form'
+      description: 'Displays the registration form for new users. Access: PUB'
+      tags:
+        - 'M04: Authentication'
+      responses:
+        '200':
+          description: 'Registration form displayed'
+    post:
+      operationId: 'R406'
+      summary: 'R406: Register user'
+      description: 'Registers a new user. Access: PUB'
+      tags:
+        - 'M04: Authentication'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: 'User registered'
+        '400':
+          description: 'Invalid input'
+
+  /projects/create:
+    get:
+      operationId: 'R501'
+      summary: 'R501: Create project form'
+      description: 'Displays the form to create a new project. Access: USR'
+      tags:
+        - 'M05: Projects'
+      responses:
+        '200':
+          description: 'Project creation form displayed'
+
+  /projects:
+    post:
+      operationId: 'R502'
+      summary: 'R502: Create new project'
+      description: 'Stores a new project in the system. Access: USR'
+      tags:
+        - 'M05: Projects'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '201':
+          description: 'Project created'
+
+  /projects/{project}:
+    get:
+      operationId: 'R503'
+      summary: 'R503: View project'
+      description: 'Displays details of a specific project. Access: MBR, MNG, OWN'
+      tags:
+        - 'M05: Projects'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Project details displayed'
+    delete:
+      operationId: 'R504'
+      summary: 'R504: Delete project'
+      description: 'Deletes a specific project. Access: OWN'
+      tags:
+        - 'M05: Projects'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'Project deleted'
+
+  /my-projects:
+    get:
+      operationId: 'R505'
+      summary: 'R505: My projects'
+      description: 'Displays the projects owned by the authenticated user. Access: USR'
+      tags:
+        - 'M05: Projects'
+      responses:
+        '200':
+          description: 'User projects displayed'
+
+  /search-projects:
+    get:
+      operationId: 'R506'
+      summary: 'R506: Search projects'
+      description: 'Search for projects based on criteria. Access: USR'
+      tags:
+        - 'M05: Projects'
+      responses:
+        '200':
+          description: 'Search results displayed'
+
+  /projects/{project}/invite:
+    post:
+      operationId: 'R507'
+      summary: 'R507: Invite to project'
+      description: 'Invite a user to the project. Access: MNG, OWN'
+      tags:
+        - 'M05: Projects'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: 'User invited to project'
+
+  /projects/{project}/tasks:
+    get:
+      operationId: 'R601'
+      summary: 'R601: View tasks'
+      description: 'Displays tasks under a project. Access: MBR, MNG, OWN'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Tasks displayed'
+    post:
+      operationId: 'R602'
+      summary: 'R602: Create task'
+      description: 'Adds a new task to the project. Access: MNG, OWN'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '201':
+          description: 'Task created'
+
+  /projects/{project}/tasks/create:
+    get:
+      operationId: 'R603'
+      summary: 'R603: Create task form'
+      description: 'Displays the form to create a new task under a project. Access: MNG, OWN'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: project
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Task creation form displayed'
+
+  /tasks/{task}:
+    put:
+      operationId: 'R604'
+      summary: 'R604: Update task'
+      description: 'Updates details of a task. Access: MNG, OWN'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: task
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: 'Task updated'
+    delete:
+      operationId: 'R605'
+      summary: 'R605: Delete task'
+      description: 'Deletes a task from the project. Access: MNG, OWN'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: task
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'Task deleted'
+
+  /tasks/{task}/edit:
+    get:
+      operationId: 'R606'
+      summary: 'R606: Edit task form'
+      description: 'Displays the form to edit a task. Access: MNG, OWN'
+      tags:
+        - 'M06: Tasks'
+      parameters:
+        - in: path
+          name: task
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Task edit form displayed'
+
+  /tasks/search:
+    get:
+      operationId: 'R607'
+      summary: 'R607: Search tasks'
+      description: 'Search for tasks based on criteria. Access: USR'
+      tags:
+        - 'M06: Tasks'
+      responses:
+        '200':
+          description: 'Search results displayed'
