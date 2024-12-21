@@ -68,6 +68,14 @@ class AuthenticatedUser extends Authenticatable
     }
 
     /**
+     * Get the favorited projects for the user.
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorited::class, 'id', 'id');
+    }
+
+    /**
      * Get the comments for the user.
      */
     public function taskComments() : hasMany
