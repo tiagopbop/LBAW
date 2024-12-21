@@ -109,6 +109,44 @@ class ProjectController extends Controller
         return back()->with('success', 'Project manager assigned successfully!');
     }
 
+    public function revertManager(Request $request, Project $project)
+    {
+        $this->authorize('update', $project);
+
+        $validated = $request->validate([
+            'member_id' => 'required|exists:authenticated_user,id',
+        ]);
+
+        $member = $project->members()->where('authenticated_user.id', $validated['member_id'])->first();
+
+        if (!$member) {
+            return back()->withErrors(['member_id' => 'Member not found in this project.']);
+        }
+
+        $project->members()->updateExistingPivot($validated['member_id'], ['role' => 'Project member']);
+
+        return back()->with('success', 'Project manager reverted to member successfully!');
+    }
+    
+    public function removeMember(Request $request, Project $project)
+    {
+        $this->authorize('update', $project);
+
+        $validated = $request->validate([
+            'member_id' => 'required|exists:authenticated_user,id',
+        ]);
+
+        // Check if the member to be removed is the project owner
+        $owner = $project->members()->wherePivot('role', 'Project owner')->first();
+        if ($owner && $owner->id == $validated['member_id']) {
+            return back()->withErrors(['member_id' => 'The project owner cannot remove themselves from the project.']);
+        }
+
+        $project->members()->detach($validated['member_id']);
+
+        return back()->with('success', 'Member removed from the project successfully!');
+    }
+
     public function edit(Project $project)
     {
         $this->authorize('update', $project);

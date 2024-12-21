@@ -114,6 +114,8 @@ Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.upda
 Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
 Route::get('/tasks/{task}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('tasks.assigned_users');
 Route::post('/projects/{project}/assign-manager', [ProjectController::class, 'assignManager'])->name('projects.assignManager');
+Route::post('/projects/{project}/revertManager', [ProjectController::class, 'revertManager'])->name('projects.revertManager');
+Route::delete('/projects/{project}/removeMember', [ProjectController::class, 'removeMember'])->name('projects.removeMember');
 
 Route::post('/projects/{project}/invite', [ProjectController::class, 'invite'])->name('projects.invite');
 Route::get('/tasks/search', [TaskController::class, 'searchTasks'])->name('tasks.search');
