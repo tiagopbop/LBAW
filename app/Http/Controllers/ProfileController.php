@@ -5,17 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\AuthenticatedUser;
 
 class ProfileController extends Controller
 {
     /**
      * Display the profile page for the currently authenticated user.
      */
-    public function show()
+    public function show_own()
     {
         $user = Auth::user();
         if ($user->suspended_status) {
             return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
+        }
+        return view('pages.profile', [
+            'username' => $user->username,
+            'email' => $user->email,
+            'pfp' => $user->pfp,
+            'pronouns' => $user->pronouns,
+            'country' => $user->country,
+            'bio' => $user->bio,
+        ]);
+    }
+
+    public function show($username)
+    {
+        $user = AuthenticatedUser::where('username', $username)->firstOrFail();
+        if ($user->suspended_status) {
+            return redirect()->route('pleading.page')->with('error', 'This account is suspended. Contact admin for further assistance.');
         }
         return view('pages.profile', [
             'username' => $user->username,
