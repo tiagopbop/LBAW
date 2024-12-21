@@ -29,6 +29,11 @@
 
                     $userRole = $userRole ? $userRole->pivot->role : null;
                 @endphp
+                @if($userRole === 'Project owner' || $userRole === 'Project manager')
+                    <a href="{{ route('projects.edit', $project) }}" class="view-project-button" style="background-color: #bfc900; margin-left: 20px;">
+                        Edit Project
+                    </a>
+                @endif
                 @if($userRole === 'Project owner')
                     <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display: inline-block; box-shadow: none; outline: none;">
                         @csrf

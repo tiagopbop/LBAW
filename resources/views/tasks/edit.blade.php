@@ -29,10 +29,10 @@
             </select>
         </div>
         <label for="details">Details</label>
-        <textarea id="details" name="details" class="strip" rows="4">{{ $task->details }}</textarea>
+        <textarea id="details" name="details" class="strip" style="max-width: 95%;" rows="4">{{ $task->details }}</textarea>
 
         <label for="due_date">Due Date</label>
-        <input type="date" id="due_date" name="due_date" class="strip" value="{{ $task->due_date }}">
+        <input type="date" id="due_date" name="due_date" class="strip" style="max-width: 95%;" value="{{ $task->due_date }}">
 
         <button type="submit" class="large-button">Update Task</button>
     </form>
