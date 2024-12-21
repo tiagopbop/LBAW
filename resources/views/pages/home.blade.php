@@ -48,11 +48,10 @@
             <div class="search-projects">
                 <li data-id="{{ $project->project_id }}" style="display: inline-block; width: 96%; text-align: center; margin-bottom: 10px; width: 100%;position: relative;left: -21px;">
                     <a href="{{ route('projects.show', $project) }}" class="search-projects-buttons" style="width: 96%; margin-bottom: 10px;">
-                        {{ $project->project_title }}: {{ $project->project_description }}
-                        <!-- Creation Date, Updated Date, and Archived Status inline -->
+                        <strong>{{ $project->project_title }}. </strong>
                         <span>Created at: {{ optional($project->project_creation_date)->format('Y-m-d') ?? 'Created: Not available' }} |</span>
                         <span>Updated at: {{ optional($project->updated_at)->format('Y-m-d') ?? 'Updated: Not available' }} |</span>
-                        <span>{{ $project->archived_status ? 'Archived: Yes' : 'Archived: No' }}</span>
+                        <span>{{ $project->archived_status ? 'Archived' : 'Not Archived' }}</span>
                     </a>
                 </li>
             </div>
@@ -93,10 +92,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     link.className = 'search-projects-buttons'; // Add the button styling class
                     link.style = 'width: 96%; margin-bottom: 10px;';
                     link.innerHTML = `
-                        ${project.project_title}: ${project.project_description}
-                        <span>Created at: ${project.project_creation_date ? new Date(project.project_creation_date).toLocaleDateString() : 'Created: Not available'} |</span>
-                        <span>Updated at: ${project.updated_at ? new Date(project.updated_at).toLocaleDateString() : 'Updated: Not available'} |</span>
-                        <span>${project.archived_status ? 'Archived: Yes' : 'Archived: No'}</span>
+                        <strong>${project.project_title}. </strong>
+                        <span> Created at: ${project.project_creation_date ? new Date(project.project_creation_date).toLocaleDateString() : 'Created: Not available'} |</span>
+                        <span> Updated at: ${project.updated_at ? new Date(project.updated_at).toLocaleDateString() : 'Updated: Not available'} |</span>
+                        <span>${project.archived_status ? 'Archived' : 'Not Archived'}</span>
                     `;
                     listItem.appendChild(link); // Append the link to the list item
                     resultsList.appendChild(listItem); // Append the list item to the results list
