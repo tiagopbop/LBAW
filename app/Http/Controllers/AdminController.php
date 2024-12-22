@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -112,5 +113,58 @@ class AdminController extends Controller
 
         return redirect()->route('admin.create_user')->with('success', 'User account created successfully.');
     }
+
+
+
+    public function toggleProjectSuspend($id)
+    {
+        $project = Project::findOrFail($id);
+
+        if (($project->availability && $project->archived_status)||(!$project->archived_status)) {
+            // If project is public and archived, change it to archived and private
+            $project->availability = false; // Set private
+            $project->archived_status = true; // Ensure it's archived
+        } else {
+            // If project is not public and not archived (or suspended), make it public and not archived
+            $project->availability = true; // Set public
+            $project->archived_status = false; // Set not archived
+        }
+
+        $project->save();
+
+        return redirect()->route('admin.suspended_projects');
+    }
+
+
+    public function deleteProject($id)
+    {
+        $project = Project::findOrFail($id);
+        $project->delete();
+
+        return redirect()->route('admin.suspended_projects');
+    }
+    public function unsuspendedProjects()
+    {
+
+        $projects = Project::where(function ($query) {
+            $query->where('archived_status', false) // Not archived
+            ->orWhere(function ($query) {
+                $query->where('archived_status', true) // Archived
+                ->where('availability', true); // Public
+            });
+        })->get();
+
+        return view('admin.unsuspended_projects', compact('projects'));
+    }
+
+    public function suspendedProjects()
+    {
+
+        $projects = Project::where('archived_status', true)
+            ->where('availability', false)
+          ->get();
+        return view('admin.suspended_projects', compact('projects'));
+    }
+
 
 }

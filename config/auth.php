@@ -100,8 +100,9 @@ return [
     */
 
     'passwords' => [
-        'users' => [
+        'authenticated_user' => [
             'provider' => 'authenticated_user',
+            'email' => 'auth.emails.password',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
