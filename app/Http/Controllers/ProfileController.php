@@ -10,7 +10,7 @@ use App\Models\Follow;
 
 class ProfileController extends Controller
 {
-    public function show($username)
+    public function showprofile($username)
     {
         $user = AuthenticatedUser::where('username', $username)->firstOrFail();
 
@@ -61,7 +61,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile.show', $user->username)->with('success', 'Profile updated successfully!');
+        return redirect()->route('profile.shows', $user->username)->with('success', 'Profile updated successfully!');
     }
 
     public function removeImage(Request $request)
@@ -75,7 +75,7 @@ class ProfileController extends Controller
         $user->pfp = 'profile_pictures/default-profile.jpg';
         $user->save();
 
-        return redirect()->route('profile.show', $user->username)->with('success', 'Profile image removed successfully.');
+        return redirect()->route('profile.shows', $user->username)->with('success', 'Profile image removed successfully.');
     }
 
     public function deleteAccount(Request $request)
@@ -84,7 +84,7 @@ class ProfileController extends Controller
 
         if ($user->id !== Auth::id()) {
             return redirect()
-                ->route('profile.show', $user->username)
+                ->route('profile.shows', $user->username)
                 ->withErrors(['error' => 'You can only delete your own account.']);
         }
 
@@ -113,7 +113,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return redirect()->route('profile.show', $username)->with('success', 'User followed successfully!');
+        return redirect()->route('profile.shows', $username)->with('success', 'User followed successfully!');
     }
 
     public function unfollow($username)
@@ -126,7 +126,7 @@ class ProfileController extends Controller
             $follow->delete();
         }
 
-        return redirect()->route('profile.show', $username)->with('success', 'User unfollowed successfully!');
+        return redirect()->route('profile.shows', $username)->with('success', 'User unfollowed successfully!');
     }
 
     public function followers($username)

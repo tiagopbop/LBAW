@@ -1,6 +1,6 @@
 DROP SCHEMA IF EXISTS lbaw24146 CASCADE;
 CREATE SCHEMA IF NOT EXISTS lbaw24146;
---SET search_path TO lbaw24146;
+SET search_path TO lbaw24146;
 
 
 DROP FUNCTION IF EXISTS update_ts_vector_project CASCADE;

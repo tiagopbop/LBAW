@@ -53,7 +53,7 @@ class ProjectController extends Controller
         return redirect()->route('projects.myProjects');
     }
 
-    public function show(Project $project) {
+    public function showproject(Project $project) {
 
         if (Auth::check() && Auth::user()->suspended_status) {
             return redirect()->route('pleading.page')
@@ -103,14 +103,13 @@ class ProjectController extends Controller
             return back()->withErrors(['username' => 'User not found.']);
         }
 
-        // Check if the user is already a member of the project
+
         if ($project->members()->where('authenticated_user.id', $user->id)->exists()) {
             return back()->withErrors(['username' => 'User is already a member of this project.']);
         }
 
         $project->members()->attach($user->id, ['role' => 'Project member']);
 
-        // Check if the user already has a notification for this project
         $existingInvite = InviteNotif::whereHas('notif.authenticatedUserNotifs', function ($query) use ($user) {
             $query->where('id', $user->id);
         })->where('project_id', $project->project_id)
@@ -120,13 +119,11 @@ class ProjectController extends Controller
             return back()->with('error', 'The user has already been invited to this project.');
         }
 
-        // Create a notification for the user
         $notification = Notif::create([
             'title' => 'Project Added',
             'content' => "You have been added to the project: {$project->project_title}.",
         ]);
 
-        // Create the invite notification record
         $inviteNotif = InviteNotif::create([
             'notif_id' => $notification->notif_id,
             'project_id' => $project->project_id,

@@ -89,7 +89,7 @@
             <ul>
                 @foreach ($sortedMembers as $member)
                     <li style="border: none; padding: 10px 0;">
-                        <a href="{{ route('profile.show', $member->username) }}">{{ $member->username ?? 'Unknown' }}</a> - {{ ucfirst($member->pivot->role ?? 'Member') }}
+                        <a href="{{ route('profile.shows', $member->username) }}">{{ $member->username ?? 'Unknown' }}</a> - {{ ucfirst($member->pivot->role ?? 'Member') }}
                     </li>
                 @endforeach
             </ul>

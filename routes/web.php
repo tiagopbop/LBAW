@@ -33,8 +33,7 @@ use App\Http\Controllers\NotificationController;
 */
 
 // Public home route
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index']);
 Route::get('/search-projects', [HomeController::class, 'searchProjects']);
 
 // Home route accessible to guests
@@ -42,8 +41,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create')->middleware(['auth', 'check.suspension']);
-Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
-Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/projects/{project}', [ProjectController::class, 'showproject'])->name('projects.show');
+Route::get('/profile/{username}', [ProfileController::class, 'showprofile'])->name('profile.shows');
 Route::get('/projects/{project}/tasks', [TaskController::class, 'viewTasks'])->name('tasks.viewTasks');
 
 // Home routes
@@ -62,7 +61,7 @@ Route::get('/faq', [InfoController::class, 'faq']);
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');
     Route::post('/login', 'authenticate');
-    Route::get('/logout', 'logout')->name('logout');
+    Route::get('/logout', 'logout')->name('logouts');
 });
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register.form');
