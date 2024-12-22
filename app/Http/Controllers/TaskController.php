@@ -65,8 +65,8 @@ class TaskController extends Controller
             $task->users()->attach($request->assigned_to);
         }
 
-        return redirect()->route('projects.show', $project->project_id)
-            ->with('success', 'Task added successfully!');
+        return redirect()->route('tasks.viewTasks', ['project' => $project->project_id, 'task' => $task->task_id])
+            ->with('success', 'Task added    successfully!');
     }
 
     public function destroy(Task $task)
@@ -80,36 +80,42 @@ class TaskController extends Controller
         return back()->with('success', 'Task deleted successfully!');
     }
 
-    public function edit(Task $task, Project $project)
+    public function edit(Project $project, Task $task)
     {
         $this->authorize('update', $task);
-
         return view('tasks.edit', compact('task', 'project'));
     }
 
-    public function update(Request $request, Task $task, Project $project)
+    public function update(Request $request, Project $project, Task $task)
     {
+        // Authorization
         $this->authorize('update', $task);
 
+        // Validation (optional but recommended)
         $validated = $request->validate([
-            'task_name' => 'required|string|max:255',
-            'status' => 'required|string|in:Ongoing,On-hold,Finished',
-            'details' => 'nullable|string|max:500',
+            'task_name' => 'required|max:255',
+            'status' => 'required|in:Ongoing,On-hold,Finished',
+            'details' => 'nullable|max:500',
             'due_date' => 'nullable|date|after_or_equal:today',
-            'assigned_to' => 'nullable|array',
+            'priority' => 'required|in:High,Medium,Low',
         ]);
 
+        // Update task fields
+        $task->update([
+            'task_name' => $request->input('task_name'),
+            'status' => $request->input('status'),
+            'details' => $request->input('details'),
+            'due_date' => $request->input('due_date'),
+            'priority' => $request->input('priority'),
+        ]);
 
-        if ($request->has('assigned_to') && count($request->assigned_to) > 0) {
+        // Attach assigned users (assuming you're handling this correctly in the form)
+        $task->users()->sync($request->input('assigned_to', []));
 
-            $task->users()->attach($request->assigned_to);
-        }
-
-        $task->update($validated);
-
-        return redirect()->route('projects.show', $task->project_id)
+        return redirect()->route('tasks.viewTasks', ['project' => $project->project_id, 'task' => $task->task_id])
             ->with('success', 'Task updated successfully!');
     }
+
 
     public function searchTasks(Request $request)
     {
@@ -124,6 +130,46 @@ class TaskController extends Controller
 
         // Return tasks as a JSON response
         return response()->json($tasks);
+    }
+
+
+    public function showTask($taskId)
+    {
+        $task = Task::findOrFail($taskId);
+
+
+        $assignedUsers = DB::table('user_task')
+            ->join('authenticated_user', 'user_task.id', '=', 'authenticated_user.id')
+            ->where('user_task.task_id', $taskId)
+            ->pluck('authenticated_user.username');
+
+
+        return view('tasks.show', compact('task', 'assignedUsers'));
+
+    }
+
+    public function getAssignedUsers($id)
+    {
+        $task = Task::findOrFail($id);
+        $assignedUsers = $task->users->pluck('username')->toArray();
+
+
+        return response()->json($assignedUsers);
+    }
+    public function updateStatus($taskId, Request $request)
+    {
+        $task = Task::findOrFail($taskId);
+
+        // Validate the new status, ensure it matches the ENUM values
+        $validated = $request->validate([
+            'status' => 'required|in:Ongoing,On-hold,Finished',
+        ]);
+
+        // Update the task status
+        $task->status = $validated['status'];
+        $task->save();
+
+        return response()->json(['success' => true, 'status' => $task->status]);
     }
 
 }

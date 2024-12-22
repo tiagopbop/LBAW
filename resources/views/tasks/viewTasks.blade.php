@@ -10,6 +10,7 @@
                 {{ session('success') }}
             </div>
         @endif
+
         <?php
         $isManagerOrOwner = $project->members
             ->where('id', auth()->id())
@@ -33,106 +34,101 @@
                     @else
                         @foreach($project->tasks as $task)
                             <div class="task" data-id="{{ $task->task_id }}" style="text-align: left; margin-top: 20px;">
-                            <p><strong>Title:</strong> <a href="{{ route('tasks.show', $task->task_id) }}">{{ $task->task_name }}</a></p>
+                                <p><strong>Title:</strong> <a href="{{ route('tasks.show', $task->task_id) }}">{{ $task->task_name }}</a></p>
                                 <p><strong>Status:</strong> {{ $task->status }}</p>
                                 <p><strong>Due date:</strong> {{ $task->due_date }}</p>
                                 <p><strong>Details:</strong> {{ $task->details }}</p>
                                 <p><strong>Assigned To:</strong>
-                                        <?php
-                                        $assignedUsers = $task->assignedUsers ? $task->assignedUsers->pluck('username')->toArray() : [];
-                                        echo !empty($assignedUsers) ? implode(', ', $assignedUsers) : 'Not assigned';
-                                        ?>
+                                    {{ $task->assignedUsers->pluck('username')->implode(', ') ?: 'Not assigned' }}
                                 </p>
                                 <div style="text-align: right;">
-                                        <?php if ($isManagerOrOwner): ?>
-                                    <a href="{{ route('tasks.edit', ['project' => $project->project_id, 'task' => $task]) }}" class="view-project-button" style="background-color: #bfc900;">
-                                        Edit Task
-                                    </a>
-
-                                    <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display: inline-flex; box-shadow: none; outline: none;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">
-                                            Delete Task
-                                        </button>
-                                    </form>
-                                    <?php endif; ?>
+                                    @if ($isManagerOrOwner)
+                                        <a href="{{ route('tasks.edit', ['project' => $project->project_id, 'task' => $task]) }}" class="view-project-button" style="background-color: #bfc900;">
+                                            Edit Task
+                                        </a>
+                                        <form action="{{ route('tasks.destroy', $task) }}" method="POST" style="display: inline-flex; box-shadow: none; outline: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">
+                                                Delete Task
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
                     @endif
                 </div>
-                <?php if ($isManagerOrOwner): ?>
-                <a href="{{ route('tasks.create', $project) }}" class="large-button" style="margin-top: 20px;">
-                    Add Task
-                </a>
-                <?php endif; ?>
+                @if ($isManagerOrOwner)
+                    <a href="{{ route('tasks.create', $project) }}" class="large-button" style="margin-top: 20px;">
+                        Add Task
+                    </a>
+                @endif
             </div>
         </div>
     </div>
 @endsection
 
-
 @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('task-search');
-            const taskList = document.getElementById('task-list');
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('task-search');
+    const taskList = document.getElementById('task-list');
+    const isManagerOrOwner = {{ json_encode($isManagerOrOwner) }};
 
-            // Fetch tasks based on search query
-            function fetchTasks(query = '') {
-                fetch(`/tasks/search?query=${encodeURIComponent(query)}&project_id={{ $project->project_id }}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        taskList.innerHTML = ''; // Clear current task list
+    // Fetch tasks based on search query
+    function fetchTasks(query = '') {
+        fetch(`/tasks/search?query=${encodeURIComponent(query)}&project_id={{ $project->project_id }}`)
+            .then(response => response.json())
+            .then(data => {
+                taskList.innerHTML = ''; // Clear current task list
 
-                        if (data.length === 0) {
-                            taskList.innerHTML = '<p>No tasks found matching the search criteria.</p>';
-                        } else {
-                            // Dynamically generate task list from response
-                            data.forEach(task => {
-                                const taskDiv = document.createElement('div');
-                                taskDiv.classList.add('task');
-                                taskDiv.dataset.id = task.task_id;
-                                taskDiv.style.textAlign = 'left';
-                                taskDiv.style.marginTop = '20px';
+                if (data.length === 0) {
+                    taskList.innerHTML = '<p>No tasks found matching the search criteria.</p>';
+                } else {
+                    // Dynamically generate task list from response
+                    data.forEach(task => {
+                        const taskDiv = document.createElement('div');
+                        taskDiv.classList.add('task');
+                        taskDiv.dataset.id = task.task_id;
+                        taskDiv.style.textAlign = 'left';
+                        taskDiv.style.marginTop = '20px';
 
-                                const assignedUsers = task.assigned_users ? task.assigned_users.join(', ') : 'Not assigned';
+                        const assignedUsers = task.assigned_users ? task.assigned_users.join(', ') : 'Not assigned';
 
-                                taskDiv.innerHTML = `
-                                    <p><strong>Title:</strong> <a href="/tasks/${task.task_id}">${task.task_name}</a></p>
-                                    <p><strong>Status:</strong> ${task.status}</p>
-                                    <p><strong>Due date:</strong> ${task.due_date}</p>
-                                    <p><strong>Details:</strong> ${task.details || ''}</p>
-                                    <p><strong>Assigned To:</strong> ${assignedUsers}</p>
-                                    ${isManagerOrOwner ? `
-                                        <div style="text-align: right;">
-                                            <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
-                                            <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex; border: none; box-shadow: none;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
-                                            </form>
-                                        </div>
-                                    ` : ''}
-                                `;
+                        taskDiv.innerHTML = `
+                            <p><strong>Title:</strong> <a href="/tasks/${task.task_id}">${task.task_name}</a></p>
+                            <p><strong>Status:</strong> ${task.status}</p>
+                            <p><strong>Due date:</strong> ${task.due_date}</p>
+                            <p><strong>Details:</strong> ${task.details || ''}</p>
+                            <p><strong>Assigned To:</strong> ${assignedUsers}</p>
+                            ${isManagerOrOwner ? `
+                                <div style="text-align: right;">
+                                    <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
+                                    <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex; border: none; box-shadow: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
+                                    </form>
+                                </div>
+                            ` : ''}
+                        `;
 
-                                taskList.appendChild(taskDiv);
-                            });
-                        }
-                    })
-                    .catch(error => console.error('Error fetching tasks:', error));
-            }
+                        taskList.appendChild(taskDiv);
+                    });
+                }
+            })
+            .catch(error => console.error('Error fetching tasks:', error));
+    }
 
-            // Listen for search input and trigger task filtering
-            searchInput.addEventListener('input', function () {
-                const query = searchInput.value.trim();
-                fetchTasks(query);
-            });
+    // Listen for search input and trigger task filtering
+    searchInput.addEventListener('input', function () {
+        const query = searchInput.value.trim();
+        fetchTasks(query);
+    });
 
-            // Initial load of all tasks when page is first loaded
-            fetchTasks();
-        });
-    </script>
+    // Initial load of all tasks when page is first loaded
+    fetchTasks();
+});
+</script>
 @endpush
-
