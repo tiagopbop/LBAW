@@ -67,4 +67,9 @@ class Reply extends Model
     {
         return $this->user ? $this->user->username : null;
     }
+
+    public function getAuthorAttribute()
+    {
+        return $this->user ? ($this->user->trashed() ? '[Deleted]' : $this->user->username) : '[Deleted]';
+    }
 }

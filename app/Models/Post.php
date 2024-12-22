@@ -11,19 +11,10 @@ class Post extends Model
 {
     use HasFactory;
 
-    // Don't add create and update timestamps in the database.
     public $timestamps  = false;
-
-    // Define the primary key as 'post_id'.
     protected $primaryKey = 'post_id';
-
-    // The primary key is auto-incrementing.
     public $incrementing = true;
-
-    // Define the data type of the primary key.
     protected $keyType = 'int';
-
-    // Set the table name explicitly.
     protected $table = 'post';
 
     /**
@@ -90,5 +81,10 @@ class Post extends Model
     public function getID()
     {
         return $this->user ? $this->user->username : null;
+    }
+
+    public function getAuthorAttribute()
+    {
+        return $this->user ? ($this->user->trashed() ? '[Deleted]' : $this->user->username) : '[Deleted]';
     }
 }

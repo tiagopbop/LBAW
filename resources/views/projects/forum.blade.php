@@ -13,26 +13,19 @@
     </form>
     <div >
         @foreach ($posts as $post)
-        
             <div class="strip">
-                <p><strong>{{$post->getID()}} Posted:<br></strong>{{ $post->getContent() }} </p>
+                <p><strong>{{$post->author}} posted:<br></strong>{{ $post->getContent() }} </p>
                 <p>at: {{ $post->getPostCreation()->format('Y-m-d H:i') }}</p>
-
-                
                 <ul>
                     @foreach ($post->replies as $reply)
                         <div style="margin-bottom: 10px;">
-                            <p><strong>{{$reply->getID()}} Replied:</strong><br> 
-                            {{ $reply->getContent() }}</p>
-                            <p>at: {{ $reply->getCreatedAt()->format('Y-m-d H:i') }}</p>
-                            
-                </div>
+                            <p><strong>{{$reply->author}} replied:</strong><br> 
+                            {{ $reply->content }}</p>
+                            <p>at: {{ $reply->getCreatedAt()->format('Y-m-d H:i') }}</p>          
+                        </div>
                     @endforeach
                 </ul>
-                
-
                 <form action="{{ route('posts.addReply', ['post' => $post->post_id]) }}" method="POST" style="margin-top: 5px;">
-
                     @csrf
                     <textarea name="content" rows="2" placeholder="Write a reply..." style="width: 100%;"></textarea>
                     <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Reply</button>
