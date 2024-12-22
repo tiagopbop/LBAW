@@ -21,7 +21,11 @@
         <a href="{{ url()->previous() }}" class="large-button" style="display: inline-block;">
             Go Back
         </a>
-
+        @if ($isManagerOrOwner)
+                    <a href="{{ route('tasks.create', $project) }}" class="large-button" style="margin-top: 20px;">
+                        Add Task
+                    </a>
+                @endif
         <div class="strip">
             <div style="text-align: center;">
                 <h1 style="color: #3e56b0;">Tasks</h1>
@@ -59,11 +63,7 @@
                         @endforeach
                     @endif
                 </div>
-                @if ($isManagerOrOwner)
-                    <a href="{{ route('tasks.create', $project) }}" class="large-button" style="margin-top: 20px;">
-                        Add Task
-                    </a>
-                @endif
+                
             </div>
         </div>
     </div>

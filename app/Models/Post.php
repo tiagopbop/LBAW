@@ -11,9 +11,19 @@ class Post extends Model
 {
     use HasFactory;
 
-    // Don't add create and update timestamps in database.
+    // Don't add create and update timestamps in the database.
     public $timestamps  = false;
 
+    // Define the primary key as 'post_id'.
+    protected $primaryKey = 'post_id';
+
+    // The primary key is auto-incrementing.
+    public $incrementing = true;
+
+    // Define the data type of the primary key.
+    protected $keyType = 'int';
+
+    // Set the table name explicitly.
     protected $table = 'post';
 
     /**
@@ -22,10 +32,10 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'project_id',
-        'id',
-        'content',
-        'post_creation',
+        'project_id', // Foreign key to the 'project' table.
+        'id',         // Foreign key to the 'authenticated_user' table.
+        'content',    // Post content.
+        'post_creation', // Post creation date.
     ];
 
     /**
@@ -34,27 +44,35 @@ class Post extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'post_creation' => 'datetime',
+        'post_creation' => 'datetime', // Cast 'post_creation' as a datetime.
     ];
 
     /**
-     * Get the project that owns the post.
+     * Define a relationship to the Project model.
      */
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project_id');
     }
 
     /**
-     * Get the replies for the post.
+     * Define a relationship to the AuthenticatedUser model.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(AuthenticatedUser::class, 'id'); // Link 'id' to 'authenticated_user' table.
+    }
+
+    /**
+     * Define a relationship to the Reply model.
      */
     public function replies(): HasMany
     {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class, 'post_id');
     }
 
     /**
-     * Get the content of the post.
+     * Accessor for the post content.
      */
     public function getContent()
     {
@@ -62,10 +80,15 @@ class Post extends Model
     }
 
     /**
-     * Get the creation date of the post.
+     * Accessor for the post creation date.
      */
     public function getPostCreation()
     {
         return $this->getAttribute('post_creation');
+    }
+
+    public function getID()
+    {
+        return $this->user ? $this->user->username : null;
     }
 }

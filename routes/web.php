@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchUsersController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,3 +160,10 @@ Route::post('/projects/{project}/leave', [ProjectController::class, 'leaveProjec
 
 Route::get('/searchusers', [SearchUsersController::class, 'index'])->name('searchusers');
 Route::get('/searchusers/ajax', [SearchUsersController::class, 'search'])->name('searchusers.ajax');
+
+
+Route::get('/projects/{project}/forum', [ProjectController::class, 'forum'])->name('projects.forum');
+Route::post('/projects/{project}/add-post', [PostController::class, 'addPost'])->name('projects.addPost');
+Route::post('/posts/{post}/add-reply', [PostController::class, 'addReply'])->name('posts.addReply');
+Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
