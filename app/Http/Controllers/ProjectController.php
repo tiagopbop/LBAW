@@ -49,7 +49,13 @@ class ProjectController extends Controller
             return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
         }
         $project->load(['tasks', 'members']);
-        return view('projects.show', compact('project'));
+
+        $sortedMembers = $project->members->sortBy(function ($member) {
+            $roleOrder = ['Project owner' => 1, 'Project manager' => 2, 'Project member' => 3];
+            return [$roleOrder[$member->pivot->role] ?? 4, $member->username];
+        });
+    
+        return view('projects.show', compact('project', 'sortedMembers'));
     }
 
     public function myProjects()

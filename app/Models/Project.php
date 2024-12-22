@@ -62,7 +62,8 @@ class Project extends Model
     {
         return $this->belongsToMany(AuthenticatedUser::class, 'project_member', 'project_id', 'id')
                     ->using(ProjectMember::class)
-                    ->withPivot('role');
+                    ->withPivot('role')
+                    ->orderBy('username');
     }
 
     /**
