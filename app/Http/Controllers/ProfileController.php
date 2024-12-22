@@ -78,8 +78,18 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         if ($user->id !== Auth::id()) {
-            return redirect()->route('profile.show', $user->username)->withErrors(['error' => 'You can only delete your own account.']);
+            return redirect()
+                ->route('profile.show', $user->username)
+                ->withErrors(['error' => 'You can only delete your own account.']);
         }
+
+    $ownedProjects = $user->projects()
+        ->wherePivot('role', 'Project owner')
+        ->get();
+        
+    foreach ($ownedProjects as $project) {
+        $project->delete();
+    }
 
         $user->delete();
         Auth::logout();

@@ -47,7 +47,8 @@ CREATE TABLE authenticated_user (
     pfp VARCHAR(255),
     pronouns VARCHAR(50),
     bio TEXT,
-    country VARCHAR(100)
+    country VARCHAR(100),
+	deleted_at TIMESTAMP DEFAULT NULL
 );
 
 CREATE TABLE admin (
@@ -89,7 +90,7 @@ CREATE TABLE task (
 
 CREATE TABLE task_comments (
     comment_id SERIAL PRIMARY KEY,
-    id INT REFERENCES authenticated_user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    id INTEGER REFERENCES authenticated_user(id) ON DELETE SET NULL,
     task_id INT REFERENCES task(task_id) ON UPDATE CASCADE ON DELETE CASCADE,
     comment TEXT CHECK (LENGTH(comment) < 500) NOT NULL,
     created_at DATE DEFAULT CURRENT_DATE NOT NULL

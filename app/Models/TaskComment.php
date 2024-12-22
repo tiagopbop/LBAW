@@ -36,16 +36,13 @@ class TaskComment extends Model
         'created_at' => 'datetime',
     ];
 
-    /**
-     * Get the task that owns the comment.
-     */
-    public function task(): BelongsTo
-    {
-        return $this->belongsTo(Task::class);
-    }
-
     public function user(): BelongsTo
     {
-        return $this->belongsTo(AuthenticatedUser::class, 'id');
+        return $this->belongsTo(AuthenticatedUser::class, 'id')->withTrashed();
+    }
+
+    public function getAuthorAttribute()
+    {
+        return $this->user ? ($this->user->trashed() ? '[Deleted]' : $this->user->username) : '[Deleted]';
     }
 }

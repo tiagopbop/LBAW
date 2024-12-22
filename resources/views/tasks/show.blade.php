@@ -12,9 +12,9 @@
         <ul id="comments-list">
             @foreach ($task->comments as $comment)
                 <li>
-                    <strong>{{ $comment->user->username }}:</strong> {{ $comment->comment }}
+                    <strong>{{ $comment->author }}:</strong> {{ $comment->comment }}
                     <br>
-                    <small>{{ $comment->created_at }}</small>
+                    <small>{{ $comment->created_at->format('Y-m-d H:i:s') }}</small>
                 </li>
             @endforeach
         </ul>
