@@ -16,7 +16,7 @@ use App\Http\Controllers\TaskCommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteController;
-
+use App\Http\Controllers\SearchUsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -174,3 +174,6 @@ Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('p
 Route::post('/projects/{project}/favorite', [FavoriteController::class, 'toggleFavorite'])->name('projects.favorite');
 
 Route::post('/projects/{project}/leave', [ProjectController::class, 'leaveProject'])->name('projects.leave');
+
+Route::get('/searchusers', [SearchUsersController::class, 'index'])->name('searchusers');
+Route::get('/searchusers/ajax', [SearchUsersController::class, 'search'])->name('searchusers.ajax');

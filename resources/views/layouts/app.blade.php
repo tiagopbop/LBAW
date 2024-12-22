@@ -32,11 +32,12 @@
                             <a href="{{ route('projects.myProjects') }}" class="projects-button">My Projects</a>
                             <a href="{{ url('/mytasks')}}" class="tasks-button">My tasks</a>
                             <a href="{{ route('profile.show', Auth::user()->username) }}" class="regular-button">Profile</a>
+                            <a href="{{ url('/searchusers') }}" class="regular-button">Search Users</a>
                             <a href="{{ url('/logout') }}" class="logout-button">Logout</a>
                         </div>
                     </nav>
                 @endif
-                @if (Auth::check()&& Auth::user()->suspended_status))
+                @if (Auth::check()&& Auth::user()->suspended_status)
                 <nav class="navbar">
                     <div class="navbar-right">
                          <a href="{{ url('/logout') }}" class="btn btn-danger">Logout</a>
