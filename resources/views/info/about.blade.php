@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,3 +15,4 @@
     <p>Our team draws inspiration from tools like Trello, Libreboard, and GitHub Projects. Together, we aim to create a platform that revolutionizes project management for individuals and teams alike.</p>
 </body>
 </html>
+@endsection
