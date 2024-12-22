@@ -1255,6 +1255,16 @@ SELECT MAX(comment_id) FROM task_comments;
 
 SELECT setval('task_comments_comment_id_seq', (SELECT MAX(comment_id) FROM task_comments));
 
+SELECT MAX(invite_notif_id) FROM invite_notif;
+
+SELECT setval('invite_notif_invite_notif_id_seq', (SELECT MAX(invite_notif_id) FROM invite_notif));
+
+
+SELECT MAX(notif_id) FROM notif;
+
+SELECT setval('notif_notif_id_seq', (SELECT MAX(notif_id) FROM invite_notif));
+
+
 
 -- Populate user_task table
 INSERT INTO user_task (id, task_id)

@@ -16,7 +16,7 @@ class InviteNotif extends Model
 
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
-
+    protected $primaryKey = 'invite_notif_id';
     protected $table = 'invite_notif';
 
     /**
@@ -24,17 +24,21 @@ class InviteNotif extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'notif_id',
-        'project_id',
-    ];
+    protected $fillable = ['user_id', 'project_id', 'title', 'content', 'accepted'];
+
+
 
     /**
      * Get the notification associated with the invite
      */
-    public function notif(): BelongsTo
+    public function project()
     {
-        return $this->belongsTo(Notif::class, 'notif_id');
+        return $this->belongsTo(Project::class, 'project_id', 'project_id');
+    }
+
+    public function notif()
+    {
+        return $this->belongsTo(Notif::class, 'notif_id', 'notif_id');
     }
 
     /**
