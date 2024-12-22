@@ -102,7 +102,7 @@
                                     <p><strong>Title:</strong> <a href="/tasks/${task.task_id}">${task.task_name}</a></p>
                                     <p style="text-align: left;"><strong>Status:</strong> ${task.status}</p>
                                     <p style="text-align: left;"><strong>Due date:</strong> ${task.due_date}</p>
-                                    <p style="text-align: left;"><strong>Details:</strong> ${task.details}</p>
+                                    <p style="text-align: left;"><strong>Details:</strong> ${task.details || ''}</p>
                                     <p><strong>Assigned To:</strong>
                                         <span id="assigned-users-${task.task_id}">Loading...</span>
                                     </p>

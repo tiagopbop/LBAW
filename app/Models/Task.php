@@ -101,9 +101,10 @@ class Task extends Model
                 'task_id' => $task->task_id,
                 'task_name' => $task->task_name,
                 'status' => $task->status,
+                'details'=>$task->details,
                 'due_date' => $task->due_date,
                 'assigned_users' => $task->assignedUsers()->pluck('username')->toArray(),
-            ];
+                ];
         });
 
         return response()->json($tasksData);

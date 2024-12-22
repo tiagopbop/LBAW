@@ -158,6 +158,39 @@ CREATE TABLE pleas (
    created_at DATE DEFAULT CURRENT_DATE NOT NULL
 );
 
+CREATE TABLE password_reset_tokens (
+   email VARCHAR PRIMARY KEY,
+   token VARCHAR NOT NULL,
+   created_at TIMESTAMP
+);
+
+CREATE TABLE follows (
+     id SERIAL PRIMARY KEY,
+     follower_id INTEGER NOT NULL,
+     followed_id INTEGER NOT NULL,
+     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     CONSTRAINT fk_follower FOREIGN KEY (follower_id) REFERENCES authenticated_user(id) ON DELETE CASCADE,
+     CONSTRAINT fk_followed FOREIGN KEY (followed_id) REFERENCES authenticated_user(id) ON DELETE CASCADE
+);
+
+ALTER TABLE authenticated_user
+ADD COLUMN remember_token VARCHAR(100) NULL;
+
+CREATE TABLE sessions (
+  id VARCHAR PRIMARY KEY,
+  user_id INT NULL REFERENCES authenticated_user(id) ON DELETE SET NULL,
+  ip_address VARCHAR(45) NULL,
+  user_agent TEXT NULL,
+  payload TEXT NOT NULL,
+  last_activity INT NOT NULL
+);
+
+
+CREATE INDEX sessions_user_id_index ON sessions(user_id);
+CREATE INDEX sessions_last_activity_index ON sessions(last_activity);
+
+
 CREATE FUNCTION update_task_and_project_timestamp() RETURNS TRIGGER AS $$
 
 BEGIN

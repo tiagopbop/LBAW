@@ -34,7 +34,7 @@
                             <a href="{{ route('profile.shows', Auth::user()->username) }}" class="regular-button">Profile</a>
                             <a href="{{ url('/searchusers') }}" class="regular-button">Search Users</a>
                             <a href="{{ route('notifications.index') }}" class="regular-button">Notifications</a>
-                            <a href="{{ url('/logout') }}" class="logout-button">Logout</a>
+                            <a href="{{ url('/logout    ') }}" class="logout-button">Logout</a>
 
                         </div>
                     </nav>

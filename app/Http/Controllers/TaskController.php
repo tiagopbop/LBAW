@@ -66,7 +66,7 @@ class TaskController extends Controller
         }
 
         return redirect()->route('tasks.viewTasks', ['project' => $project->project_id, 'task' => $task->task_id])
-            ->with('success', 'Task added    successfully!');
+            ->with('success', 'Task added successfully!');
     }
 
     public function destroy(Task $task)
@@ -85,7 +85,6 @@ class TaskController extends Controller
         $this->authorize('update', $task);
         return view('tasks.edit', compact('task', 'project'));
     }
-
     public function update(Request $request, Project $project, Task $task)
     {
         // Authorization
@@ -126,7 +125,7 @@ class TaskController extends Controller
         // Query tasks by project_id and filter by task_name
         $tasks = Task::where('project_id', $projectId)
             ->where('task_name', 'like', '%' . $query . '%') // Only tasks with matching names
-            ->get(['task_id', 'task_name', 'status', 'due_date']); // Select relevant fields
+            ->get(['task_id', 'task_name', 'status','details', 'due_date']); // Select relevant fields
 
         // Return tasks as a JSON response
         return response()->json($tasks);
@@ -160,16 +159,17 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($taskId);
 
-        // Validate the new status, ensure it matches the ENUM values
+
         $validated = $request->validate([
             'status' => 'required|in:Ongoing,On-hold,Finished',
         ]);
 
-        // Update the task status
+
         $task->status = $validated['status'];
         $task->save();
 
         return response()->json(['success' => true, 'status' => $task->status]);
     }
+
 
 }

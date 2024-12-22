@@ -3,8 +3,7 @@
 @section('content')
     <div class="profile-container">
         <h1>Edit Task</h1>
-        <!-- Use the correct route structure with both project and task ids -->
-        <form action="{{ route('tasks.update', [$project, $task]) }}" method="POST">
+          <form action="{{ route('tasks.update', [$project, $task]) }}" method="POST">
             @csrf
             @method('PUT')
 

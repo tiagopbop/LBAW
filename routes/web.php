@@ -126,8 +126,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tasks/{id}/assigned-users', [TaskController::class, 'getAssignedUsers']);
     Route::get('/tasks/search', [TaskController::class, 'searchTasks'])->name('tasks.search');
     Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
-    Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
-    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::get('/projects/{project}/tasks/edit/{task}', [TaskController::class, 'edit'])->name('tasks.edit');
+    Route::put('/projects/{project}/tasks/edit/{task}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
     Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
     Route::get('/tasks/{task}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('tasks.assigned_users');

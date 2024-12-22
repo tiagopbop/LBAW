@@ -11,13 +11,13 @@
             <div class="nav-links mb-4">
                 <a href="{{ route('profile.followers', $user->username) }}" class="nav-link-custom">Followers</a>
                 <span class="nav-divider">|</span>
-                <a href="{{ route('profile.show', $user->username) }}" class="nav-link-custom">Return to Profile</a>
+                <a href="{{ route('profile.shows', $user->username) }}" class="nav-link-custom">Return to Profile</a>
             </div>
 
             <div class="user-list">
                 @foreach ($following as $follow)
                     <div class="user-item">
-                        <a href="{{ route('profile.show', $follow->followed->username) }}" class="user-link">
+                        <a href="{{ route('profile.shows', $follow->followed->username) }}" class="user-link">
                             {{ $follow->followed->username }}
                         </a>
                     </div>
