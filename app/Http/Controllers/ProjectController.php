@@ -78,15 +78,15 @@ class ProjectController extends Controller
     }
 
     public function destroy(Project $project)
-{
-    if (auth()->id() !== $project->members()->wherePivot('role', 'Project owner')->first()->id) {
-        abort(403, 'Unauthorized action.');
+    {
+        if (auth()->id() !== $project->members()->wherePivot('role', 'Project owner')->first()->id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $project->delete();
+
+        return redirect()->route('projects.myProjects')->with('success', 'Project deleted successfully!');
     }
-
-    $project->delete();
-
-    return redirect()->route('projects.myProjects')->with('success', 'Project deleted successfully!');
-}
 
     public function invite(Request $request, Project $project)
     {
@@ -98,6 +98,11 @@ class ProjectController extends Controller
 
         if (!$user) {
             return back()->withErrors(['username' => 'User not found.']);
+        }
+
+        // Check if the user is already a member of the project
+        if ($project->members()->where('authenticated_user.id', $user->id)->exists()) {
+            return back()->withErrors(['username' => 'User is already a member of this project.']);
         }
 
         $project->members()->attach($user->id, ['role' => 'Project member']);

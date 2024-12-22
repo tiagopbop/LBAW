@@ -19,6 +19,9 @@ class ProfileController extends Controller
             return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
         }
 
+        $followers_count = $user->followers()->count();
+        $following_count = $user->following()->count();
+
         return view('pages.profile', [
             'user' => $user,
             'username' => $user->username,
@@ -27,6 +30,8 @@ class ProfileController extends Controller
             'pronouns' => $user->pronouns,
             'country' => $user->country,
             'bio' => $user->bio,
+            'followers_count' => $followers_count,
+            'following_count' => $following_count,
         ]);
     }
 
@@ -139,4 +144,5 @@ class ProfileController extends Controller
 
         return view('pages.following', compact('user', 'following'));
     }
+    
 }

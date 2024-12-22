@@ -42,4 +42,18 @@ class PostController extends Controller
         // Redirect back to the project forum
         return redirect()->route('projects.forum', $post->project)->with('success', 'Reply added successfully!');
     }
+
+    public function destroy(Post $post)
+    {
+        // Check if user is post author or project manager
+        if (auth()->id() !== $post->id && 
+            !$post->project->members()->where('id', auth()->id())->where('role', 'Project manager')->exists()) {
+            abort(403);
+        }
+
+        // Delete post (replies will be automatically deleted due to cascade)
+        $post->delete();
+
+        return redirect()->back()->with('success', 'Post deleted successfully');
+    }
 }

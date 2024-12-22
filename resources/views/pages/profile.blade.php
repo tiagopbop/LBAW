@@ -13,9 +13,16 @@
         <p>Bio: {{ $bio ?? 'No bio available' }}</p>
         <p>Country: {{ $country ?? 'Not specified' }}</p>
 
-        <div style="margin-top: 20px;">
-            <a href="{{ route('profile.followers', $username) }}">Followers</a> |
-            <a href="{{ route('profile.following', $username) }}">Following</a>
+        <div class="profile-follows">
+            <a href="{{ route('profile.followers', $username) }}" class="follow-link">
+                <span class="follow-count">{{ $followers_count }}</span>
+                <span class="follow-text">Followers</span>
+            </a>
+            <span class="follow-divider">|</span>
+            <a href="{{ route('profile.following', $username) }}" class="follow-link">
+                <span class="follow-count">{{ $following_count }}</span>
+                <span class="follow-text">Following</span>
+            </a>
         </div>
         
         @if (Auth::check() && Auth::user()->username === $username)

@@ -23,34 +23,42 @@
 
     @if($userRole === 'Project owner')
         <div style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
-            <h3>Project Members</h3>
+            <h3>Manage Members</h3>
             <ul>
-                @foreach ($project->members as $member)
-                    <li style="border: none; padding: 10px 0;">
-                        {{ $member->username }} - {{ ucfirst($member->pivot->role) }}
+            @foreach ($project->members as $member)
+                @if ($member->pivot->role !== 'Project owner')
+                <li class="member-list-item">
+                    <div class="member-info">
+                        <span class="member-name">{{ $member->username }}</span>
+                        <span class="member-role">{{ ucfirst($member->pivot->role) }}</span>
+                    </div>
+                    <div class="member-actions">
                         @if ($member->pivot->role === 'Project member')
-                            <form action="{{ route('projects.assignManager', $project) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('projects.assignManager', $project) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="member_id" value="{{ $member->id }}">
-                                <button type="submit" class="btn btn-primary">Make Manager</button>
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Make Manager</button>
                             </form>
                         @elseif ($member->pivot->role === 'Project manager')
-                            <form action="{{ route('projects.revertManager', $project) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('projects.revertManager', $project) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="member_id" value="{{ $member->id }}">
-                                <button type="submit" class="btn btn-primary">Make Member</button>
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Make Member</button>
                             </form>
                         @endif
+
                         @if ($member->pivot->role !== 'Project owner')
-                            <form action="{{ route('projects.removeMember', $project) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('projects.removeMember', $project) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" name="member_id" value="{{ $member->id }}">
-                                <button type="submit" class="btn btn-danger">Remove</button>
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
                             </form>
                         @endif
-                    </li>
-                @endforeach
+                    </div>
+                </li>
+                @endif
+            @endforeach
             </ul>
         </div>
     @endif

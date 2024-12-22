@@ -73,13 +73,21 @@ class AdminController extends Controller
     }
 
 
-
-
     public function deleteUser($id)
     {
-        $users = AuthenticatedUser::findOrFail($id);
-        $users->delete();
+        $user = AuthenticatedUser::findOrFail($id);
 
+        $ownedProjects = $user->projects()
+            ->wherePivot('role', 'Project owner')
+            ->get();
+            
+        foreach ($ownedProjects as $project) {
+            $project->delete();
+        }
+
+        $user->delete();
+
+        
         return redirect()->route('admin.suspended_users')->with('success', 'User deleted successfully.');
     }
 

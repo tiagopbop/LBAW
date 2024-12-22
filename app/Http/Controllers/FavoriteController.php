@@ -2,36 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Favorited;
 use App\Models\Project;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-    public function toggleFavorite(Project $project): \Illuminate\Http\JsonResponse
+    public function toggleFavorite(Project $project): JsonResponse
     {
-        $userId = auth()->id();
-
+        $userId = Auth::id();
+        
         $favorite = Favorited::where('id', $userId)
             ->where('project_id', $project->project_id)
             ->first();
 
         if ($favorite) {
-            // Toggle the `checks` column
             $favorite->checks = !$favorite->checks;
             $favorite->save();
         } else {
+            Favorited::create([
+                'id' => $userId,
+                'project_id' => $project->project_id,
+                'checks' => true
+            ]);
             return response()->json([
-                'error' => 'Entry not found for this user and project.',
-            ], 404);
+                'status' => 'favorited',
+                'project_id' => $project->project_id
+            ]);
         }
 
         return response()->json([
             'status' => $favorite->checks ? 'favorited' : 'unfavorited',
-            'project_id' => $project->project_id,
+            'project_id' => $project->project_id
         ]);
     }
-
 }
-

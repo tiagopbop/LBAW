@@ -18,6 +18,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchUsersController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReplyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,9 +140,10 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/searchusers', [SearchUsersController::class, 'index'])->name('searchusers');
 Route::get('/searchusers/ajax', [SearchUsersController::class, 'search'])->name('searchusers.ajax');
 
-
+// Forum
 Route::get('/projects/{project}/forum', [ProjectController::class, 'forum'])->name('projects.forum');
 Route::post('/projects/{project}/add-post', [PostController::class, 'addPost'])->name('projects.addPost');
 Route::post('/posts/{post}/add-reply', [PostController::class, 'addReply'])->name('posts.addReply');
 Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
-
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::delete('/replies/{reply}', [ReplyController::class, 'destroy'])->name('replies.destroy');

@@ -319,3 +319,54 @@ form button:hover {
 .footer-link:hover {
     text-decoration: underline;
 }
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.nav-link-custom {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.nav-link-custom:hover {
+    color: #0d6efd;
+}
+
+.nav-divider {
+    color: #dee2e6;
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.user-item {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    transition: transform 0.2s ease;
+}
+
+.user-item:hover {
+    transform: translateX(5px);
+    background: #e9ecef;
+}
+
+.user-link {
+    color: #212529;
+    text-decoration: none;
+    display: block;
+}
+
+.user-link:hover {
+    color: #0d6efd;
+}
