@@ -44,7 +44,14 @@
                     </div>
                 </nav>
                 @endif
-
+                @if (!Auth::check())
+                <nav class="navbar-background">
+                    <div class="navbar-buttons">
+                        <a href="{{ route('login') }}" class="regular-button">Login</a>
+                        <a href="{{ route('register.form') }}" class="regular-button">Register</a>
+                    </div>
+                </nav>
+                @endif
             </header>
             <section id="content">
                 @yield('content')

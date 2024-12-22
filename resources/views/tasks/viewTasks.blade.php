@@ -42,6 +42,7 @@
                                     {{ $task->users->isNotEmpty() ? $task->users->pluck('username')->implode(', ') : 'Not assigned' }}
                                 </p>
                                 <div style="text-align: right;">
+                                @if ($isManagerOrOwner)
                                     <a href="{{ route('tasks.edit', ['project' => $project->project_id, 'task' => $task]) }}" class="view-project-button" style="background-color: #bfc900;">
                                         Edit Task
                                     </a>
@@ -53,7 +54,7 @@
                                             Delete Task
                                         </button>
                                     </form>
-                                </div>
+                                @endif
                             </div>
                         @endforeach
                     @endif

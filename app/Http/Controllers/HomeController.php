@@ -23,6 +23,18 @@ class HomeController extends Controller
         ]);
     }
 
+    public function index()
+    {
+        if (Auth::check()) {
+            return $this->showUserDetails();
+        }
+        
+        $projects = Project::public()
+            ->select('project_id', 'project_title', 'project_description')
+            ->get();
+        return view('pages.home', compact('projects'));
+    }
+    
     /**
      * Logout the current user.
      */
@@ -38,39 +50,39 @@ class HomeController extends Controller
     }
 
     public function searchProjects(Request $request): JsonResponse
-{
-    $searchTerm = $request->input('query');
-    $filters = $request->input('filters', []); // Get filters as an array
-    $sortBy = $request->input('sort_by', 'project_creation_date'); // Default to project_creation_date
-    $sortOrder = $request->input('sort_order', 'asc'); // Default to ascending order
+    {
+        $searchTerm = $request->input('query');
+        $filters = $request->input('filters', []); // Get filters as an array
+        $sortBy = $request->input('sort_by', 'project_creation_date'); // Default to project_creation_date
+        $sortOrder = $request->input('sort_order', 'asc'); // Default to ascending order
 
-    // Query only public projects
-    $projects = Project::public()
-        ->select('project_id', 'project_title', 'project_description', 'project_creation_date', 'updated_at', 'archived_status');
+        // Query only public projects
+        $projects = Project::public()
+            ->select('project_id', 'project_title', 'project_description', 'project_creation_date', 'updated_at', 'archived_status');
 
-    if ($searchTerm) {
-        // Apply full-text search for the search term
-        $projects->whereRaw("ts_vector_title_description @@ plainto_tsquery('english', ?)", [$searchTerm]);
-    }
-
-    if (!empty($filters)) {
-        // Apply multiple filters dynamically with AND logic
-        foreach ($filters as $filter) {
-            $projects->where(function ($query) use ($filter) {
-                $query->where('project_title', 'ILIKE', "%{$filter}%")
-                      ->orWhere('project_description', 'ILIKE', "%{$filter}%");
-            });
+        if ($searchTerm) {
+            // Apply full-text search for the search term
+            $projects->whereRaw("ts_vector_title_description @@ plainto_tsquery('english', ?)", [$searchTerm]);
         }
+
+        if (!empty($filters)) {
+            // Apply multiple filters dynamically with AND logic
+            foreach ($filters as $filter) {
+                $projects->where(function ($query) use ($filter) {
+                    $query->where('project_title', 'ILIKE', "%{$filter}%")
+                        ->orWhere('project_description', 'ILIKE', "%{$filter}%");
+                });
+            }
+        }
+
+        // Apply sorting
+        $projects->orderBy($sortBy, $sortOrder);
+
+        // Fetch the results
+        $results = $projects->get();
+
+        return response()->json($results);
     }
-
-    // Apply sorting
-    $projects->orderBy($sortBy, $sortOrder);
-
-    // Fetch the results
-    $results = $projects->get();
-
-    return response()->json($results);
-}
 
 
 

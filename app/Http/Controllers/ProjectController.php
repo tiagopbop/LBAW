@@ -10,6 +10,12 @@ use App\Models\Favorited;
 
 class ProjectController extends Controller
 {
+    public function index()
+    {
+        $projects = Project::all(); // Or apply any necessary filters
+        return view('projects.index', compact('projects'));
+    }
+
     public function create()
     {
         if (Auth::user()->suspended_status) {
@@ -45,9 +51,12 @@ class ProjectController extends Controller
     }
 
     public function show(Project $project) {
-        if (Auth::user()->suspended_status) {
-            return redirect()->route('pleading.page')->with('error', 'Your account is suspended. Contact admin for further assistance.');
+
+        if (Auth::check() && Auth::user()->suspended_status) {
+            return redirect()->route('pleading.page')
+                ->with('error', 'Your account is suspended. Contact admin for further assistance.');
         }
+
         $project->load(['tasks', 'members']);
 
         $sortedMembers = $project->members->sortBy(function ($member) {
