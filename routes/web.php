@@ -126,6 +126,7 @@ Route::get('/search-projects', [HomeController::class, 'searchProjects']);
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
 Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
+Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
 Route::get('/projects/{project}/tasks', [TaskController::class, 'viewTasks'])->name('tasks.viewTasks');
 Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
 Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');

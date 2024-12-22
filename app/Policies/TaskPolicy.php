@@ -9,7 +9,8 @@ class TaskPolicy
 {
     public function view(AuthenticatedUser $user, Task $task): bool
     {
-        return $task->users->contains($user);
+        $project = $task->project;
+        return $project->members->contains($user);
     }
 
     public function update(AuthenticatedUser $user, Task $task): bool
