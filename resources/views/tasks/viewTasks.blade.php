@@ -10,6 +10,7 @@
                 {{ session('success') }}
             </div>
         @endif
+
         <?php
         $isManagerOrOwner = $project->members
             ->where('id', auth()->id())
@@ -33,18 +34,14 @@
                     @else
                         @foreach($project->tasks as $task)
                             <div class="task" data-id="{{ $task->task_id }}" style="text-align: left; margin-top: 20px;">
-                            <p><strong>Title:</strong> <a href="{{ route('tasks.show', $task->task_id) }}">{{ $task->task_name }}</a></p>
+                                <p><strong>Title:</strong> {{ $task->task_name }}</p>
                                 <p><strong>Status:</strong> {{ $task->status }}</p>
                                 <p><strong>Due date:</strong> {{ $task->due_date }}</p>
                                 <p><strong>Details:</strong> {{ $task->details }}</p>
                                 <p><strong>Assigned To:</strong>
-                                        <?php
-                                        $assignedUsers = $task->assignedUsers ? $task->assignedUsers->pluck('username')->toArray() : [];
-                                        echo !empty($assignedUsers) ? implode(', ', $assignedUsers) : 'Not assigned';
-                                        ?>
+                                    {{ $task->users->isNotEmpty() ? $task->users->pluck('username')->implode(', ') : 'Not assigned' }}
                                 </p>
                                 <div style="text-align: right;">
-                                        <?php if ($isManagerOrOwner): ?>
                                     <a href="{{ route('tasks.edit', ['project' => $project->project_id, 'task' => $task]) }}" class="view-project-button" style="background-color: #bfc900;">
                                         Edit Task
                                     </a>
@@ -56,83 +53,100 @@
                                             Delete Task
                                         </button>
                                     </form>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                         @endforeach
                     @endif
                 </div>
-                <?php if ($isManagerOrOwner): ?>
+
                 <a href="{{ route('tasks.create', $project) }}" class="large-button" style="margin-top: 20px;">
                     Add Task
                 </a>
-                <?php endif; ?>
             </div>
         </div>
     </div>
+
 @endsection
-
-
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const searchInput = document.getElementById('task-search');
             const taskList = document.getElementById('task-list');
 
-            // Fetch tasks based on search query
+            // Pass PHP variables into JavaScript
+            const projectId = @json($project->project_id);
+            const isManagerOrOwner = @json($isManagerOrOwner); // Assuming you pass $isManagerOrOwner from PHP
+
+            // Fetch tasks based on the search query
             function fetchTasks(query = '') {
-                fetch(`/tasks/search?query=${encodeURIComponent(query)}&project_id={{ $project->project_id }}`)
+                fetch(`/tasks/search?query=${encodeURIComponent(query)}&project_id=${projectId}`)
                     .then(response => response.json())
                     .then(data => {
-                        taskList.innerHTML = ''; // Clear current task list
+                        taskList.innerHTML = '';
 
                         if (data.length === 0) {
                             taskList.innerHTML = '<p>No tasks found matching the search criteria.</p>';
                         } else {
-                            // Dynamically generate task list from response
                             data.forEach(task => {
                                 const taskDiv = document.createElement('div');
                                 taskDiv.classList.add('task');
-                                taskDiv.dataset.id = task.task_id;
-                                taskDiv.style.textAlign = 'left';
-                                taskDiv.style.marginTop = '20px';
-
-                                const assignedUsers = task.assigned_users ? task.assigned_users.join(', ') : 'Not assigned';
-
+                                taskDiv.setAttribute('data-id', task.task_id);
                                 taskDiv.innerHTML = `
+                                <div class="strip">
                                     <p><strong>Title:</strong> <a href="/tasks/${task.task_id}">${task.task_name}</a></p>
-                                    <p><strong>Status:</strong> ${task.status}</p>
-                                    <p><strong>Due date:</strong> ${task.due_date}</p>
-                                    <p><strong>Details:</strong> ${task.details || ''}</p>
-                                    <p><strong>Assigned To:</strong> ${assignedUsers}</p>
-                                    ${isManagerOrOwner ? `
-                                        <div style="text-align: right;">
-                                            <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
+                                    <p style="text-align: left;"><strong>Status:</strong> ${task.status}</p>
+                                    <p style="text-align: left;"><strong>Due date:</strong> ${task.due_date}</p>
+                                    <p style="text-align: left;"><strong>Details:</strong> ${task.details}</p>
+                                    <p><strong>Assigned To:</strong>
+                                        <span id="assigned-users-${task.task_id}">Loading...</span>
+                                    </p>
+                                    <div style="text-align: right;">
+                                        ${isManagerOrOwner ? `
+                                            <a href="/projects/${projectId}/tasks/edit/${task.task_id}" class="view-project-button" style="background-color: #bfc900;">
+                                                Edit Task
+                                            </a>
                                             <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex; border: none; box-shadow: none;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">
+                                                    Delete Task
+                                                </button>
                                             </form>
-                                        </div>
-                                    ` : ''}
-                                `;
-
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `;
                                 taskList.appendChild(taskDiv);
+
+                                fetchAssignedUsers(task.task_id);
                             });
                         }
                     })
                     .catch(error => console.error('Error fetching tasks:', error));
             }
 
-            // Listen for search input and trigger task filtering
+            // Fetch assigned users for a task
+            function fetchAssignedUsers(taskId) {
+                fetch(`/tasks/${taskId}/assigned-users`)
+                    .then(response => response.json())
+                    .then(users => {
+                        const assignedUsersElement = document.getElementById(`assigned-users-${taskId}`);
+                        assignedUsersElement.textContent = users.length > 0 ? users.join(', ') : 'Not assigned';
+                    })
+                    .catch(error => {
+                        const assignedUsersElement = document.getElementById(`assigned-users-${taskId}`);
+                        assignedUsersElement.textContent = 'Error fetching assigned users';
+                    });
+            }
+
+            // Add event listener for search input
             searchInput.addEventListener('input', function () {
                 const query = searchInput.value.trim();
                 fetchTasks(query);
             });
 
-            // Initial load of all tasks when page is first loaded
+            // Initially fetch tasks
             fetchTasks();
         });
     </script>
 @endpush
-

@@ -77,16 +77,13 @@ class Task extends Model
         return $value ? $value : 'No Due Date';
     }
 
-    public function getAssignedUsers()
+    public function getAssignedUsers($id)
     {
-        $assignedUsers = $this->users();
-
-        if ($assignedUsers->isNotEmpty()) {
-            return $assignedUsers->pluck('username')->join(', ');
-        }
-
-        return 'Not assigned';
+        $task = Task::findOrFail($id);  // Ensure the task exists
+        $users = $task->users->pluck('username')->toArray();  // Get the usernames
+        return response()->json($users);  // Return as JSON
     }
+
 
     public function assignedUsers(): BelongsToMany
     {
