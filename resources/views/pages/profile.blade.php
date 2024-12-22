@@ -14,18 +14,27 @@
         <p>Country: {{ $country ?? 'Not specified' }}</p>
 
         @if (Auth::check() && Auth::user()->username === $username)
-        <button id="edit-profile-button">
-            <i class="fa fa-pencil"></i> Edit Profile
-        </button>
+            <button id="edit-profile-button">
+                <i class="fa fa-pencil"></i> Edit Profile
+            </button>
+        @else
+        @if (Auth::check() && Auth::user()->isFollowing($user->id))
+                <form method="POST" action="{{ route('profile.unfollow', $user->username) }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Unfollow</button>
+                </form>
+            @else
+                <form method="POST" action="{{ route('profile.follow', $user->username) }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Follow</button>
+                </form>
+            @endif
         @endif
 
-        @if(Auth::check() && Auth::user()->username === $username && $pfp && $pfp !== 'profile_pictures/default-profile.jpg')
-            <form id="remove-image-form" method="POST" action="{{ route('profile.removeImage') }}" style="display: none;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="remove-button">Remove Profile Image</button>
-            </form>
-        @endif
+        <div style="margin-top: 20px;">
+            <a href="{{ route('profile.followers', $username) }}">Followers</a> |
+            <a href="{{ route('profile.following', $username) }}">Following</a>
+        </div>
 
         <form id="edit-profile-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" style="display: none;">
             @csrf

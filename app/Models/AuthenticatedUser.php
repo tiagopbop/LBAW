@@ -100,6 +100,27 @@ class AuthenticatedUser extends Authenticatable
     }
 
     /**
+     * Get the user's followers
+     */
+    public function followers()
+    {
+        return $this->hasMany(Follow::class, 'followed_id');
+    }
+
+    /**
+     * Get the user's following
+     */
+    public function following()
+    {
+        return $this->hasMany(Follow::class, 'follower_id');
+    }
+
+    public function isFollowing($userId)
+    {
+        return $this->following()->where('followed_id', $userId)->exists();
+    }
+
+    /**
      * Get the creation date for the user.
      */
     public function getUserCreationDate()

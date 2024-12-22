@@ -77,6 +77,10 @@ Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('pro
 Route::delete('/profile/remove-image', [ProfileController::class, 'removeImage'])->name('profile.removeImage');
 Route::delete('/profile/delete', [ProfileController::class, 'deleteAccount'])->name('profile.delete');
 
+Route::post('/profile/{username}/follow', [ProfileController::class, 'follow'])->name('profile.follow');
+Route::post('/profile/{username}/unfollow', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
+Route::get('/profile/{username}/followers', [ProfileController::class, 'followers'])->name('profile.followers');
+Route::get('/profile/{username}/following', [ProfileController::class, 'following'])->name('profile.following');
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {

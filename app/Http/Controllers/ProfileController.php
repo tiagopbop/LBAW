@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\AuthenticatedUser;
+use App\Models\Follow;
 
 class ProfileController extends Controller
 {
@@ -19,6 +20,7 @@ class ProfileController extends Controller
         }
 
         return view('pages.profile', [
+            'user' => $user,
             'username' => $user->username,
             'email' => $user->email,
             'pfp' => $user->pfp,
@@ -82,5 +84,49 @@ class ProfileController extends Controller
         $user->delete();
         Auth::logout();
         return redirect('/')->with('status', 'Your account has been deleted successfully.');
+    }
+
+    public function follow($username)
+    {
+        $userToFollow = AuthenticatedUser::where('username', $username)->firstOrFail();
+        $follower = Auth::user();
+
+        if ($follower->id !== $userToFollow->id && !$follower->following()->where('followed_id', $userToFollow->id)->exists()) {
+            Follow::create([
+                'follower_id' => $follower->id,
+                'followed_id' => $userToFollow->id,
+            ]);
+        }
+
+        return redirect()->route('profile.show', $username)->with('success', 'User followed successfully!');
+    }
+
+    public function unfollow($username)
+    {
+        $userToUnfollow = AuthenticatedUser::where('username', $username)->firstOrFail();
+        $follower = Auth::user();
+
+        $follow = $follower->following()->where('followed_id', $userToUnfollow->id)->first();
+        if ($follow) {
+            $follow->delete();
+        }
+
+        return redirect()->route('profile.show', $username)->with('success', 'User unfollowed successfully!');
+    }
+
+    public function followers($username)
+    {
+        $user = AuthenticatedUser::where('username', $username)->firstOrFail();
+        $followers = $user->followers()->with('follower')->get();
+
+        return view('pages.followers', compact('user', 'followers'));
+    }
+
+    public function following($username)
+    {
+        $user = AuthenticatedUser::where('username', $username)->firstOrFail();
+        $following = $user->following()->with('followed')->get();
+
+        return view('pages.following', compact('user', 'following'));
     }
 }
