@@ -18,6 +18,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchUsersController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,3 +146,4 @@ Route::post('/projects/{project}/add-post', [PostController::class, 'addPost'])-
 Route::post('/posts/{post}/add-reply', [PostController::class, 'addReply'])->name('posts.addReply');
 Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuthenticatedUserNotif;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AuthenticatedUser;
 use App\Models\Favorited;
+use App\Models\Notif;
+use App\Models\InviteNotif;
 
 class ProjectController extends Controller
 {
@@ -100,10 +103,46 @@ class ProjectController extends Controller
             return back()->withErrors(['username' => 'User not found.']);
         }
 
+        // Check if the user is already a member of the project
+        if ($project->members()->where('authenticated_user.id', $user->id)->exists()) {
+            return back()->withErrors(['username' => 'User is already a member of this project.']);
+        }
+
         $project->members()->attach($user->id, ['role' => 'Project member']);
 
-        return back()->with('success', 'User invited successfully!');
+        // Check if the user already has a notification for this project
+        $existingInvite = InviteNotif::whereHas('notif.authenticatedUserNotifs', function ($query) use ($user) {
+            $query->where('id', $user->id);
+        })->where('project_id', $project->project_id)
+            ->exists();
+
+        if ($existingInvite) {
+            return back()->with('error', 'The user has already been invited to this project.');
+        }
+
+        // Create a notification for the user
+        $notification = Notif::create([
+            'title' => 'Project Added',
+            'content' => "You have been added to the project: {$project->project_title}.",
+        ]);
+
+        // Create the invite notification record
+        $inviteNotif = InviteNotif::create([
+            'notif_id' => $notification->notif_id,
+            'project_id' => $project->project_id,
+            'accepted' => false,
+        ]);
+
+        // Link the notification to the user
+        AuthenticatedUserNotif::create([
+            'id' => $user->id,
+            'notif_id' => $notification->notif_id,
+        ]);
+
+        // Return success message
+        return back()->with('success', 'User has been added successfully!');
     }
+
 
     public function assignManager(Request $request, Project $project)
     {

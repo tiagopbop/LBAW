@@ -13,9 +13,10 @@ class Notif extends Model
     use HasFactory;
 
     // Don't add create and update timestamps in database.
-    public $timestamps  = false;
+    public $timestamps = false;
 
     protected $table = 'notif';
+    protected $primaryKey = 'notif_id';
 
     /**
      * The attributes that are mass assignable.
@@ -83,4 +84,10 @@ class Notif extends Model
     {
         return $this->getAttribute('created_at');
     }
+
+    public function inviteNotifs()
+    {
+        return $this->hasMany(InviteNotif::class, 'notif_id', 'notif_id');
+    }
+
 }
