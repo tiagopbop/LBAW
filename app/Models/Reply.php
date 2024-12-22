@@ -12,7 +12,7 @@ class Reply extends Model
 
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
-
+    protected $primaryKey = 'reply_id';
     protected $table = 'reply';
 
     /**
@@ -41,7 +41,7 @@ class Reply extends Model
      */
     public function post(): BelongsTo
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class, 'post_id');
     }
 
     /**
@@ -58,5 +58,13 @@ class Reply extends Model
     public function getCreatedAt()
     {
         return $this->getAttribute('reply_creation');
+    }
+    public function user()
+{
+    return $this->belongsTo(AuthenticatedUser::class, 'id');
+}
+    public function getID()
+    {
+        return $this->user ? $this->user->username : null;
     }
 }

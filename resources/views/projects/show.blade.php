@@ -90,6 +90,9 @@
         <a href="{{ route('tasks.viewTasks', $project) }}" class="large-button">
             View Tasks
         </a>
+        <div style="text-align: center; margin-top: 20px;">
+    <a href="{{ route('projects.forum', $project) }}" class="btn btn-primary">Go to Forum</a>
+</div>
     </div>
 </div>
 @endsection

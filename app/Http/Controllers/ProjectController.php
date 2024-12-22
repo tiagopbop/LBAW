@@ -204,4 +204,19 @@ class ProjectController extends Controller
         return redirect()->route('projects.myProjects')->with('success', 'You have left the project.');
     }
 
+
+    public function forum(Project $project)
+{
+    
+    $posts = $project->posts()
+        ->with(['replies' => function ($query) {
+            $query->orderBy('reply_creation', 'desc'); 
+        }])
+        ->orderBy('post_creation', 'desc') 
+        ->get();
+
+    return view('projects.forum', compact('project', 'posts'));
+}
+
+
 }
