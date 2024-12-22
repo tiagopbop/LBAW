@@ -13,6 +13,11 @@
         <p>Bio: {{ $bio ?? 'No bio available' }}</p>
         <p>Country: {{ $country ?? 'Not specified' }}</p>
 
+        <div style="margin-top: 20px;">
+            <a href="{{ route('profile.followers', $username) }}">Followers</a> |
+            <a href="{{ route('profile.following', $username) }}">Following</a>
+        </div>
+        
         @if (Auth::check() && Auth::user()->username === $username)
             <button id="edit-profile-button">
                 <i class="fa fa-pencil"></i> Edit Profile
@@ -30,11 +35,6 @@
                 </form>
             @endif
         @endif
-
-        <div style="margin-top: 20px;">
-            <a href="{{ route('profile.followers', $username) }}">Followers</a> |
-            <a href="{{ route('profile.following', $username) }}">Following</a>
-        </div>
 
         <form id="edit-profile-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" style="display: none;">
             @csrf

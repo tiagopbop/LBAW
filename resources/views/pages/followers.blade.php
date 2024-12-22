@@ -1,9 +1,10 @@
-<!-- resources/views/pages/followers.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
     <div class="profile-container">
+        <div style="margin-top: 20px;">
+                <a href="{{ route('profile.following', $user->username) }}">Following</a>
+        </div>
         <h1>{{ $user->username }}'s Followers</h1>
         <ul>
             @foreach ($followers as $follow)
