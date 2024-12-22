@@ -118,19 +118,37 @@ Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create']
 
 Route::get('/tasks/{id}/assigned-users', [TaskController::class, 'getAssignedUsers']);
 
+Route::middleware(['auth'])->group(function () {
+    // Search route should come before dynamic routes
+    Route::get('/tasks/search', [TaskController::class, 'searchTasks'])->name('tasks.search');
+    
+    // Project-specific task routes
+    Route::get('/projects/{project}/tasks', [TaskController::class, 'viewTasks'])->name('tasks.viewTasks');
+    Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+    Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    
+    // Individual task routes
+    Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+    Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::get('/tasks/{task}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('tasks.assigned_users');
+    
+    // This should be last to avoid catching other task routes
+    Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+});
 
 Route::get('/my-projects', [ProjectController::class, 'myProjects'])->name('projects.myProjects');
 Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
 Route::get('/search-projects', [HomeController::class, 'searchProjects']);
 
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
-Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+// Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
-Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
-Route::get('/projects/{project}/tasks', [TaskController::class, 'viewTasks'])->name('tasks.viewTasks');
-Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
-Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
-Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
+// Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+// Route::get('/projects/{project}/tasks', [TaskController::class, 'viewTasks'])->name('tasks.viewTasks');
+// Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+// Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+// Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
 
 Route::get('/projects/{project}/tasks/edit/{task}', [TaskController::class, 'edit'])->name('tasks.edit');
 
@@ -140,13 +158,13 @@ Route::put('/tasks/{task_id}/update-status', [TaskController::class, 'updateStat
 
 Route::post('/tasks/{task}/comments', [TaskCommentController::class, 'store'])->name('taskComments.store');
 
-Route::get('/tasks/{task}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('tasks.assigned_users');
+// Route::get('/tasks/{task}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('tasks.assigned_users');
 Route::post('/projects/{project}/assign-manager', [ProjectController::class, 'assignManager'])->name('projects.assignManager');
 Route::post('/projects/{project}/revertManager', [ProjectController::class, 'revertManager'])->name('projects.revertManager');
 Route::delete('/projects/{project}/removeMember', [ProjectController::class, 'removeMember'])->name('projects.removeMember');
 
 Route::post('/projects/{project}/invite', [ProjectController::class, 'invite'])->name('projects.invite');
-Route::get('/tasks/search', [TaskController::class, 'searchTasks'])->name('tasks.search');
+// Route::get('/tasks/search', [TaskController::class, 'searchTasks'])->name('tasks.search');
 
 Route::get('/mytasks', [MyTasksController::class, 'myTasks'])->name('tasks.mytasks');
 
