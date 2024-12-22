@@ -12,6 +12,15 @@ use App\Models\UserTask;
 
 class TaskController extends Controller
 {
+    public function show(Task $task)
+    {
+        $this->authorize('view', $task);
+
+        $task->load('assignedUsers');
+        $task->load('comments.user');
+
+        return view('tasks.show', compact('task'));
+    }
     public function create(Project $project)
     {
         $this->authorize('create', $project);
@@ -115,16 +124,6 @@ class TaskController extends Controller
 
         // Return tasks as a JSON response
         return response()->json($tasks);
-    }
-
-
-    public function show(Task $task)
-    {
-        $this->authorize('view', $task);
-
-        $task->load('assignedUsers');
-
-        return view('tasks.show', compact('task'));
     }
 
 }

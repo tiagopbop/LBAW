@@ -59,9 +59,9 @@ class Task extends Model
     /**
      * Get the comments for the task.
      */
-    public function comments(): HasMany
+        public function comments(): HasMany
     {
-        return $this->hasMany(TaskComment::class);
+        return $this->hasMany(TaskComment::class, 'task_id', 'task_id');
     }
 
     /**
@@ -79,13 +79,18 @@ class Task extends Model
 
     public function getAssignedUsers()
     {
-        $assignedUsers = $this->users;
+        $assignedUsers = $this->users();
 
         if ($assignedUsers->isNotEmpty()) {
             return $assignedUsers->pluck('username')->join(', ');
         }
 
         return 'Not assigned';
+    }
+
+    public function assignedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(AuthenticatedUser::class, 'user_task', 'task_id', 'id');
     }
 
     public function searchTasks(Request $request)

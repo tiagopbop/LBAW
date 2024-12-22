@@ -10,10 +10,10 @@ class TaskComment extends Model
 {
     use HasFactory;
 
-    // Don't add create and update timestamps in database.
     public $timestamps  = false;
-
-    protected $table = 'task_comment';
+    protected $table = 'task_comments';
+    protected $primaryKey = 'comment_id';
+    public $incrementing = true;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +21,7 @@ class TaskComment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id', 
         'task_id',
         'comment',
         'created_at',
@@ -41,5 +42,10 @@ class TaskComment extends Model
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(AuthenticatedUser::class, 'id');
     }
 }

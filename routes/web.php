@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskCommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteController;
@@ -128,6 +129,9 @@ Route::get('/projects/{project}/tasks/create', [TaskController::class, 'create']
 Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
 Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
+Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+Route::post('/tasks/{task}/comments', [TaskCommentController::class, 'store'])->name('taskComments.store');
+
 Route::get('/tasks/{task}/assigned-users', [TaskController::class, 'getAssignedUsers'])->name('tasks.assigned_users');
 Route::post('/projects/{project}/assign-manager', [ProjectController::class, 'assignManager'])->name('projects.assignManager');
 Route::post('/projects/{project}/revertManager', [ProjectController::class, 'revertManager'])->name('projects.revertManager');

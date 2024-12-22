@@ -33,7 +33,7 @@
                     @else
                         @foreach($project->tasks as $task)
                             <div class="task" data-id="{{ $task->task_id }}" style="text-align: left; margin-top: 20px;">
-                                <p><strong>Title:</strong> {{ $task->task_name }}</p>
+                            <p><strong>Title:</strong> <a href="{{ route('tasks.show', $task->task_id) }}">{{ $task->task_name }}</a></p>
                                 <p><strong>Status:</strong> {{ $task->status }}</p>
                                 <p><strong>Due date:</strong> {{ $task->due_date }}</p>
                                 <p><strong>Details:</strong> {{ $task->details }}</p>
@@ -70,7 +70,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 
@@ -94,31 +93,30 @@
                             data.forEach(task => {
                                 const taskDiv = document.createElement('div');
                                 taskDiv.classList.add('task');
-                                taskDiv.setAttribute('data-id', task.task_id);
-                                taskDiv.innerHTML = `
-                            <div class="strip">
-                                <p style="text-align: left;"><strong>Title:</strong> ${task.task_name}</p>
-                                <p style="text-align: left;"><strong>Status:</strong> ${task.status}</p>
-                                <p style="text-align: left;"><strong>Due date:</strong> ${task.due_date}</p>
-                                <p style="text-align: left;"><strong>Details:</strong> ${task.details}</p>
-                                <p><strong>Assigned To:</strong> ${
-                                    task.assignedUsers && task.assignedUsers.length > 0
-                                        ? task.assignedUsers.map(user => user.username).join(', ')
-                                        : 'Not assigned'
-                                }</p>
-                                    <div style="text-align: right;">
-                                    <?php if ($isManagerOrOwner): ?>
-                                <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
-                                        <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex; border: none; box-shadow: none;">
-                                            @csrf
-                                @method('DELETE')
-                                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
-                                </form>
-<?php endif; ?>
-                                </div>
-                            </div>
+                                taskDiv.dataset.id = task.task_id;
+                                taskDiv.style.textAlign = 'left';
+                                taskDiv.style.marginTop = '20px';
 
-`;
+                                const assignedUsers = task.assigned_users ? task.assigned_users.join(', ') : 'Not assigned';
+
+                                taskDiv.innerHTML = `
+                                    <p><strong>Title:</strong> <a href="/tasks/${task.task_id}">${task.task_name}</a></p>
+                                    <p><strong>Status:</strong> ${task.status}</p>
+                                    <p><strong>Due date:</strong> ${task.due_date}</p>
+                                    <p><strong>Details:</strong> ${task.details || ''}</p>
+                                    <p><strong>Assigned To:</strong> ${assignedUsers}</p>
+                                    ${isManagerOrOwner ? `
+                                        <div style="text-align: right;">
+                                            <a href="/tasks/${task.task_id}/edit" class="view-project-button" style="background-color: #bfc900;">Edit Task</a>
+                                            <form action="/tasks/${task.task_id}" method="POST" style="display: inline-flex; border: none; box-shadow: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this task?')">Delete Task</button>
+                                            </form>
+                                        </div>
+                                    ` : ''}
+                                `;
+
                                 taskList.appendChild(taskDiv);
                             });
                         }
@@ -129,7 +127,7 @@
             // Listen for search input and trigger task filtering
             searchInput.addEventListener('input', function () {
                 const query = searchInput.value.trim();
-                fetchTasks(query); // Fetch tasks based on the input query
+                fetchTasks(query);
             });
 
             // Initial load of all tasks when page is first loaded

@@ -89,8 +89,8 @@ CREATE TABLE task (
 
 CREATE TABLE task_comments (
     comment_id SERIAL PRIMARY KEY,
-    id INT REFERENCES authenticated_user(id)ON UPDATE CASCADE ON DELETE CASCADE,
-    task_id INT REFERENCES task(task_id)ON UPDATE CASCADE ON DELETE CASCADE,
+    id INT REFERENCES authenticated_user(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    task_id INT REFERENCES task(task_id) ON UPDATE CASCADE ON DELETE CASCADE,
     comment TEXT CHECK (LENGTH(comment) < 500) NOT NULL,
     created_at DATE DEFAULT CURRENT_DATE NOT NULL
 );
@@ -1455,6 +1455,9 @@ SELECT MAX(task_id) FROM task;
 
 SELECT setval('task_task_id_seq', (SELECT MAX(task_id) FROM task));
 
+SELECT MAX(comment_id) FROM task_comments;
+
+SELECT setval('task_comments_comment_id_seq', (SELECT MAX(comment_id) FROM task_comments));
 
 
 -- Populate user_task table
