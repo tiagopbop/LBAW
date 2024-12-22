@@ -55,6 +55,9 @@
                 <a href="{{ url('/about') }}" class="footer-link">About Us</a>
                 <a href="{{ url('/contact') }}" class="footer-link">Contacts</a>
                 <a href="{{ url('/faq') }}" class="footer-link">FAQ</a>
+                @if(!Auth::check())
+                <a href="{{ url('login') }}" class="footer-link">Login</a>
+                @endif
             </div>
         </footer>
     </body>
